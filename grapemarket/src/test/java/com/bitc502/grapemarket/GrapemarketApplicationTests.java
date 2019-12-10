@@ -1,10 +1,10 @@
-package com.bitc502.carrotmarket;
+package com.bitc502.grapemarket;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CarrotmarketApplicationTests {
+class GrapemarketApplicationTests {
 
 	@Test
 	void contextLoads() {

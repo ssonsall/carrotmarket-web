@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Carrot Market Index</title>
+<title>GrapeMarket Index Page</title>
 </head>
 <body>
-<h1>Carrot Market Index</h1>
+<h1>GrapeMarket Index Page</h1>
 </body>
 </html>
