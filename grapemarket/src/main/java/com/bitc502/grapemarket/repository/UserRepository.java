@@ -6,5 +6,5 @@ import com.bitc502.grapemarket.model.User;
 
 
 public interface UserRepository extends JpaRepository<User, Integer>{
-
+	User findByUsername(String username);
 }

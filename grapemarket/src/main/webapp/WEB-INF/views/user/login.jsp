@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
 <head>
@@ -11,17 +10,16 @@
     =============================================
     -->
 <title>login</title>
-<%@include file="../include/favicons.jsp" %>
-    <%@include file="../include/stylesheets.jsp" %>
+<%@include file="../include/favicons.jsp"%>
+<%@include file="../include/stylesheets.jsp"%>
 </head>
-<body data-spy="scroll" data-target=".onpage-navigation"
-	data-offset="60">
+<body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
 	<main>
 		<div class="page-loader">
 			<div class="loader">Loading...</div>
 		</div>
 		<!-- nav -->
-		<%@include file="../include/nav.jsp" %>
+		<%@include file="../include/nav.jsp"%>
 		<div class="main">
 			<section class="module" id="contact">
 				<div class="container">
@@ -33,26 +31,22 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-6 col-sm-offset-3">
-							<form id="contactForm" role="form" method="post"
-								action="php/contact.php">
+							<form role="form" method="post" action="/user/loginProc">
 								<div class="form-group">
-									<label class="sr-only" for="name">username</label> <input
-										class="form-control" type="text" id="username" name="username"
-										placeholder="username*" required="required"
+									<label class="sr-only" for="name">username</label> <input class="form-control" type="text" id="username"
+										name="username" placeholder="username*" required="required"
 										data-validation-required-message="Please enter your name." />
 									<p class="help-block text-danger"></p>
 								</div>
 								<div class="form-group">
-									<label class="sr-only" for="email">password</label> <input
-										class="form-control" type="password" id="password"
+									<label class="sr-only" for="email">password</label> <input class="form-control" type="password" id="password"
 										name="password" placeholder="password*" required="required"
 										data-validation-required-message="Please enter your email address." />
 									<p class="help-block text-danger"></p>
 								</div>
 
 								<div class="text-center">
-									<button class="btn btn-block btn-round btn-d" id="cfsubmit"
-										type="submit">Submit</button>
+									<button class="btn btn-block btn-round btn-d" id="cfsubmit" type="submit">Submit</button>
 								</div>
 							</form>
 							<div class="ajax-response font-alt" id="contactFormResponse"></div>
@@ -66,8 +60,7 @@
 						<div class="col-sm-3">
 							<div class="widget">
 								<h5 class="widget-title font-alt">About Titan</h5>
-								<p>The languages only differ in their grammar, their
-									pronunciation and their most common words.</p>
+								<p>The languages only differ in their grammar, their pronunciation and their most common words.</p>
 								<p>Phone: +1 234 567 89 10</p>
 								Fax: +1 234 567 89 10
 								<p>
@@ -105,8 +98,7 @@
 								<ul class="widget-posts">
 									<li class="clearfix">
 										<div class="widget-posts-image">
-											<a href="#"><img src="assets/images/rp-1.jpg"
-												alt="Post Thumbnail" /></a>
+											<a href="#"><img src="assets/images/rp-1.jpg" alt="Post Thumbnail" /></a>
 										</div>
 										<div class="widget-posts-body">
 											<div class="widget-posts-title">
@@ -117,8 +109,7 @@
 									</li>
 									<li class="clearfix">
 										<div class="widget-posts-image">
-											<a href="#"><img src="assets/images/rp-2.jpg"
-												alt="Post Thumbnail" /></a>
+											<a href="#"><img src="assets/images/rp-2.jpg" alt="Post Thumbnail" /></a>
 										</div>
 										<div class="widget-posts-body">
 											<div class="widget-posts-title">
@@ -139,16 +130,13 @@
 					<div class="row">
 						<div class="col-sm-6">
 							<p class="copyright font-alt">
-								&copy; 2017&nbsp;<a href="index.html">TitaN</a>, All Rights
-								Reserved
+								&copy; 2017&nbsp;<a href="index.html">TitaN</a>, All Rights Reserved
 							</p>
 						</div>
 						<div class="col-sm-6">
 							<div class="footer-social-links">
-								<a href="#"><i class="fa fa-facebook"></i></a><a href="#"><i
-									class="fa fa-twitter"></i></a><a href="#"><i
-									class="fa fa-dribbble"></i></a><a href="#"><i
-									class="fa fa-skype"></i></a>
+								<a href="#"><i class="fa fa-facebook"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i
+									class="fa fa-dribbble"></i></a><a href="#"><i class="fa fa-skype"></i></a>
 							</div>
 						</div>
 					</div>
@@ -163,6 +151,6 @@
     JavaScripts
     =============================================
     -->
-	 <%@include file="../include/script.jsp" %>
+	<%@include file="../include/script.jsp"%>
 </body>
 </html>

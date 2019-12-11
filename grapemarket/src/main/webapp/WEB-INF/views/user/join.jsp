@@ -32,10 +32,15 @@
             </div>
             <div class="row">
               <div class="col-sm-6 col-sm-offset-3">
-                <form id="contactForm" role="form" method="post" action="php/contact.php">
+                <form role="form" method="post" action="/user/joinProc">
                   <div class="form-group">
                     <label class="sr-only" for="name">username</label>
-                    <input class="form-control" type="text" id="username" name="username" placeholder="username*" required="required" data-validation-required-message="Please enter your name."/>
+                    <input class="form-control" type="text" id="username" name="username" placeholder="username*" required="required" data-validation-required-message="Please enter your username."/>
+                    <p class="help-block text-danger"></p>
+                  </div>
+                  <div class="form-group">
+                    <label class="sr-only" for="name">name</label>
+                    <input class="form-control" type="text" id="name" name="name" placeholder="name*" required="required" data-validation-required-message="Please enter your name."/>
                     <p class="help-block text-danger"></p>
                   </div>
                   <div class="form-group">
@@ -45,7 +50,7 @@
                   </div>
                   <div class="form-group">
                     <label class="sr-only" for="name">checkpassword</label>
-                    <input class="form-control" type="password" id="username" name="username" placeholder="username*" required="required" data-validation-required-message="Please enter your name."/>
+                    <input class="form-control" type="password" id="checkPassword" required="required" placeholder="check password*" data-validation-required-message="checkpassword."/>
                     <p class="help-block text-danger"></p>
                   </div>
                   <div class="form-group">
@@ -60,7 +65,7 @@
                   </div>
                   
                   <div class="text-center">
-                    <button class="btn btn-block btn-round btn-d" id="cfsubmit" type="submit">Submit</button>
+                    <button class="btn btn-block btn-round btn-d" type="submit">Submit</button>
                   </div>
                 </form>
                 <div class="ajax-response font-alt" id="contactFormResponse"></div>
