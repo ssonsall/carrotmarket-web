@@ -57,4 +57,15 @@ public class UserController {
 		return "/user/userProfile";
 	}
 
+	@PostMapping("/update")
+	public String update(User user) {
+		try {
+			System.out.println("이메일>>"+user.getEmail());
+			mUserRepo.update(user.getPassword(),user.getEmail(),user.getPhone(),user.getId());
+			return "redirect:/";
+		} catch (Exception e) {
+		}
+		return "/user/userProfile";
+	}
+
 }

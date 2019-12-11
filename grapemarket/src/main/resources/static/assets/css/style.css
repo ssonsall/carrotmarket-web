@@ -813,7 +813,6 @@ a,
 /* Forms common style */
 .form-control {
   font-family: "Roboto Condensed", sans-serif;
-  text-transform: uppercase;
   letter-spacing: 2px;
   font-size: 11px;
   height: 33px;
@@ -1255,7 +1254,7 @@ General Styles - Owlcarousel
 }
 
 
-/* 드롭다운 메뉴 수정 여기서 */
+/* �뱶濡��떎�슫 硫붾돱 �닔�젙 �뿬湲곗꽌 */
 .navbar-custom .dropdown-menu {
   background: rgba(26, 26, 26, 0.9);
   border-radius: 0;
