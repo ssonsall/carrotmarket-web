@@ -13,6 +13,8 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 
 @Data
@@ -25,6 +27,7 @@ public class Chat {
 	
 	//id, content, createDate
 	@OneToMany(mappedBy = "chat")
+	@JsonIgnoreProperties({ "user","chat" })
 	private List<Message> message;
 	
 	//id, username, address

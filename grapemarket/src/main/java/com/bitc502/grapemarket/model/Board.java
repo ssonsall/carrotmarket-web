@@ -13,6 +13,9 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 
 @Data
@@ -31,15 +34,18 @@ public class Board {
 	
 	//댓글
 	@OneToMany(mappedBy = "board")
+	@JsonIgnoreProperties({ "board","user" })
 	private List<Comment> comment;
 
 	@OneToMany(mappedBy = "board")
+	@JsonIgnoreProperties({ "board","user" })
 	private List<Likes> like; //좋아요
 	
 
 	//id, username, address
 	@ManyToOne
 	@JoinColumn(name="userId")
+	@JsonBackReference
 	private User user;
 	
 	//상품 사진 시작

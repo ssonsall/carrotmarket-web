@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 
 @Data //lombok
@@ -29,8 +31,10 @@ public class User {
 	private String address1Auth; //주소1 인증
 
 	@OneToMany(mappedBy = "user")
+	@JsonIgnoreProperties({ "user" })
 	private List<Board> board;
 	@OneToMany(mappedBy = "user")
+	@JsonIgnoreProperties({ "user","board" })
 	private List<Chat> chat;
 	
 	
