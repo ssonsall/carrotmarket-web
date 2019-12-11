@@ -36,9 +36,9 @@
               </li>
               <li class="dropup"><a class="dropup-toggle" href="/board/writeForm" data-toggle="dropup">상품등록</a>
               </li>
-              <li class="dropup"><a class="dropup-toggle" href="#" data-toggle="dropup">채팅</a>
+              <li class="dropup"><a class="dropup-toggle" href="/chat/" data-toggle="dropup">채팅</a>
               </li>
-              <li class="dropup"><a class="dropup-toggle" href="#" data-toggle="dropup">유저정보</a>
+              <li class="dropup"><a class="dropup-toggle" href="/user/userProfile" data-toggle="dropup">유저정보</a>
               </li>
             </ul>
           </div>
