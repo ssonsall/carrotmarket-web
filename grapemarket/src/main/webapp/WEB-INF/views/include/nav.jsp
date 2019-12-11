@@ -2,8 +2,10 @@
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
- <nav class="navbar navbar-custom navbar-fixed-top navbar-transparent" role="navigation">
-        <div class="container">
+    
+    
+ <nav class="navbar navbar-custom navbar-fixed-top navbar-transparent" style ="background-color: black;" role="navigation">
+        <div class="container" >
           <div class="navbar-header">
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#custom-collapse"><span
                 class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span
@@ -11,9 +13,9 @@
           </div>
           <div class="collapse navbar-collapse" id="custom-collapse">
             <ul class="nav navbar-nav navbar-right">
-              <li class="dropup"><a class="dropup-toggle" href="#" data-toggle="dropup">홈화면</a>
+              <li class="dropup"><a class="dropup-toggle" href="/" data-toggle="dropup">홈화면</a>
               </li>
-              <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">카테고리</a>
+              <li class="dropdown"><a class="dropdown-toggle" href="/board/" data-toggle="dropdown">카테고리</a>
                 <ul class="dropdown-menu">
                   <li class="dropdown"><a href="#" data-toggle="dropdown">인기매물</a></li>
                   <li class="dropdown"><a href="#" data-toggle="dropdown">디지털/가전</a></li>
@@ -32,7 +34,7 @@
                   <li class="dropdown"><a href="#" data-toggle="dropdown">삽니다</a></li>
                 </ul><!--  -->
               </li>
-              <li class="dropup"><a class="dropup-toggle" href="#" data-toggle="dropup">상품등록</a>
+              <li class="dropup"><a class="dropup-toggle" href="/board/writeForm" data-toggle="dropup">상품등록</a>
               </li>
               <li class="dropup"><a class="dropup-toggle" href="#" data-toggle="dropup">채팅</a>
               </li>
