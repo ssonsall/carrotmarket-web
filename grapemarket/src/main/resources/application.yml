@@ -9,11 +9,11 @@ spring:
       prefix: /WEB-INF/views/
       suffix: .jsp
       
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/insta?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
-#    username: insta
-#    password: bitc5600
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/grapemarket?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
+    username: grapemarket
+    password: bitc5600
     
   jpa:
     open-in-view: false    
@@ -40,10 +40,10 @@ spring:
       force: true 
       
 # 시큐리티 사용자 기본 아이디 비번 디폴트 세팅      
-#  security:
-#    user:
-#      name: test
-#      password: 1234
+  security:
+    user:
+      name: test
+      password: 1234
       
 #파일 저장할 경로
 #file:
