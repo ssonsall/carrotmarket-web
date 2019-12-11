@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
   <head>
@@ -20,13 +20,14 @@
         <div class="loader">Loading...</div>
       </div>
       <!-- nav -->
-      <%@include file="../include/nav.jsp" %>
+		<%@include file="../include/nav.jsp" %>
+
       <div class="main">
         <section class="module" id="contact">
           <div class="container">
             <div class="row">
               <div class="col-sm-6 col-sm-offset-3">
-                <h2 class="module-title font-alt">Join</h2>
+                <h2 class="module-title font-alt">ìí ë±ë¡</h2>
                 <div class="module-subtitle font-serif"></div>
               </div>
             </div>
@@ -34,31 +35,48 @@
               <div class="col-sm-6 col-sm-offset-3">
                 <form id="contactForm" role="form" method="post" action="php/contact.php">
                   <div class="form-group">
-                    <label class="sr-only" for="name">username</label>
-                    <input class="form-control" type="text" id="username" name="username" placeholder="username*" required="required" data-validation-required-message="Please enter your name."/>
+                    <label class="sr-only" for="title">ì ëª©</label>
+                    <input class="form-control" type="text" id="title" name="title" placeholder="ì ëª©*" required="required" data-validation-required-message="Please enter your name."/>
                     <p class="help-block text-danger"></p>
                   </div>
                   <div class="form-group">
-                    <label class="sr-only" for="email">password</label>
-                    <input class="form-control" type="password" id="password" name="password" placeholder="password*" required="required" data-validation-required-message="Please enter your email address."/>
+                      <label class="sr-only" for="category">ì¹´íê³ ë¦¬</label>
+                      <!-- <input class="form-control" type="text" id="category" name="category" placeholder="ì¹´íê³ ë¦¬*" required="required" data-validation-required-message="Please enter your email address."/> -->
+                      <div class="col-sm-4 mb-sm-20">
+                          <select class="form-control"  style="position: relative; bottom:7px; right: 15px; width : 555px;">
+                            <option selected="selected">ì¸ê¸°ë§¤ë¬¼</option>
+                            <option>ëì§í¸/ê°ì </option>
+                            <option>ê°êµ¬/ì¸íë¦¬ì´</option>
+                            <option>ì ìë/ì ìëì</option>
+                            <option>ìí/ê°ê³µìí</option>
+                            <option>ì¬ì±ìë¥</option>
+                            <option>ì¬ì±ì¡í</option>
+                            <option>ë·°í°/ë¯¸ì©</option>
+                            <option>ë¨ì±í¨ì/ì¡í</option>
+                            <option>ì¤í¬ì¶/ë ì </option>
+                            <option>ê²ì/ì·¨ë¯¸</option>
+                            <option>ëì/í°ì¼/ìë°</option>
+                            <option>ë°ë ¤ëë¬¼ì©í</option>
+                            <option>ê¸°í ì¤ê³ ë¬¼í</option>
+                            <option>ì½ëë¤</option>
+                          </select>
+                        </div>
+                      <p class="help-block text-danger"></p>
+                    </div>
+                  <div class="form-group">
+                    <label class="sr-only" for="price">ê°ê²©</label>
+                    <input class="form-control" type="text" id="price" name="price" placeholder="ê°ê²©*" required="required" data-validation-required-message="Please enter your email address."/>
                     <p class="help-block text-danger"></p>
                   </div>
                   <div class="form-group">
-                    <label class="sr-only" for="name">checkpassword</label>
-                    <input class="form-control" type="password" id="username" name="username" placeholder="username*" required="required" data-validation-required-message="Please enter your name."/>
+                    <textarea class="form-control" rows="7" id="content" name="content" placeholder="ë´ì©*" required="required" data-validation-required-message="Please enter your message."></textarea>
                     <p class="help-block text-danger"></p>
                   </div>
                   <div class="form-group">
-                    <label class="sr-only" for="email">email</label>
-                    <input class="form-control" type="text" id="email" name="email" placeholder="email*" required="required" data-validation-required-message="Please enter your email address."/>
-                    <p class="help-block text-danger"></p>
-                  </div>
-                  <div class="form-group">
-                    <label class="sr-only" for="email">phone</label>
-                    <input class="form-control" type="text" id="phone" name="phone" placeholder="phone*" required="required" data-validation-required-message="Please enter your email address."/>
-                    <p class="help-block text-danger"></p>
-                  </div>
-                  
+                      <label class="sr-only" for="product_images">ì¬ì§ì²¨ë¶</label>
+                      <input class="form-control" type="file" id="product_images" name="product_images"/>
+                      <p class="help-block text-danger"></p>
+                    </div>
                   <div class="text-center">
                     <button class="btn btn-block btn-round btn-d" id="cfsubmit" type="submit">Submit</button>
                   </div>
