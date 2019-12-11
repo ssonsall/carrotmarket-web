@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -22,7 +24,13 @@ public class Message {
 	
 	
 //	private User user; //id,username
-//	private Chat chat; //id
+	@ManyToOne
+	@JoinColumn(name="userId")
+	private User user; //id, username, address
+
+	@ManyToOne
+	@JoinColumn(name="chatId")
+	private Chat chat; //id
 	
 	@CreationTimestamp
 	private Timestamp createDate;

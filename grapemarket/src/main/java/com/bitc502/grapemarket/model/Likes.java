@@ -9,37 +9,33 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
 
 import lombok.Data;
 
 @Data
-@Entity 
-public class Chat {
+@Entity
+public class Likes {
 
-	@Id 
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id; // 시퀀스
-	
-	//id, content, createDate
-	@OneToMany(mappedBy = "chat")
-	private List<Message> message;
-	
-	//id, username, address
+
+	//누르는 사람
+	//private User user; //id, username
 	@ManyToOne
-	@JoinColumn(name="userId")
-	private User user; //id, username, address
-	
-//	private Board board; //id, title, price
+	@JoinColumn(name = "userId")
+	private User user;
+
 	// id, title
 	@ManyToOne
 	@JoinColumn(name = "boardId")
 	private Board board;
-	
+
 	@CreationTimestamp
 	private Timestamp createDate;
-	@CreationTimestamp 
+	@CreationTimestamp
 	private Timestamp updateDate;
+
 }

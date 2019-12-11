@@ -1,7 +1,6 @@
 package com.bitc502.grapemarket.model;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -9,13 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
 
@@ -29,12 +25,22 @@ public class Board {
 	private String title; //제목
 	private String content; //내용
 	private String price; //가격
-	private String range; //범위
+	private String addressRange; //범위
 	private String state; // 상품 상태 (판매중, 판매완료)
 	private String category; // 상품 카테고리
-//	private List<Comment> comment; //댓글
-//	private List<Like> like; //좋아요
 	
+	//댓글
+	@OneToMany(mappedBy = "board")
+	private List<Comment> comment;
+
+	@OneToMany(mappedBy = "board")
+	private List<Likes> like; //좋아요
+	
+
+	//id, username, address
+	@ManyToOne
+	@JoinColumn(name="userId")
+	private User user;
 	
 	//상품 사진 시작
 	private String image1;
@@ -49,7 +55,6 @@ public class Board {
 	private String image10;
 	//상품 사진 끝
 	
-//	private User user; //id, username, address
 	
 	
 	@CreationTimestamp

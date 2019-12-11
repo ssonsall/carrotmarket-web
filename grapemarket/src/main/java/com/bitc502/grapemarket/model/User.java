@@ -1,8 +1,6 @@
 package com.bitc502.grapemarket.model;
 
-import java.awt.Image;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -12,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 
@@ -31,9 +27,11 @@ public class User {
 	private String phone; //핸드폰 번호
 	private String address1;  //주소1
 	private String address1Auth; //주소1 인증
-	
-//	private List<Board> board;
-//	private List<Chat> chat;
+
+	@OneToMany(mappedBy = "user")
+	private List<Board> board;
+	@OneToMany(mappedBy = "user")
+	private List<Chat> chat;
 	
 	
 	@CreationTimestamp //null 값으로 생성시 자동으로 현재 시간이 설정
