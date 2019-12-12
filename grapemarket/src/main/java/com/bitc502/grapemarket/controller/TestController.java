@@ -1,5 +1,6 @@
 package com.bitc502.grapemarket.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.User;
+import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 
 @Controller
@@ -17,12 +20,21 @@ public class TestController {
 	
 	@Autowired
 	private UserRepository uRepo;
+
+	@Autowired
+	private BoardRepository bRepo;
 	
 	@GetMapping("/category")
 	public @ResponseBody User category() {
 		Optional<User> oUser = uRepo.findById(2);
 		User user = oUser.get();
 		return user;
+	}
+
+	@GetMapping("/board")
+	public @ResponseBody List<Board> board() {
+		List<Board> boards = bRepo.findAll();
+		return boards;
 	}
 
 }
