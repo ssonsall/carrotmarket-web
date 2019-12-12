@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -27,8 +28,13 @@ public class User {
 	private String name; // 사용자 이름
 	private String email; //EMAIL
 	private String phone; //핸드폰 번호
-	private String address1;  //주소1
-	private String address1Auth; //주소1 인증
+	private String address;  //주소1
+    @ColumnDefault("0")
+	private long addressX;
+    @ColumnDefault("0")
+	private long addressY;
+    @ColumnDefault("0")
+	private Integer addressAuth; //주소1 인증
 
 	@OneToMany(mappedBy = "user")
 	@JsonIgnoreProperties({ "user" })

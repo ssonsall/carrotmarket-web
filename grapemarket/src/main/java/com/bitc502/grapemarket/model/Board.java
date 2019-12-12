@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -19,36 +20,38 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 @Data
-@Entity 
+@Entity
 public class Board {
 
-	@Id 
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id; // 시퀀스
-	private String title; //제목
-	private String content; //내용
-	private String price; //가격
-	private String addressRange; //범위
+	private String title; // 제목
+	private String content; // 내용
+	private String price; // 가격
+	private String addressRange; // 범위
 	private String state; // 상품 상태 (판매중, 판매완료)
-	private String category; // 상품 카테고리
-	
-	//댓글
+
+	@OneToOne
+	@JoinColumn(name = "category_id", referencedColumnName = "id")
+	private Category category; // 상품 카테고리
+
+	// 댓글
 	@OneToMany(mappedBy = "board")
-	@JsonIgnoreProperties({ "board","user" })
+	@JsonIgnoreProperties({ "board", "user" })
 	private List<Comment> comment;
 
 	@OneToMany(mappedBy = "board")
-	@JsonIgnoreProperties({ "board","user" })
-	private List<Likes> like; //좋아요
-	
+	@JsonIgnoreProperties({ "board", "user" })
+	private List<Likes> like; // 좋아요
 
-	//id, username, address
+	// id, username, address
 	@ManyToOne
-	@JoinColumn(name="userId")
+	@JoinColumn(name = "userId")
 	@JsonBackReference
 	private User user;
-	
-	//상품 사진 시작
+
+	// 상품 사진 시작
 	private String image1;
 	private String image2;
 	private String image3;
@@ -59,12 +62,10 @@ public class Board {
 	private String image8;
 	private String image9;
 	private String image10;
-	//상품 사진 끝
-	
-	
-	
+	// 상품 사진 끝
+
 	@CreationTimestamp
 	private Timestamp createDate;
-	@CreationTimestamp 
+	@CreationTimestamp
 	private Timestamp updateDate;
 }
