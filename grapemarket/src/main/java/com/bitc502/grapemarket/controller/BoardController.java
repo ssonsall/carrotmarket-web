@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,9 +36,32 @@ public class BoardController {
 	@Autowired
 	private BoardRepository bRepo;
 
-	// 전체 페이지
+	// 전체 페이지 
 	@GetMapping("/")
 	public String list() {
+		return "/board/list";
+	}
+	
+	// 페이징. 보드카테고리 임의로 지정(4)해둠. 나중에 카테고리도 변수로 넘겨야 함.
+	//localhost:8080/board/page?page=0   ->   1번 페이지
+	@GetMapping("/page")
+	public String getList(Model model,
+			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable) {
+		Page<Board> boards = bRepo.findAll(pageable);
+		if (pageable.getPageNumber() >= boards.getTotalPages()) {
+			return "redirect:/test/page?page=" + (boards.getTotalPages() - 1);
+		}
+		int category = 4;
+		int countRow = bRepo.countFindByCategory(category);
+		int count = 0;
+		if (countRow % 8 == 0) {
+			count = countRow / 8;
+		} else {
+			count = (countRow / 8) + 1;
+		}
+		System.out.println("count >>" + count);
+		model.addAttribute("count", count);
+		model.addAttribute("boards", boards.getContent());
 		return "/board/list";
 	}
 

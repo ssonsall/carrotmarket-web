@@ -102,8 +102,39 @@ public class TestController {
 		if (pageable.getPageNumber() >= boards.getTotalPages()) {
 			return "redirect:/test/page?page=" + (boards.getTotalPages() - 1);
 		}
+		int category = 4;
+		int countRow = bRepo.countFindByCategory(category);
+		int count = 0;
+		if (countRow % 8 == 0) {
+			count = countRow / 8;
+		} else {
+			count = (countRow / 8) + 1;
+		}
+		System.out.println("count >>" + count);
+		model.addAttribute("count", count);
 		model.addAttribute("boards", boards.getContent());
 		return "/board/list";
 	}
 
+	@GetMapping("/pageres")
+	public @ResponseBody Page<Board> getlistres(Model model,
+			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable) {
+		Page<Board> boards = bRepo.findAll(pageable);
+		if (pageable.getPageNumber() >= boards.getTotalPages()) {
+			return null;
+		}
+		int category = 4;
+		int countRow = bRepo.countFindByCategory(category);
+		int count = 0;
+		if (countRow % 8 == 0) {
+			count = countRow / 8;
+		} else {
+			count = (countRow / 8) + 1;
+		}
+		
+		System.out.println("count >>" + count);
+		model.addAttribute("count", count);
+		model.addAttribute("boards", boards.getContent());
+		return boards;
+	}
 }
