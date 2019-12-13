@@ -20,7 +20,6 @@ import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
-import com.bitc502.grapemarket.service.BoardService;
 import com.bitc502.grapemarket.util.Script;
 
 @Controller
@@ -32,9 +31,6 @@ public class TestController {
 
 	@Autowired
 	private BoardRepository bRepo;
-
-	@Autowired
-	private BoardService bService;
 
 	@GetMapping("/userAll")
 	public @ResponseBody List<User> userAll() {
