@@ -1,5 +1,6 @@
 package com.bitc502.grapemarket.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,18 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bitc502.grapemarket.common.CategoryType;
 import com.bitc502.grapemarket.model.Board;
-import com.bitc502.grapemarket.model.Category;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
-import com.bitc502.grapemarket.repository.CategoryRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.MyUserDetails;
 import com.bitc502.grapemarket.util.Script;
@@ -32,9 +31,6 @@ public class BoardController {
 
 	@Autowired
 	private BoardRepository bRepo;
-
-	@Autowired
-	private CategoryRepository cRepo;
 
 	// 전체 페이지
 	@GetMapping("/")
@@ -79,14 +75,20 @@ public class BoardController {
 		}
 		return Script.back("Fail Delete");
 	}
-
+	
 	@GetMapping("/category")
 	public String category(Model model) {
-		List<Category> categories = cRepo.findAll();
-		model.addAttribute("categories", categories);
+		CategoryType[] categories = CategoryType.values();
+		System.out.println(categories[0]);
+		List<String> list = new ArrayList<>(15);
+		for (CategoryType categoryType : categories) {
+			list.add(categoryType.NAME);
+		}
+		System.out.println(list);
+		model.addAttribute("categories",list);
 		return "/board/category";
 	}
-
+	
 	@GetMapping("/category/{id}")
 	public String searchByCategory(@PathVariable int id) {
 		// 카테고리별 리스트 화면

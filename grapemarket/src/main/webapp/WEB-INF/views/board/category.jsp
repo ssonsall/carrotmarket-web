@@ -53,15 +53,15 @@
 									<c:when test="${status.count%2 == 0 }">
 										<div class="col-md-4 col-sm-6 col-lg-4"
 											style="padding-left: 5%">
-											<a href="/board/category/${category.id}"><h3>
-													${category.category}</h3></a>
+											<a href="/board/category/${status.count}"><h3>
+													${category}</h3></a>
 										</div>
 									</c:when>
 									<c:otherwise>
 										<div class="col-md-4 col-sm-6 col-lg-4"
 											style="padding-left: 5%; background-color: #f9f2ec">
-											<a href="/board/category/${category.id}"><h3>
-													${category.category}</h3></a>
+											<a href="/board/category/${status.count}"><h3>
+													${category}</h3></a>
 										</div>
 									</c:otherwise>
 								</c:choose>

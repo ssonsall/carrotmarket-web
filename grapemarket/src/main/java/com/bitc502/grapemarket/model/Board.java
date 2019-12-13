@@ -34,10 +34,7 @@ public class Board {
 	private String price; // 가격
 	private String addressRange; // 범위
 	private String state; // 상품 상태 (판매중, 판매완료)
-
-	@OneToOne
-	@JoinColumn(name = "category_id", referencedColumnName = "id")
-	private Category category; // 상품 카테고리
+	private int category; // 상품 카테고리
 
 	// 댓글
 	@OneToMany(mappedBy = "board")
