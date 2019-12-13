@@ -3,6 +3,7 @@ package com.bitc502.grapemarket.model;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -38,15 +41,22 @@ public class Board {
 
 	// 댓글
 	@OneToMany(mappedBy = "board")
-	@JsonIgnoreProperties({ "board", "user" })
+	@JsonIgnoreProperties({ "user","board" })
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Comment> comment;
 
 	@OneToMany(mappedBy = "board")
-	@JsonIgnoreProperties({ "board", "user" })
+	@JsonIgnoreProperties({ "user","board" })
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Likes> like; // 좋아요
+	
+	@OneToMany(mappedBy = "board")
+	@JsonIgnoreProperties({ "user","board" })
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<Chat> chat;
 
 	// id, username, address
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "userId")
 	@JsonBackReference
 	private User user;

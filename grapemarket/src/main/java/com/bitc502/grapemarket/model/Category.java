@@ -1,5 +1,6 @@
 package com.bitc502.grapemarket.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,7 +20,7 @@ public class Category {
 	private int id;
 	private String Category;
 	
-	@OneToOne()
+	@OneToOne
 	@JsonBackReference
 	private Board board;
 }

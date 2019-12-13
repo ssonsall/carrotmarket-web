@@ -3,6 +3,7 @@ package com.bitc502.grapemarket.model;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -28,16 +31,17 @@ public class Chat {
 	//id, content, createDate
 	@OneToMany(mappedBy = "chat")
 	@JsonIgnoreProperties({ "user","chat" })
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Message> message;
 	
-	//id, username, address
+	//누르는 사람
+	//private User user; //id, username
 	@ManyToOne
-	@JoinColumn(name="userId")
-	private User user; //id, username, address
+	@JoinColumn(name = "userId")
+	private User user;
 	
-//	private Board board; //id, title, price
 	// id, title
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "boardId")
 	private Board board;
 	

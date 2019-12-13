@@ -8,18 +8,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.MyUserDetails;
+import com.bitc502.grapemarket.util.Script;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
 	@Autowired
-	private UserRepository mUserRepo;
+	private UserRepository uRepo;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -42,7 +45,7 @@ public class UserController {
 		String encPassword = passwordEncoder.encode(rawPassword);
 		user.setPassword(encPassword);
 		try {
-			mUserRepo.save(user);
+			uRepo.save(user);
 			return "/user/login";
 		} catch (Exception e) {
 			return "/user/join";
@@ -51,7 +54,7 @@ public class UserController {
 
 	@GetMapping("/userProfile")
 	public String userProfile(@AuthenticationPrincipal MyUserDetails userDetail, Model model) {
-		Optional<User> oUser = mUserRepo.findById(userDetail.getUser().getId());
+		Optional<User> oUser = uRepo.findById(userDetail.getUser().getId());
 		User user = oUser.get();
 		model.addAttribute("user", user);
 		return "/user/userProfile";
@@ -61,11 +64,22 @@ public class UserController {
 	public String update(User user) {
 		try {
 			System.out.println("이메일>>"+user.getEmail());
-			mUserRepo.update(user.getPassword(),user.getEmail(),user.getPhone(),user.getId());
+			uRepo.update(user.getPassword(),user.getEmail(),user.getPhone(),user.getId());
 			return "redirect:/";
 		} catch (Exception e) {
 		}
 		return "/user/userProfile";
+	}
+
+	@GetMapping("/delete/{id}")
+	public @ResponseBody String delete(@PathVariable int id) {
+		try {
+			uRepo.deleteById(id);
+			return Script.href("/test/userAll");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Script.back("Fail Delete");
 	}
 
 }

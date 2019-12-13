@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -38,12 +40,26 @@ public class User {
 
 	@OneToMany(mappedBy = "user")
 	@JsonIgnoreProperties({ "user" })
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Board> board;
+
+	// 댓글
 	@OneToMany(mappedBy = "user")
 	@JsonIgnoreProperties({ "user","board" })
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<Comment> comment;
+
+	@OneToMany(mappedBy = "user")
+	@JsonIgnoreProperties({ "user","board" })
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<Likes> like; // 좋아요
+	
+	@OneToMany(mappedBy = "user")
+	@JsonIgnoreProperties({ "user","board" })
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Chat> chat;
-	
-	
+
+
 	@CreationTimestamp //null 값으로 생성시 자동으로 현재 시간이 설정
 	private Timestamp createDate;
 	@CreationTimestamp 

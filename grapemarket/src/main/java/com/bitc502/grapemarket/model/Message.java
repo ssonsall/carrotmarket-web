@@ -2,6 +2,7 @@ package com.bitc502.grapemarket.model;
 
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,11 +24,6 @@ public class Message {
 	private String content; //메시지 내용
 	
 	
-//	private User user; //id,username
-	@ManyToOne
-	@JoinColumn(name="userId")
-	private User user; //id, username, address
-
 	@ManyToOne
 	@JoinColumn(name="chatId")
 	private Chat chat; //id
