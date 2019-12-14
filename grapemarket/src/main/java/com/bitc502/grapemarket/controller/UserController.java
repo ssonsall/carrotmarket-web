@@ -63,8 +63,17 @@ public class UserController {
 	@PostMapping("/update")
 	public String update(User user) {
 		try {
-			System.out.println("이메일>>"+user.getEmail());
 			uRepo.update(user.getPassword(),user.getEmail(),user.getPhone(),user.getId());
+			return "redirect:/";
+		} catch (Exception e) {
+		}
+		return "/user/userProfile";
+	}
+
+	@PostMapping("/addupdate")
+	public String addUpdate(User user) {
+		try {
+			uRepo.addUpdate(user.getAddress(), user.getAddressX(), user.getAddressY(), user.getId());
 			return "redirect:/";
 		} catch (Exception e) {
 		}

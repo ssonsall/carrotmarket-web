@@ -11,8 +11,15 @@ import com.bitc502.grapemarket.model.User;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
 	User findByUsername(String username);
+	
 	@Modifying
 	@Transactional
 	@Query(value = "UPDATE User u set u.password=?1, u.email = ?2, u.phone = ?3 WHERE u.id = ?4")
 	void update(String password, String email, String phone, int id);
+
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE User u set u.address=?1, u.addressX = ?2, u.addressY = ?3 WHERE u.id = ?4")
+	void addUpdate(String address, Double addressX, Double addressY, int id);
+
 }

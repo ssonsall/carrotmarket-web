@@ -32,9 +32,9 @@ public class User {
 	private String phone; //핸드폰 번호
 	private String address;  //주소1
     @ColumnDefault("0")
-	private long addressX;
+	private Double addressX;
     @ColumnDefault("0")
-	private long addressY;
+	private Double addressY;
     @ColumnDefault("0")
 	private Integer addressAuth; //주소1 인증
 

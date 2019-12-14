@@ -71,7 +71,7 @@
 										<div class="col-sm-6 col-sm-offset-3 col-md-8"
 											style="margin-left: auto;">
 											<form role="form" method="post" action="/user/update">
-											<input type="hidden" name="id" value="${user.id}">
+												<input type="hidden" name="id" value="${user.id}">
 												<div class="form-group">
 													<label class="sr-only" for="name">username</label> <input
 														class="form-control" type="text" id="username"
@@ -87,7 +87,7 @@
 														class="form-control" type="text" id="name" name="name"
 														placeholder="${user.name}" required="required"
 														data-validation-required-message="Please enter your name."
-														readonly="readonly" value="${user.name}"/>
+														readonly="readonly" value="${user.name}" />
 													<p class="help-block text-danger"></p>
 												</div>
 												<div class="form-group">
@@ -122,7 +122,6 @@
 														value="${user.phone}" />
 													<p class="help-block text-danger"></p>
 												</div>
-
 												<div class="text-center">
 													<button class="btn btn-block btn-round btn-d" id="cfsubmit"
 														type="submit">Submit</button>
@@ -132,9 +131,95 @@
 										</div>
 									</div>
 
-									<div class="tab-pane" id="myTown">동네설정</div>
+									<div class="tab-pane" id="myTown" style="margin-top: 5%;">
+										<div class="col-sm-6 col-sm-offset-3 col-md-10"
+											style="margin-left: auto;">
+											
+											<form name="form" id="form" method="post" action="/user/addupdate">
+												<input type="hidden" name="id" value="${user.id}">
 
-									<div class="tab-pane" id="townAuth">동네인증</div>
+												<div id="callBackDiv form-group col-md-10">
+													<div class="form-group">
+														<label class="sr-only" for="name">도로명주소</label> <input
+															class="form-control" type="text" id="roadFullAddr"
+															name="address" value="${user.address}"
+															required="required"
+															data-validation-required-message="Please enter your name."
+															readonly="readonly" />
+														<p class="help-block text-danger"></p>
+													</div>
+													<div class="form-group">
+														<label class="sr-only" for="name">Y좌표</label> <input
+															class="form-control" type="text" id="entX" name="addressX"
+															value="${user.addressX}" required="required"
+															data-validation-required-message="Please enter your name."
+															readonly="readonly" />
+														<p class="help-block text-danger"></p>
+													</div>
+													<div class="form-group">
+														<label class="sr-only" for="name">X좌표</label> <input
+															class="form-control" type="text" id="entY" name="addressY"
+															value="${user.addressY}" required="required"
+															data-validation-required-message="Please enter your name."
+															readonly="readonly" />
+														<p class="help-block text-danger"></p>
+													</div>
+
+												</div>
+												<div class="text-center col-md-4">
+														<input class="btn btn-block btn-round btn-d" id="cfsubmit"
+														type="button" onClick="goPopup();" placeholder="Search"
+														value="동네설정" />
+													
+														<input class="btn btn-block btn-round btn-d" id="cfsubmit"
+														type="submit" placeholder="Search"
+														value="저장" />
+												</div>
+											</form>
+											<!-- 주소 스크립트 시작 -->
+											<script language="javascript">
+												function goPopup() {
+													// 주소검색을 수행할 팝업 페이지를 호출합니다.
+													// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(http://www.juso.go.kr/addrlink/addrCoordUrl.do)를 호출하게 됩니다.
+													var pop = window
+															.open("/map/popup",
+																	"pop",
+																	"width=570,height=420, scrollbars=yes, resizable=yes");
+												}
+
+												function jusoCallBack(
+														roadFullAddr, entX,
+														entY) {
+													// 팝업페이지에서 주소입력한 정보를 받아서, 현 페이지에 정보를 등록합니다.
+													document.form.roadFullAddr.value = roadFullAddr;
+													document.form.entX.value = entX;
+													document.form.entY.value = entY;
+												}
+											</script>
+											<!-- 주소 스크립트 끝 -->
+											<div class="ajax-response font-alt" id="contactFormResponse"></div>
+										</div>
+									</div>
+
+									<div class="tab-pane" id="townAuth">
+										<form role="form" method="post" action="/user/update">
+											<input type="hidden" name="id" value="${user.id}">
+											<div class="form-group">
+												<label class="sr-only" for="name">username</label> <input
+													class="form-control" type="text" id="username"
+													name="username" placeholder="${user.username}"
+													required="required"
+													data-validation-required-message="Please enter your name."
+													readonly="readonly" value="${user.username}" />
+												<p class="help-block text-danger"></p>
+											</div>
+
+											<div class="text-center">
+												<button class="btn btn-block btn-round btn-d" id="cfsubmit"
+													type="submit">Submit</button>
+											</div>
+										</form>
+									</div>
 
 									<!-- 거래내역 시작 -->
 									<div class="tab-pane" id="sales">
@@ -327,7 +412,7 @@
 					</div>
 				</div>
 			</section>
-			<%@include file="../include/footer.jsp" %>
+			<%@include file="../include/footer.jsp"%>
 		</div>
 		<div class="scroll-up">
 			<a href="#totop"><i class="fa fa-angle-double-up"></i></a>
