@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+
+
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
 <head>
@@ -30,184 +35,190 @@
 					<div class="row">
 						<!-- ìí í° ì¬ì§ -->
 						<div class="col-sm-6 mb-sm-40">
-							<a class="gallery" href="/assets/images/shop/product-7.jpg"><img
-								src="/assets/images/shop/product-7.jpg"
-								alt="Single Product Image" /></a>
+							<img width="600px" id="mainImage" src="/upload/${board.image1}"
+								alt="Single Product Image" />
 							<!-- ìí ìì ì¬ì§ ìì-->
 							<ul class="product-gallery">
-								<li><a class="gallery"
-									href="/assets/images/shop/product-8.jpg"></a><img
-									src="/assets/images/shop/product-8.jpg" alt="Single Product" /></li>
-								<li><a class="gallery"
-									href="/assets/images/shop/product-9.jpg"></a><img
-									src="/assets/images/shop/product-9.jpg" alt="Single Product" /></li>
-								<li><a class="gallery"
-									href="/assets/images/shop/product-10.jpg"></a><img
-									src="/assets/images/shop/product-7.jpg" alt="Single Product" /></li>
-								<li><a class="gallery"
-									href="/assets/images/shop/product-10.jpg"></a><img
-									src="/assets/images/shop/product-10.jpg" alt="Single Product" /></li>
-								<li><a class="gallery"
-									href="/assets/images/shop/product-10.jpg"></a><img
-									src="/assets/images/shop/product-10.jpg" alt="Single Product" /></li>
+								<li><img id="img1" onClick="changeImg(1)"
+									src="/upload/${board.image1}" alt=" No Image" /></li>
+								<li><img id="img2" onClick="changeImg(2)"
+									src="/upload/${board.image2}" alt=" No Image" /></li>
+								<li><img id="img3" onClick="changeImg(3)"
+									src="/upload/${board.image3}" alt=" No Image" /></li>
+								<li><img id="img4" onClick="changeImg(4)"
+									src="/upload/${board.image4}" alt=" No Image" /></li>
+								<li><img id="img5" onClick="changeImg(5)"
+									src="/upload/${board.image5}" alt=" No Image" /></li>
 							</ul>
-							<!-- ìí ìì ì¬ì§ ë -->
+
+
+
+
+							<script>
+								function changeImg(id) {
+									var img = document
+											.getElementById("mainImage");
+									if (id == 1) {
+										img.src = "/upload/${board.image1}";
+									} else if (id == 2) {
+										img.src = "/upload/${board.image2}";
+									} else if (id == 3) {
+										img.src = "/upload/${board.image3}";
+									} else if (id == 4) {
+										img.src = "/upload/${board.image4}";
+									} else if (id == 5) {
+										img.src = "/upload/${board.image5}";
+									}
+
+								}
+							</script>
 						</div>
 						<div class="col-sm-6">
 							<div class="row">
 								<div class="col-sm-12">
-									<h1 class="product-title font-alt">Accessories Pack</h1>
+									<h1 style="font-size: 40px;" class="product-title font-alt">${board.title}</h1>
+									<div class="row mb-20">
+										<div class="col-sm-12">
+											<div class="product_meta">
+												Category · ${board.createDate}
+												<!-- <a href="#"> enum 생성후 카테고리 입력 </a> -->
+											</div>
+										</div>
+									</div>
+									<h4 style="color: gray;">${board.user.username}</h4>
+									<h4 style="color: gray;">${board.user.address}</h4>
 								</div>
 							</div>
 							<div class="row mb-20">
 								<div class="col-sm-12">
-									<span><i class="fa fa-star star"></i></span><span><i
+
+									<!-- 별모양 / 별점 -->
+									<!-- <span><i class="fa fa-star star"></i></span><span><i
 										class="fa fa-star star"></i></span><span><i
 										class="fa fa-star star"></i></span><span><i
 										class="fa fa-star star"></i></span><span><i
 										class="fa fa-star star-off"></i></span><a
 										class="open-tab section-scroll" href="#reviews">-2customer
-										reviews</a>
+										reviews</a> -->
 								</div>
 							</div>
 							<div class="row mb-20">
 								<div class="col-sm-12">
 									<div class="price font-alt">
-										<span class="amount">Â£20.00</span>
+										<span class="amount">${board.price} WON</span>
 									</div>
 								</div>
 							</div>
+
+
+
 							<div class="row mb-20">
 								<div class="col-sm-12">
 									<div class="description">
-										<p>The European languages are members of the same family.
-											Their separate existence is a myth. For science, music,
-											sport, etc, Europe uses the same vocabulary. The languages
-											only differ in their grammar, their pronunciation and their
-											most common words.</p>
+										<p>${board.content}</p>
 									</div>
 								</div>
 							</div>
 							<div class="row mb-20">
-								<div class="col-sm-4 mb-sm-20">
+								<!-- <div class="col-sm-4 mb-sm-20">
 									<input class="form-control input-lg" type="number" name=""
 										value="1" max="40" min="1" required="required" />
-								</div>
+								</div> -->
 								<div class="col-sm-8">
-									<a class="btn btn-lg btn-block btn-round btn-b" href="#">Add
-										To Cart</a>
+									<a class="btn btn-lg btn-block btn-round btn-b" href="#">채팅으로
+										거래하기</a>
+									<!-- style="position:absolute; top:390px;" -->
 								</div>
 							</div>
-							<div class="row mb-20">
-								<div class="col-sm-12">
-									<div class="product_meta">
-										Categories:<a href="#"> Man, </a><a href="#">Clothing, </a><a
-											href="#">T-shirts</a>
-									</div>
-								</div>
-							</div>
+
 						</div>
 					</div>
 					<div class="row mt-70">
 						<div class="col-sm-12">
 							<ul class="nav nav-tabs font-alt" role="tablist">
 								<li class="active"><a href="#reviews" data-toggle="tab"><span
-										class="icon-tools-2"></span>ëê¸ (2)</a></li>
+										class="icon-tools-2"></span>comment</a></li>
 							</ul>
 							<!-- ëê¸ êµ¬ì­ ìì-->
-							<div class="comments reviews">
-								<div class="comment clearfix">
-									<div class="comment-avatar">
-										<img src="" alt="avatar" />
-									</div>
-									<div class="comment-content clearfix">
-										<div class="comment-author font-alt">
-											<a href="#">John Doe</a>
+							<div class="comments_reviews" id="comments_reviews">
+
+								<c:forEach var="comment" items="${comments}">
+
+									<div class="comment clearfix">
+										<div class="comment-avatar">
+											<img src="" alt="avatar" />
 										</div>
-										<div class="comment-body">
-											<p>The European languages are members of the same family.
-												Their separate existence is a myth. For science, music,
-												sport, etc, Europe uses the same vocabulary. The European
-												languages are members of the same family. Their separate
-												existence is a myth.</p>
-										</div>
-										<div class="comment-meta font-alt">
-											Today, 14:55 -<span><i class="fa fa-star star"></i></span><span><i
-												class="fa fa-star star"></i></span><span><i
-												class="fa fa-star star"></i></span><span><i
-												class="fa fa-star star"></i></span><span><i
-												class="fa fa-star star-off"></i></span>
-										</div>
-									</div>
-								</div>
-								<div class="comment clearfix">
-									<div class="comment-avatar">
-										<img src="" alt="avatar" />
-									</div>
-									<div class="comment-content clearfix">
-										<div class="comment-author font-alt">
-											<a href="#">Mark Stone</a>
-										</div>
-										<div class="comment-body">
-											<p>Europe uses the same vocabulary. The European
-												languages are members of the same family. Their separate
-												existence is a myth.</p>
-										</div>
-										<div class="comment-meta font-alt">
-											Today, 14:59 -<span><i class="fa fa-star star"></i></span><span><i
-												class="fa fa-star star"></i></span><span><i
-												class="fa fa-star star"></i></span><span><i
-												class="fa fa-star star-off"></i></span><span><i
-												class="fa fa-star star-off"></i></span>
+										<div class="comment-content clearfix">
+											<div class="comment-author font-alt">
+												<a href="#">${comment.user.username}</a>
+											</div>
+											<div class="comment-body">
+												<p>${comment.content}</p>
+											</div>
+											<div class="comment-meta font-alt">
+												Today, 14:55 -<span><i class="fa fa-star star"></i></span><span><i
+													class="fa fa-star star"></i></span><span><i
+													class="fa fa-star star"></i></span><span><i
+													class="fa fa-star star"></i></span><span><i
+													class="fa fa-star star-off"></i></span>
+											</div>
 										</div>
 									</div>
-								</div>
+
+								</c:forEach>
 							</div>
 							<!-- ëê¸ êµ¬ì­ ë -->
-
+							<sec:authorize access="isAuthenticated()">
+								<sec:authentication property="principal" var="principal" />
+							</sec:authorize>
 							<!-- ëê¸ ì°ê¸° ìì -->
+
+
+
 							<div class="comment-form mt-30">
 								<h4 class="comment-form-title font-alt">Add review</h4>
-								<form method="post">
+
+
+								<form id="comment-submit">
 									<div class="row">
 										<div class="col-sm-4">
 											<div class="form-group">
-												<label class="sr-only" for="name">Name</label> <input
-													class="form-control" id="name" type="text" name="name"
-													placeholder="Name" />
+												<label class="sr-only" for="name">Name</label>
+												 <input
+													type="hidden" name="board" value="${board.id}" /> 
+													<input
+													type="hidden" name="user" value="${principal.user.id}" />
+												<input class="form-control" id="username" type="text"
+													name="username" value="${principal.user.username}"
+													placeholder="${principal.user.username}"
+													readonly="readonly" />
 											</div>
 										</div>
 										<div class="col-sm-4">
 											<div class="form-group">
 												<label class="sr-only" for="email">Name</label> <input
 													class="form-control" id="email" type="text" name="email"
-													placeholder="E-mail" />
-											</div>
-										</div>
-										<div class="col-sm-4">
-											<div class="form-group">
-												<select class="form-control">
-													<option selected="true" disabled="">Rating</option>
-													<option value="1">1</option>
-													<option value="2">2</option>
-													<option value="3">3</option>
-													<option value="4">4</option>
-													<option value="5">5</option>
-												</select>
+													placeholder="${principal.user.email}"
+													value="${principal.user.email}" readonly="readonly" />
 											</div>
 										</div>
 										<div class="col-sm-12">
 											<div class="form-group">
-												<textarea class="form-control" id="" name="" rows="4"
-													placeholder="Review"></textarea>
+												<textarea class="form-control" id="comment_area"
+													name="content" rows="4" placeholder="Review"></textarea>
 											</div>
 										</div>
 										<div class="col-sm-12">
-											<button class="btn btn-round btn-d" type="submit">Submit
-												Review</button>
+											<button onclick="commentWrite()" class="btn btn-round btn-d"
+												type="button">Submit Review</button>
 										</div>
 									</div>
 								</form>
+
+
+								<script>
+									
+								</script>
 							</div>
 							<!-- ëê¸ ì°ê¸° ë -->
 						</div>
@@ -259,7 +270,8 @@
 						<div class="col-sm-6 col-md-3 col-lg-3">
 							<div class="shop-item">
 								<div class="shop-item-image">
-									<img src="/assets/images/shop/product-13.jpg" alt="Menâs Garb" />
+									<img src="/assets/images/shop/product-13.jpg"
+										alt="Menâs Garb" />
 									<div class="shop-item-detail">
 										<a class="btn btn-round btn-b"><span class="icon-basket">Add
 												To Cart</span></a>
@@ -380,6 +392,7 @@
 				</div>
 			</section>
 			<%@include file="../include/footer.jsp"%>
+			
 		</div>
 		<div class="scroll-up">
 			<a href="#totop"><i class="fa fa-angle-double-up"></i></a>
