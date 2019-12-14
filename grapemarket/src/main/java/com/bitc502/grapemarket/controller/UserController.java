@@ -79,6 +79,16 @@ public class UserController {
 		}
 		return "/user/userProfile";
 	}
+	
+	@PostMapping("/authupdate")
+	public String authUpdate(User user) {
+		try {
+			uRepo.authUpdate(user.getId());
+			return "redirect:/";
+		} catch (Exception e) {
+		}
+		return "/user/userProfile";
+	}
 
 	@GetMapping("/delete/{id}")
 	public @ResponseBody String delete(@PathVariable int id) {
