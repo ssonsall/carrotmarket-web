@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitc502.grapemarket.model.Comment;
-import com.bitc502.grapemarket.model.CommentRepository;
+import com.bitc502.grapemarket.repository.CommentRepository;
 
 @Controller
 @RequestMapping("/comment")

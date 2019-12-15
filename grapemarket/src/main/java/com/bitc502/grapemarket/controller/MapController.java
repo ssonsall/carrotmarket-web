@@ -9,14 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/map")
 public class MapController {
 
-	@GetMapping("/sample")
-	public String sample() {
-		return "map/Sample";
-	}
 	@GetMapping("/popup")
 	public String popup1() {
 		return "map/jusoPopup";
 	}
+	
 	@PostMapping("/popup")
 	public String popup2() {
 		return "map/jusoPopup";
