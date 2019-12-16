@@ -28,7 +28,7 @@ import com.bitc502.grapemarket.security.MyUserDetails;
 import com.bitc502.grapemarket.util.Script;
 
 @Controller
-@RequestMapping("board")
+@RequestMapping("/board")
 public class BoardController {
 
 	@Autowired
@@ -38,13 +38,11 @@ public class BoardController {
 	private BoardRepository bRepo;
 
 	// 전체 페이지
-	@GetMapping("/")
+	@GetMapping({"/",""})
 	public String list() {
-		return "/board/list";
+		return "redirect:/board/page?page=0&category=1&userInput=";
 	}
 
-	// 페이징. 보드카테고리 임의로 지정(4)해둠. 나중에 카테고리도 변수로 넘겨야 함.
-	// localhost:8080/board/page?page=0 -> 1번 페이지
 
 	@GetMapping("/page")
 	public String getList(Model model,
@@ -62,7 +60,6 @@ public class BoardController {
 			if (category == 1) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
 				boards = bRepo.findAll(pageable);
 			} else {// 입력값 공백이면 + 카테고리 (입력값조건 무시 카테고리만 걸고)
-				System.out.println("asdfasdfasfsafasf");
 				boards = bRepo.findByCategory(category, pageable);
 			}
 		} else {
@@ -75,10 +72,7 @@ public class BoardController {
 			}
 		}
 
-		System.out.println("category >> " + category);
-		System.out.println("userInput >> " + userInput);
 
-		// Page<Board> boards = bRepo.findAll(pageable);
 		if (pageable.getPageNumber() >= boards.getTotalPages()) {
 			return "redirect:/board/page?page=" + (boards.getTotalPages() - 1);
 		}
@@ -90,7 +84,6 @@ public class BoardController {
 		} else {
 			count = (countRow / 8) + 1;
 		}
-		System.out.println("count >>" + count);
 		model.addAttribute("currentUserInput", userInput);
 		model.addAttribute("currentCategory", category);
 		model.addAttribute("currentPage", pageable.getPageNumber());

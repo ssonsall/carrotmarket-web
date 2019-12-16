@@ -15,8 +15,8 @@
             <ul class="nav navbar-nav navbar-right">
               <li class="dropup"><a class="dropup-toggle" href="/" data-toggle="dropup">홈화면</a>
               </li>
-              <li class="dropdown"><a class="dropdown-toggle" href="/board/" data-toggle="dropdown">카테고리</a>
-                <ul class="dropdown-menu">
+              <li class="dropup"><a class="dropup-toggle" href="/board/page?page=0&category=1&userInput=" data-toggle="dropup">포도장터</a>
+<!--                 <ul class="dropdown-menu">
                   <li class="dropdown"><a href="#" data-toggle="dropdown">인기매물</a></li>
                   <li class="dropdown"><a href="#" data-toggle="dropdown">디지털/가전</a></li>
                   <li class="dropdown"><a href="#" data-toggle="dropdown">가구/인테리어</a></li>
@@ -32,7 +32,7 @@
                   <li class="dropdown"><a href="#" data-toggle="dropdown">반려동물용품</a></li>
                   <li class="dropdown"><a href="#" data-toggle="dropdown">기타 중고물품</a></li>
                   <li class="dropdown"><a href="#" data-toggle="dropdown">삽니다</a></li>
-                </ul><!--  -->
+                </ul> -->
               </li>
               <li class="dropup"><a class="dropup-toggle" href="/board/writeForm" data-toggle="dropup">상품등록</a>
               </li>
