@@ -62,6 +62,9 @@ public class UserController {
 
 	@PostMapping("/update")
 	public String update(User user) {
+		String rawPassword = user.getPassword();
+		String encPassword = passwordEncoder.encode(rawPassword);
+		user.setPassword(encPassword);
 		try {
 			uRepo.update(user.getPassword(),user.getEmail(),user.getPhone(),user.getId());
 			return "redirect:/";
