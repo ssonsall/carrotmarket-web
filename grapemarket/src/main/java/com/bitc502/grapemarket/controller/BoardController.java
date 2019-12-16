@@ -37,30 +37,48 @@ public class BoardController {
 	@Autowired
 	private BoardRepository bRepo;
 
-	// 전체 페이지 
+	// 전체 페이지
 	@GetMapping("/")
 	public String list() {
 		return "/board/list";
 	}
-	
+
 	// 페이징. 보드카테고리 임의로 지정(4)해둠. 나중에 카테고리도 변수로 넘겨야 함.
-	//localhost:8080/board/page?page=0   ->   1번 페이지
-	
+	// localhost:8080/board/page?page=0 -> 1번 페이지
+
 	@GetMapping("/page")
 	public String getList(Model model,
-			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable, @RequestParam int category, @RequestParam String userInput) {
-				
+			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable,
+			@RequestParam int category, @RequestParam String userInput) {
+
+		List<User> users = uRepo.findByAddressContaining(userInput);
+		List<Integer> userIds = new ArrayList<>();
+		for (User u : users) {
+			userIds.add(u.getId());
+		}
+		Page<Board> boards;
+
+		if (userInput.equals("")) {
+			if (category == 1) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
+				boards = bRepo.findAll(pageable);
+			} else {// 입력값 공백이면 + 카테고리 (입력값조건 무시 카테고리만 걸고)
+				System.out.println("asdfasdfasfsafasf");
+				boards = bRepo.findByCategory(category, pageable);
+			}
+		} else {
+			if (category == 1) {// 입력값 + 카테고리 전체 (입력값만 걸고 카테고리 조건 무시)
+				boards = bRepo.findByTitleContainingOrContentContainingOrUserIdIn(userInput, userInput, userIds,
+						pageable);
+			} else {// 입력값 + 카테고리
+				boards = bRepo.findByCategoryOrTitleContainingOrContentContainingOrUserIdIn(category, userInput,
+						userInput, userIds, pageable);
+			}
+		}
+
 		System.out.println("category >> " + category);
 		System.out.println("userInput >> " + userInput);
-		List<User> users = uRepo.findByAddressContaining(userInput);
-	    List<Integer> userIds = new ArrayList<>();
-	      for (User u : users) {
-	         userIds.add(u.getId());
-	      }
-	      
-	    Page<Board> boards = bRepo.findByCategoryOrTitleContainingOrContentContainingOrUserIdIn(category, userInput, userInput, userIds, pageable);
-		
-		//Page<Board> boards = bRepo.findAll(pageable);
+
+		// Page<Board> boards = bRepo.findAll(pageable);
 		if (pageable.getPageNumber() >= boards.getTotalPages()) {
 			return "redirect:/board/page?page=" + (boards.getTotalPages() - 1);
 		}
@@ -118,7 +136,7 @@ public class BoardController {
 		}
 		return Script.back("Fail Delete");
 	}
-	
+
 	@GetMapping("/category")
 	public String category(Model model) {
 		CategoryType[] categories = CategoryType.values();
@@ -128,10 +146,10 @@ public class BoardController {
 			list.add(categoryType.NAME);
 		}
 		System.out.println(list);
-		model.addAttribute("categories",list);
+		model.addAttribute("categories", list);
 		return "/board/category";
 	}
-	
+
 	@GetMapping("/category/{id}")
 	public String searchByCategory(@PathVariable int id) {
 		// 카테고리별 리스트 화면
