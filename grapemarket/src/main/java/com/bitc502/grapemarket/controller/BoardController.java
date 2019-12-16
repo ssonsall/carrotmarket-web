@@ -16,14 +16,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitc502.grapemarket.common.CategoryType;
 import com.bitc502.grapemarket.model.Board;
-import com.bitc502.grapemarket.model.Comment;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
-import com.bitc502.grapemarket.repository.CommentRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.MyUserDetails;
 import com.bitc502.grapemarket.util.Script;
@@ -38,9 +37,6 @@ public class BoardController {
 	@Autowired
 	private BoardRepository bRepo;
 
-	@Autowired
-	private CommentRepository commentRepo;
-	
 	// 전체 페이지 
 	@GetMapping("/")
 	public String list() {
@@ -49,22 +45,37 @@ public class BoardController {
 	
 	// 페이징. 보드카테고리 임의로 지정(4)해둠. 나중에 카테고리도 변수로 넘겨야 함.
 	//localhost:8080/board/page?page=0   ->   1번 페이지
+	
 	@GetMapping("/page")
 	public String getList(Model model,
-			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable) {
-		Page<Board> boards = bRepo.findAll(pageable);
+			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable, @RequestParam int category, @RequestParam String userInput) {
+				
+		System.out.println("category >> " + category);
+		System.out.println("userInput >> " + userInput);
+		List<User> users = uRepo.findByAddressContaining(userInput);
+	    List<Integer> userIds = new ArrayList<>();
+	      for (User u : users) {
+	         userIds.add(u.getId());
+	      }
+	      
+	    Page<Board> boards = bRepo.findByCategoryOrTitleContainingOrContentContainingOrUserIdIn(category, userInput, userInput, userIds, pageable);
+		
+		//Page<Board> boards = bRepo.findAll(pageable);
 		if (pageable.getPageNumber() >= boards.getTotalPages()) {
-			return "redirect:/test/page?page=" + (boards.getTotalPages() - 1);
+			return "redirect:/board/page?page=" + (boards.getTotalPages() - 1);
 		}
-		int category = 4;
-		int countRow = bRepo.countFindByCategory(category);
-		int count = 0;
+		long countRow = boards.getTotalElements();
+		System.out.println("countRow >> " + countRow);
+		long count = 0;
 		if (countRow % 8 == 0) {
 			count = countRow / 8;
 		} else {
 			count = (countRow / 8) + 1;
 		}
 		System.out.println("count >>" + count);
+		model.addAttribute("currentUserInput", userInput);
+		model.addAttribute("currentCategory", category);
+		model.addAttribute("currentPage", pageable.getPageNumber());
 		model.addAttribute("count", count);
 		model.addAttribute("boards", boards.getContent());
 		return "/board/list";
@@ -93,17 +104,8 @@ public class BoardController {
 	}
 
 	// 상세보기 페이지
-	@GetMapping("/detail/{id}")
-	public String detail(@PathVariable int id, Model model, @AuthenticationPrincipal MyUserDetails userDetail) {
-		Optional<Board> oBoard = bRepo.findById(id);
-		Board board = oBoard.get();
-		
-		List<Comment> comments = commentRepo.findByBoardId(board.getId());
-		
-		model.addAttribute("comments",comments);
-		model.addAttribute("board",board);
-		
-		
+	@GetMapping("/detail")
+	public String detail() {
 		return "/board/detail";
 	}
 
