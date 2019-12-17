@@ -19,4 +19,16 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	void update(String password, String email, String phone, int id);
 	
 	List<User> findByAddressContaining(String address);
+	
+	
+	@Modifying
+	   @Transactional
+	   @Query(value = "UPDATE User u set u.address=?1, u.addressX = ?2, u.addressY = ?3, u.addressAuth=0 WHERE u.id = ?4")
+	   void addUpdate(String address, Double addressX, Double addressY, int id);
+
+	   @Modifying
+	   @Transactional
+	   @Query(value = "UPDATE User u set u.addressAuth=1 WHERE u.id = ?1")
+	   void authUpdate(int id);
+	
 }
