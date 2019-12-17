@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		//해당주소를 타는 것은 전부 시큐리티가 막는다.
 		// ex) board/접근을 세분화해서 막고싶으면 먼저 추가해주고 밑에 다막으면된다 순서 잘지켜라!!
 		.antMatchers("/board/list").permitAll()
-		.antMatchers("/admin/**", "/board/**").authenticated()
+		.antMatchers("/admin/**", "/board/**","/chat/**").authenticated()
 		//위의 주소를 타는 것을 제외한 접근은 시큐리티가 막지 않는다.
 		.anyRequest().permitAll()
 		.and()
@@ -49,11 +49,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.failureUrl("/user/login")
 		.and()
 		.logout()
+		.logoutUrl("/user/logout")
 		//로그아웃에 성공했을 때
 		//이 것은 핸들러를 사용한 것이고
 		//로그인처럼 url을 사용해도된다.
-		//.logoutSuccessUrl("/home")
-		.logoutSuccessHandler(new MyLogoutSuccessHandler());
+		.logoutSuccessUrl("/");
+		//.logoutSuccessHandler(new MyLogoutSuccessHandler());
 		
 	}
 
