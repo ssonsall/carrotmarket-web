@@ -204,7 +204,7 @@
 							<div class="col-sm-6 col-md-3 col-lg-3">
 								<div class="shop-item">
 									<div class="shop-item-image">
-										<img src="/assets/images/shop/product-7.jpg" alt="Accessories Pack" />
+										<img src="/upload/${board.image1}" alt="Accessories Pack" />
 										<div class="shop-item-detail">
 											<a href="/board/detail/${board.id}" class="btn btn-round btn-b"><span class="icon-basket">See Detail</span></a>
 										</div>

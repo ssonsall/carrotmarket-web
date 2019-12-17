@@ -118,7 +118,7 @@ public class BoardController {
 
 	@PostMapping("/writeProc")
 	public String write(@AuthenticationPrincipal MyUserDetails userDetail, @RequestParam("state") String state,
-			@RequestParam("title") String title, @RequestParam("price") String price,
+			@RequestParam("category") int category,@RequestParam("title") String title, @RequestParam("price") String price,
 			@RequestParam("content") String content, @RequestParam("productImages") List<MultipartFile> productImages) {
 		try {
 			Board board = new Board();
@@ -133,6 +133,7 @@ public class BoardController {
 			}
 
 			board.setUser(userDetail.getUser());
+			board.setCategory(category);
 			board.setState(state);
 			board.setTitle(title);
 			board.setPrice(price);
