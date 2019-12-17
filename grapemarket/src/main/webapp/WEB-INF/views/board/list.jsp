@@ -199,8 +199,7 @@
 			<section class="module-small">
 				<div class="container">
 					<div class="row multi-columns-row">
-
-
+					<c:catch var="e">
 						<c:forEach var="board" items="${boards}">
 							<div class="col-sm-6 col-md-3 col-lg-3">
 								<div class="shop-item">
@@ -217,6 +216,11 @@
 								</div>
 							</div>
 						</c:forEach>
+					</c:catch>
+						<c:if test="${e ne null}">
+							<h1>Error ${e.message}</h1>
+						</c:if>	
+							
 					</div>
 
 					<!-- 페이징 -->

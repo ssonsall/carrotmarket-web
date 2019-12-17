@@ -11,8 +11,8 @@ import com.bitc502.grapemarket.model.Board;
 public interface BoardRepository extends JpaRepository<Board, Integer> {
 	int countFindByCategory(int category);
 	
-	Page<Board> findByCategoryOrTitleContainingOrContentContainingOrUserIdIn(
-			int id,String title, String content, List<Integer> userIds, Pageable page);
+	Page<Board> findByCategoryAndTitleContainingOrCategoryAndContentContainingOrCategoryAndUserIdIn(
+			int id,String title, int id2, String content, int id3,List<Integer> userIds, Pageable page);
 	
 	Page<Board> findByCategory(int id, Pageable page);
 	

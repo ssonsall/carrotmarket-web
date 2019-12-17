@@ -41,19 +41,17 @@ public class BoardController {
 
 	@Autowired
 	private CommentRepository commentRepo;
-	
+
 	// 전체 페이지
-	@GetMapping({"/",""})
+	@GetMapping({ "/", "" })
 	public String list() {
 		return "redirect:/board/page?page=0&category=1&userInput=";
 	}
-
 
 	@GetMapping("/page")
 	public String getList(Model model,
 			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable,
 			@RequestParam int category, @RequestParam String userInput) {
-
 		List<User> users = uRepo.findByAddressContaining(userInput);
 		List<Integer> userIds = new ArrayList<>();
 		for (User u : users) {
@@ -72,15 +70,16 @@ public class BoardController {
 				boards = bRepo.findByTitleContainingOrContentContainingOrUserIdIn(userInput, userInput, userIds,
 						pageable);
 			} else {// 입력값 + 카테고리
-				boards = bRepo.findByCategoryOrTitleContainingOrContentContainingOrUserIdIn(category, userInput,
-						userInput, userIds, pageable);
+				boards = bRepo.findByCategoryAndTitleContainingOrCategoryAndContentContainingOrCategoryAndUserIdIn(
+						category, userInput, category, userInput, category, userIds, pageable);
 			}
 		}
 
-
-		if (pageable.getPageNumber() >= boards.getTotalPages()) {
-			return "redirect:/board/page?page=" + (boards.getTotalPages() - 1);
+		if (pageable.getPageNumber() >= boards.getTotalPages() && boards.getTotalPages() > 0) {
+			return "redirect:/board/page?page=" + (boards.getTotalPages() - 1) + "&category=" + category + "&userInput="
+					+ userInput;
 		}
+
 		long countRow = boards.getTotalElements();
 		System.out.println("countRow >> " + countRow);
 		long count = 0;
@@ -94,7 +93,9 @@ public class BoardController {
 		model.addAttribute("currentPage", pageable.getPageNumber());
 		model.addAttribute("count", count);
 		model.addAttribute("boards", boards.getContent());
-		return "/board/list";
+		
+		return "board/list";
+
 	}
 
 	// 글쓰기 페이지
@@ -124,13 +125,12 @@ public class BoardController {
 	public String detail(@PathVariable int id, Model model, @AuthenticationPrincipal MyUserDetails userDetail) {
 		Optional<Board> oBoard = bRepo.findById(id);
 		Board board = oBoard.get();
-		
+
 		List<Comment> comments = commentRepo.findByBoardId(board.getId());
-		
-		model.addAttribute("comments",comments);
-		model.addAttribute("board",board);
-		
-		
+
+		model.addAttribute("comments", comments);
+		model.addAttribute("board", board);
+
 		return "/board/detail";
 	}
 
