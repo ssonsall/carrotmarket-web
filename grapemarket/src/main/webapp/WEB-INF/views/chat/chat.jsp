@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
 <head>
@@ -17,6 +17,9 @@
 </head>
 <body data-spy="scroll" data-target=".onpage-navigation"
 	data-offset="60">
+	<sec:authorize access="isAuthenticated()">
+		<sec:authentication property="principal" var="principal" />
+	</sec:authorize>
 	<main>
 		<div class="page-loader">
 			<div class="loader">Loading...</div>
@@ -65,13 +68,27 @@
 						<div class="col-sm-4 col-sm-offset-1">
 							<h4 class="font-alt mb-0">채팅방 목록</h4>
 							<hr class="divider-w mt-10 mb-20">
-							<c:forEach var="chat" items="${chats}">
-							<div class="alert alert-success" role="alert">
-								<button class="close" type="button" data-dismiss="alert"
-									aria-hidden="true">&times;</button>
-								<i class="fa fa-comment"></i><strong>Alert!</strong> ${chat.user.username}님과의
-								채팅방입니다.
-							</div>							
+							<h3>구매</h3>
+							<c:forEach var="chat" items="${chatForBuy}">
+								<div class="alert alert-success" role="alert">
+									<button class="close" type="button" data-dismiss="alert"
+										aria-hidden="true">&times;</button>
+									<i class="fa fa-comment"></i><strong>Alert!</strong>
+									${chat.sellerId.username}님과의 채팅방입니다.
+									<button
+										onclick="enterRoom(${chat.id})">${user.username} 입장</button>
+								</div>
+							</c:forEach>
+							<h3>판매</h3>
+							<c:forEach var="chat" items="${chatForSell}">
+								<div class="alert alert-success" role="alert">
+									<button class="close" type="button" data-dismiss="alert"
+										aria-hidden="true">&times;</button>
+									<i class="fa fa-comment"></i><strong>Alert!</strong>
+									${chat.buyerId.username}님과의 채팅방입니다.
+									<button
+										onclick="enterRoom(${chat.id})">${user.username} 입장</button>
+								</div>
 							</c:forEach>
 						</div>
 						<!-- 채팅방 목록 끝 -->
@@ -80,34 +97,34 @@
 							<h4 class="font-alt mb-0">누구누구와의 채팅방</h4>
 							<hr class="divider-w mt-10 mb-20">
 							<div id="chat-page">
-							<div class="chat-container">
-            				<ul id="messageArea">
+								<div class="chat-container">
+									<ul id="messageArea">
 
-           					</ul>
-           					</div>
-            			<form id="messageForm" name="messageForm">
-             				 <!-- <div class="form-group">
+									</ul>
+								</div>
+								<form id="messageForm" name="messageForm">
+									<!-- <div class="form-group">
                   				  <div class="input-group clearfix">
                   				      <input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
                   				      <button type="submit" class="primary">Send</button>
                   				  </div>
                				 </div> -->
-               				 	<div class="form-group">
-									<label class="sr-only" for="message">메세지</label> 
-									<input class="form-control" type="text" id="message" name="message"
-										placeholder="메세지*"
-										data-validation-required-message="Please enter your name."" />
-									<p class="help-block text-danger"></p>
-								</div>
-								<div class="text-center">
-									<button class="btn btn-block btn-round btn-d" id="cfsubmit"
-										type="submit">Submit</button>
-								</div>
-            			</form>
-            			
-            			</div>
+									<div class="form-group">
+										<label class="sr-only" for="message">메세지</label> <input
+											class="form-control" type="text" id="message" name="message"
+											placeholder="메세지*"
+											data-validation-required-message="Please enter your name." />
+										<p class="help-block text-danger"></p>
+									</div>
+									<div class="text-center">
+										<button class="btn btn-block btn-round btn-d" id="cfsubmit"
+											type="submit">Submit</button>
+									</div>
+								</form>
+
+							</div>
 						</div>
-<!-- 						<div class="col-sm-4 col-md-3 col-md-offset-1 sidebar">
+						<!-- 						<div class="col-sm-4 col-md-3 col-md-offset-1 sidebar">
 							<h4 class="font-alt mb-0">누구누구와의 채팅방</h4>
 							<hr class="divider-w mt-10 mb-20">
 							<form id="contactForm" role="form" method="post"

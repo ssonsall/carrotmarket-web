@@ -23,6 +23,9 @@
 </head>
 <body data-spy="scroll" data-target=".onpage-navigation"
 	data-offset="60">
+	<sec:authorize access="isAuthenticated()">
+		<sec:authentication property="principal" var="principal" />
+	</sec:authorize>
 	<main>
 		<div class="page-loader">
 			<div class="loader">Loading...</div>
@@ -125,11 +128,22 @@
 										value="1" max="40" min="1" required="required" />
 								</div> -->
 								<div class="col-sm-8">
-									<a class="btn btn-lg btn-block btn-round btn-b" href="#">채팅으로
-										거래하기</a>
-									<!-- style="position:absolute; top:390px;" -->
+									<!-- 채팅생성 -->
+									<form id="createChat">
+										<input type="hidden" name="board" value="${board.id}" /> <input
+											type="hidden" name="buyerId" value="${principal.user.id}">
+										<input type="hidden" name="sellerId" value="${board.user.id}">
+									</form>
+
+									<button onclick="createChat()" class="btn btn-round btn-d"
+										type="button">채팅으로 거래하기</button>
+
 								</div>
 							</div>
+
+
+
+
 
 						</div>
 					</div>
@@ -168,9 +182,7 @@
 								</c:forEach>
 							</div>
 							<!-- ëê¸ êµ¬ì­ ë -->
-							<sec:authorize access="isAuthenticated()">
-								<sec:authentication property="principal" var="principal" />
-							</sec:authorize>
+
 							<!-- ëê¸ ì°ê¸° ìì -->
 
 
@@ -183,10 +195,8 @@
 									<div class="row">
 										<div class="col-sm-4">
 											<div class="form-group">
-												<label class="sr-only" for="name">Name</label>
-												 <input
-													type="hidden" name="board" value="${board.id}" /> 
-													<input
+												<label class="sr-only" for="name">Name</label> <input
+													type="hidden" name="board" value="${board.id}" /> <input
 													type="hidden" name="user" value="${principal.user.id}" />
 												<input class="form-control" id="username" type="text"
 													name="username" value="${principal.user.username}"
@@ -392,7 +402,7 @@
 				</div>
 			</section>
 			<%@include file="../include/footer.jsp"%>
-			
+
 		</div>
 		<div class="scroll-up">
 			<a href="#totop"><i class="fa fa-angle-double-up"></i></a>

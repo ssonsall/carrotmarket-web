@@ -29,20 +29,26 @@ public class Chat {
 	private int id; // 시퀀스
 	
 	//id, content, createDate
-	@OneToMany(mappedBy = "chat")
-	@JsonIgnoreProperties({ "user","chat" })
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<Message> message;
+//	@OneToMany(mappedBy = "chat")
+//	@JsonIgnoreProperties({ "user","chat" })
+//	@OnDelete(action = OnDeleteAction.CASCADE)
+//	private List<Message> message;
 	
 	//누르는 사람
 	//private User user; //id, username
 	@ManyToOne
-	@JoinColumn(name = "userId")
-	private User user;
+	@JoinColumn(name = "buyerId")
+	private User buyerId;
+	
+	@ManyToOne
+	@JoinColumn(name = "sellerId")
+	@JsonIgnoreProperties({"like","comment","board"})
+	private User sellerId;
 	
 	// id, title
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "boardId")
+	@JsonIgnoreProperties({"like","comment","user"})
 	private Board board;
 	
 	@CreationTimestamp

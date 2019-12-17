@@ -8,8 +8,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 
@@ -20,7 +23,9 @@ public class Message {
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id; // 시퀀스
-	private String content; //메시지 내용
+	private String message; //메시지 내용
+	
+	private String sender; //메시지 내용
 	
 	
 	@ManyToOne
@@ -31,4 +36,7 @@ public class Message {
 	private Timestamp createDate;
 	@CreationTimestamp 
 	private Timestamp updateDate;
+	
+	@Transient
+	private int temp;
 }

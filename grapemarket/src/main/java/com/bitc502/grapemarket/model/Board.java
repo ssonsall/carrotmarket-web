@@ -46,10 +46,10 @@ public class Board {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Likes> like; // 좋아요
 	
-	@OneToMany(mappedBy = "board")
-	@JsonIgnoreProperties({ "user","board" })
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<Chat> chat;
+//	@OneToMany(mappedBy = "board")
+//	@JsonIgnoreProperties({ "user","board" })
+//	@OnDelete(action = OnDeleteAction.CASCADE)
+//	private List<Chat> chat;
 
 	// id, username, address
 	@ManyToOne(cascade = CascadeType.ALL)

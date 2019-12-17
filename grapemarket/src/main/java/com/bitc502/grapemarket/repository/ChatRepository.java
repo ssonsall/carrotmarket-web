@@ -8,5 +8,11 @@ import com.bitc502.grapemarket.model.Chat;
 import com.bitc502.grapemarket.model.User;
 
 public interface ChatRepository extends JpaRepository<Chat, Integer>{
-	List<Chat> findByUser(User user);
+	List<Chat> findByBuyerId(User buyerId);
+	
+	List<Chat> findBySellerId(User sellerId);
+	
+	
+	
+	
 }

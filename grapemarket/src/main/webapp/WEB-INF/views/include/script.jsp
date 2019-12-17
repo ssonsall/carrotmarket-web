@@ -23,5 +23,6 @@
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDK2Axt8xiFYMBMDwwG1XzBQvEbYpzCvFU"></script>
 	<script src="/assets/js/plugins.js"></script>
 	<script src="/assets/js/main.js"></script>
+	<script src="/assets/js/chat.js"></script>
 	<script src="/assets/js/chatform.js"></script>
 	<script src="/assets/js/comment.js"></script>

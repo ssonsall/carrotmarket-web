@@ -54,10 +54,10 @@ public class User {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Likes> like; // 좋아요
 	
-	@OneToMany(mappedBy = "user")
-	@JsonIgnoreProperties({ "user","board" })
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<Chat> chat;
+//	@OneToMany(mappedBy = "user")
+//	@JsonIgnoreProperties({ "user","board" })
+//	@OnDelete(action = OnDeleteAction.CASCADE)
+//	private List<Chat> chat;
 
 
 	@CreationTimestamp //null 값으로 생성시 자동으로 현재 시간이 설정
