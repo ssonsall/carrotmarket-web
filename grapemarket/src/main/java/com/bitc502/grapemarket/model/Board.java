@@ -52,7 +52,7 @@ public class Board {
 //	private List<Chat> chat;
 
 	// id, username, address
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "userId")
 	@JsonBackReference
 	private User user;
@@ -63,11 +63,7 @@ public class Board {
 	private String image3;
 	private String image4;
 	private String image5;
-	private String image6;
-	private String image7;
-	private String image8;
-	private String image9;
-	private String image10;
+
 	// 상품 사진 끝
 
 	@CreationTimestamp

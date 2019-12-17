@@ -17,9 +17,9 @@
 </head>
 <body data-spy="scroll" data-target=".onpage-navigation"
 	data-offset="60">
-	<sec:authorize access="isAuthenticated()">
+<%-- 	<sec:authorize access="isAuthenticated()">
 		<sec:authentication property="principal" var="principal" />
-	</sec:authorize>
+	</sec:authorize> --%>
 	<main>
 		<div class="page-loader">
 			<div class="loader">Loading...</div>

@@ -34,9 +34,8 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-6 col-sm-offset-3">
-							<form id="contactForm" role="form" method="post"
-								action="/board/writeProc">
-								<input type="hidden" name="userId" value="${user.id}">
+							<form action="/board/writeProc" method="post" enctype="multipart/form-data">
+								<%-- <input type="hidden" name="userId" value="${user.id}"> --%>
 								<input type="hidden" name="state" value="0">
 								
 								<div class="form-group">
@@ -75,6 +74,13 @@
 									<label class="sr-only" for="price">가격</label> <input
 										class="form-control" type="text" id="price" name="price"
 										placeholder="가격*" required="required"
+										data-validation-required-message="Please enter your email address." />
+									<p class="help-block text-danger"></p>
+								</div>
+						        <div class="form-group">
+									<label class="sr-only" for="price">사진</label> <input
+										class="form-control" type="file" multiple="multiple" accept="image/*" id="productImages" name="productImages"
+										required="required"
 										data-validation-required-message="Please enter your email address." />
 									<p class="help-block text-danger"></p>
 								</div>

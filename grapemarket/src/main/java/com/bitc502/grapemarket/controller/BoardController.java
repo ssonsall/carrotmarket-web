@@ -1,10 +1,15 @@
 package com.bitc502.grapemarket.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bitc502.grapemarket.common.CategoryType;
 import com.bitc502.grapemarket.model.Board;
@@ -32,6 +38,9 @@ import com.bitc502.grapemarket.util.Script;
 @Controller
 @RequestMapping("/board")
 public class BoardController {
+
+	@Value("${file.path}")
+	private String fileRealPath;
 
 	@Autowired
 	private UserRepository uRepo;
@@ -93,7 +102,7 @@ public class BoardController {
 		model.addAttribute("currentPage", pageable.getPageNumber());
 		model.addAttribute("count", count);
 		model.addAttribute("boards", boards.getContent());
-		
+
 		return "board/list";
 
 	}
@@ -108,14 +117,39 @@ public class BoardController {
 	}
 
 	@PostMapping("/writeProc")
-	public String write(Board board) {
+	public String write(@AuthenticationPrincipal MyUserDetails userDetail, @RequestParam("state") String state,
+			@RequestParam("title") String title, @RequestParam("price") String price,
+			@RequestParam("content") String content, @RequestParam("productImages") List<MultipartFile> productImages) {
 		try {
-			System.out.println(board);
+			Board board = new Board();
+			// 파일 이름 세팅 및 쓰기
+			List<String> uuidFileNames = new ArrayList<String>();
+			
+			
+			for(int i = 0 ; i < productImages.size(); i++) {
+				uuidFileNames.add(UUID.randomUUID() + "_" + productImages.get(i).getOriginalFilename());
+				Path filePath = Paths.get(fileRealPath + uuidFileNames.get(i));
+				Files.write(filePath, productImages.get(i).getBytes());	
+			}
+
+			board.setUser(userDetail.getUser());
+			board.setState(state);
+			board.setTitle(title);
+			board.setPrice(price);
+			board.setContent(content);
+			board.setImage1(uuidFileNames.get(0));
+			board.setImage2(uuidFileNames.get(1));
+			board.setImage3(uuidFileNames.get(2));
+			board.setImage4(uuidFileNames.get(3));
+			board.setImage5(uuidFileNames.get(4));
+
+			
 			bRepo.save(board);
 //			리스트 완성되면 바꿔야함
-			return "/board/category";
+			return "redirect:/board/page?page=0&category=1&userInput=";
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return "redirect:/board/writeForm";
 	}
