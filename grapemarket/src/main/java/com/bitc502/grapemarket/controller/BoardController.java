@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitc502.grapemarket.common.CategoryType;
 import com.bitc502.grapemarket.model.Board;
+import com.bitc502.grapemarket.model.Comment;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
+import com.bitc502.grapemarket.repository.CommentRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.MyUserDetails;
 import com.bitc502.grapemarket.util.Script;
@@ -37,6 +39,9 @@ public class BoardController {
 	@Autowired
 	private BoardRepository bRepo;
 
+	@Autowired
+	private CommentRepository commentRepo;
+	
 	// 전체 페이지
 	@GetMapping({"/",""})
 	public String list() {
@@ -115,8 +120,17 @@ public class BoardController {
 	}
 
 	// 상세보기 페이지
-	@GetMapping("/detail")
-	public String detail() {
+	@GetMapping("/detail/{id}")
+	public String detail(@PathVariable int id, Model model, @AuthenticationPrincipal MyUserDetails userDetail) {
+		Optional<Board> oBoard = bRepo.findById(id);
+		Board board = oBoard.get();
+		
+		List<Comment> comments = commentRepo.findByBoardId(board.getId());
+		
+		model.addAttribute("comments",comments);
+		model.addAttribute("board",board);
+		
+		
 		return "/board/detail";
 	}
 

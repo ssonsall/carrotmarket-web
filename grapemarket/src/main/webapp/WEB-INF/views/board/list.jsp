@@ -207,13 +207,13 @@
 									<div class="shop-item-image">
 										<img src="/assets/images/shop/product-7.jpg" alt="Accessories Pack" />
 										<div class="shop-item-detail">
-											<a href="/board/detail" class="btn btn-round btn-b"><span class="icon-basket">See Detail</span></a>
+											<a href="/board/detail/${board.id}" class="btn btn-round btn-b"><span class="icon-basket">See Detail</span></a>
 										</div>
 									</div>
 									<h4 class="shop-item-title font-alt">
 										<a href="#">${board.title}</a>
 									</h4>
-									가격
+									${board.price}
 								</div>
 							</div>
 						</c:forEach>
