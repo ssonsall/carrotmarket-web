@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Chat;
 import com.bitc502.grapemarket.model.Message;
 import com.bitc502.grapemarket.model.User;
+import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.ChatRepository;
 import com.bitc502.grapemarket.repository.MessageRepository;
 import com.bitc502.grapemarket.security.MyUserDetails;
@@ -29,6 +31,9 @@ public class ChatController {
 	
 	@Autowired
 	private MessageRepository mRepo;
+	
+	@Autowired
+	private BoardRepository bRepo;
 
 	@PostMapping("/chat")
 	public @ResponseBody String CreateChat(Chat chat) {
@@ -74,4 +79,16 @@ public class ChatController {
 		Chat chat = oChat.get();
 		return chat;
 	}
+	
+	
+	@GetMapping("/test/{id}")
+	public @ResponseBody Chat JsonTest(@PathVariable int id) {
+		
+		Optional<com.bitc502.grapemarket.model.Chat> oChat = cRepo.findById(id);
+		Chat chat = oChat.get();
+		
+		return chat;
+		
+	}
+	
 }
