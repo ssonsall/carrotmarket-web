@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -20,6 +21,7 @@ import lombok.Data;
 
 @Data //lombok
 @Entity //JPA -> ORM
+@DynamicInsert
 public class User {
 
 	@Id
@@ -30,6 +32,8 @@ public class User {
 	private String name; // 사용자 이름
 	private String email; //EMAIL
 	private String phone; //핸드폰 번호
+	@ColumnDefault("'defaultProfile.png'")
+	private String userProfile;
 	private String address;  //주소1
     @ColumnDefault("0")
 	private Double addressX;

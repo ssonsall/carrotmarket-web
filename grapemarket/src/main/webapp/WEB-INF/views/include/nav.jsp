@@ -34,14 +34,19 @@
               </li>
               </c:when>
               <c:otherwise>
-              <li class="dropup"><a class="dropup-toggle" href="/user/userProfile" data-toggle="dropup">유저정보</a>
+              <li class="dropup"><a class="dropup-toggle" href="/user/userProfile" data-toggle="dropup">내 정보</a>
               </li>
               <li class="dropup"><a class="dropup-toggle" href="/user/logout" data-toggle="dropup">로그아웃</a>
               </li>
+<%--               <span style="float: right;"><a class="dropup-toggle" href="/user/userProfile" data-toggle="dropup"><img src="/userprofile/${principal.user.userProfile}" style="width: 50px; height: 50px;"> ${principal.user.username}</a>
+              </span> --%>
               </c:otherwise>
             </c:choose>
-
             </ul>
+            <c:if test="${!empty principal.user.id}">
+              <span style="position: absolute; right: 10px;"><a class="dropup-toggle" href="/user/userProfile" data-toggle="dropup"><img src="/upload/${principal.user.userProfile}" style="width: 50px; height: 50px;"> ${principal.user.username}</a>
+              </span>
+             </c:if>
           </div>
         </div>
       </nav>

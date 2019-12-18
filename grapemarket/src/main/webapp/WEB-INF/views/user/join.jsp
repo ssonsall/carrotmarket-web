@@ -32,7 +32,7 @@
             </div>
             <div class="row">
               <div class="col-sm-6 col-sm-offset-3">
-                <form role="form" method="post" action="/user/joinProc">
+                <form role="form" method="post" action="/user/joinProc" enctype="multipart/form-data">
                   <div class="form-group">
                     <label class="sr-only" for="name">username</label>
                     <input class="form-control" type="text" id="username" name="username" placeholder="username*" required="required" data-validation-required-message="Please enter your username."/>
@@ -61,6 +61,11 @@
                   <div class="form-group">
                     <label class="sr-only" for="email">phone</label>
                     <input class="form-control" type="text" id="phone" name="phone" placeholder="phone*" required="required" data-validation-required-message="Please enter your email address."/>
+                    <p class="help-block text-danger"></p>
+                  </div>
+                  <div class="form-group">
+                    <label class="sr-only" for="userProfile">photo</label>
+                    <input class="form-control" type="file" id="userProfile" name="userProfile" placeholder="photo*" accept="image/*" data-validation-required-message="Please enter your email address."/>
                     <p class="help-block text-danger"></p>
                   </div>
                   
