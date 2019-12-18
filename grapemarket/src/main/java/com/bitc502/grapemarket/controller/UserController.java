@@ -28,10 +28,10 @@ import com.bitc502.grapemarket.util.Script;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-	
+
 	@Value("${file.path}")
 	private String fileRealPath;
-	
+
 	@Autowired
 	private UserRepository uRepo;
 
@@ -51,10 +51,10 @@ public class UserController {
 	}
 
 	@PostMapping("/joinProc")
-	public String join(@RequestParam("username") String username, @RequestParam("name") String name, 
-			@RequestParam("password") String password, @RequestParam("email") String email, 
+	public String join(@RequestParam("username") String username, @RequestParam("name") String name,
+			@RequestParam("password") String password, @RequestParam("email") String email,
 			@RequestParam("phone") String phone, @RequestParam("userProfile") MultipartFile userProfile) {
-		
+
 		try {
 			String rawPassword = password;
 			String encPassword = passwordEncoder.encode(rawPassword);
@@ -64,11 +64,13 @@ public class UserController {
 			user.setPassword(encPassword);
 			user.setEmail(email);
 			user.setPhone(phone);
-			
-			String UUIDFileName = UUID.randomUUID()+"_"+userProfile.getOriginalFilename();
-			user.setUserProfile(UUIDFileName);
-			Path filePath = Paths.get(fileRealPath + UUIDFileName);
-			Files.write(filePath, userProfile.getBytes());
+
+			if (userProfile.getSize() != 0) {
+				String UUIDFileName = UUID.randomUUID() + "_" + userProfile.getOriginalFilename();
+				user.setUserProfile(UUIDFileName);
+				Path filePath = Paths.get(fileRealPath + UUIDFileName);
+				Files.write(filePath, userProfile.getBytes());
+			}
 			uRepo.save(user);
 			return "/user/login";
 		} catch (Exception e) {
@@ -86,16 +88,33 @@ public class UserController {
 	}
 
 	@PostMapping("/update")
-	public String update(User user) {
-		String rawPassword = user.getPassword();
-		String encPassword = passwordEncoder.encode(rawPassword);
-		user.setPassword(encPassword);
+	public String update(@AuthenticationPrincipal MyUserDetails userDetail ,@RequestParam("id") int id, @RequestParam("password") String password, @RequestParam("email") String email, 
+			@RequestParam("phone") String phone, @RequestParam("currentUserProfile") String currentUserProfile, @RequestParam("userProfile") MultipartFile userProfile) {
 		try {
-			uRepo.update(user.getPassword(),user.getEmail(),user.getPhone(),user.getId());
+			String rawPassword = password;
+			String encPassword = passwordEncoder.encode(rawPassword);
+			User user = new User();
+			user.setId(id);
+			user.setPassword(encPassword);
+			user.setEmail(email);
+			user.setPhone(phone);
+
+			if (userProfile.getSize() != 0) {
+				String UUIDFileName = UUID.randomUUID() + "_" + userProfile.getOriginalFilename();
+				user.setUserProfile(UUIDFileName);
+				Path filePath = Paths.get(fileRealPath + UUIDFileName);
+				Files.write(filePath, userProfile.getBytes());
+			}else {
+				user.setUserProfile(currentUserProfile);
+			}
+			
+			uRepo.update(user.getPassword(),user.getEmail(),user.getPhone(), user.getUserProfile(), user.getId());
+			userDetail.getUser().setUserProfile(user.getUserProfile());
 			return "redirect:/";
 		} catch (Exception e) {
+			e.printStackTrace();
+			return "/user/userProfile";
 		}
-		return "/user/userProfile";
 	}
 
 	@PostMapping("/addupdate")
@@ -107,7 +126,7 @@ public class UserController {
 		}
 		return "/user/userProfile";
 	}
-	
+
 	@PostMapping("/authupdate")
 	public String authUpdate(User user) {
 		try {

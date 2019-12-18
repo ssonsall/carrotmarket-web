@@ -61,8 +61,9 @@
 
 									<div class="tab-pane active" id="profile" style="margin-top: 5%;">
 										<div class="col-sm-6 col-sm-offset-3 col-md-8" style="margin-left: auto;">
-											<form role="form" method="post" action="/user/update">
+											<form role="form" method="post" action="/user/update" enctype="multipart/form-data">
 												<input type="hidden" name="id" value="${user.id}">
+												<input type="hidden" name="currentUserProfile" value="${user.userProfile}">
 												<div class="form-group">
 													<label class="sr-only" for="name">username</label> <input class="form-control" type="text" id="username" name="username"
 														placeholder="${user.username}" required="required" data-validation-required-message="Please enter your name." readonly="readonly"
@@ -95,6 +96,11 @@
 														required="required" data-validation-required-message="Please enter your email address." value="${user.phone}" />
 													<p class="help-block text-danger"></p>
 												</div>
+												<div class="form-group">
+                   									 <label class="sr-only" for="userProfile">photo</label>
+                    								 <input class="form-control" type="file" id="userProfile" name="userProfile" placeholder="photo*" accept="image/*" data-validation-required-message="Please enter your email address."/>
+                    								 <p class="help-block text-danger"></p>
+                  								</div>
 												<div class="text-center">
 													<button class="btn btn-block btn-round btn-d" id="cfsubmit" type="submit">Submit</button>
 												</div>
