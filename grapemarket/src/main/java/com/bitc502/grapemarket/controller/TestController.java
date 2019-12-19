@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitc502.grapemarket.model.Board;
@@ -131,10 +132,24 @@ public class TestController {
 		} else {
 			count = (countRow / 8) + 1;
 		}
-		
+
 		System.out.println("count >>" + count);
 		model.addAttribute("count", count);
 		model.addAttribute("boards", boards.getContent());
 		return boards;
+	}
+
+	@GetMapping("/liketest")
+	public @ResponseBody Page<Board> liketest(@RequestParam("con") String temp, @RequestParam("cate") String cate,
+			Pageable page) {
+		//공백제거
+		temp = temp.trim();
+		//정규식 형태 만들어주기
+		temp = temp.replace(" ", ")(?=.*");
+		temp = "(?=.*" + temp + ")";
+		if (cate.equals("1"))
+			cate = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
+		Page<Board> testU = bRepo.search(cate, temp, page);
+		return testU;
 	}
 }
