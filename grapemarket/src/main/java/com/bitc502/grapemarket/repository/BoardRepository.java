@@ -17,9 +17,10 @@ public interface BoardRepository extends JpaRepository<Board, Integer>, JpaSpeci
    @Query(value = "SELECT * FROM Board b Join User u on b.userId = u.id WHERE category regexp :category AND concat(b.title, b.content, u.address) regexp :search", nativeQuery = true)
    Page<Board> search(@Param("category") String cate, @Param("search") String search, Pageable page);
    
-   Page<Board> findByCategory(int id, Pageable page);
 
    Page<Board> findByTitleContainingOrContentContainingOrUserIdIn(String title, String content, List<Integer> userIds,
          Pageable page);
+
+   Page<Board> findByCategory(String category, Pageable pageable);
 
 }

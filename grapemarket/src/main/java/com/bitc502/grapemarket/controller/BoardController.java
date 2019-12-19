@@ -60,7 +60,8 @@ public class BoardController {
 	@GetMapping("/page")
 	public String getList(Model model,
 			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable,
-			@RequestParam int category, @RequestParam String userInput) {
+			@RequestParam String category, @RequestParam String userInput) {
+		String currentCategory = category;
 		List<User> users = uRepo.findByAddressContaining(userInput);
 		List<Integer> userIds = new ArrayList<>();
 		for (User u : users) {
@@ -69,18 +70,29 @@ public class BoardController {
 		Page<Board> boards;
 
 		if (userInput.equals("")) {
-			if (category == 1) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
+			if (category.equals("1")) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
 				boards = bRepo.findAll(pageable);
 			} else {// 입력값 공백이면 + 카테고리 (입력값조건 무시 카테고리만 걸고)
+				category = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
 				boards = bRepo.findByCategory(category, pageable);
 			}
 		} else {
-			if (category == 1) {// 입력값 + 카테고리 전체 (입력값만 걸고 카테고리 조건 무시)
-				boards = bRepo.findByTitleContainingOrContentContainingOrUserIdIn(userInput, userInput, userIds,
-						pageable);
+			if (category.equals("1")) {// 입력값 + 카테고리 전체 (입력값만 걸고 카테고리 조건 무시)
+				// 공백제거
+				userInput = userInput.trim();
+				// 정규식 형태 만들어주기
+				userInput = userInput.replace(" ", ")(?=.*");
+				userInput = "(?=.*" + userInput + ")";
+				if (category.equals("1"))
+					category = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
+				boards = bRepo.search(category, userInput, pageable);
 			} else {// 입력값 + 카테고리
-				boards = bRepo.findByCategoryAndTitleContainingOrCategoryAndContentContainingOrCategoryAndUserIdIn(
-						category, userInput, category, userInput, category, userIds, pageable);
+				// 공백제거
+				userInput = userInput.trim();
+				// 정규식 형태 만들어주기
+				userInput = userInput.replace(" ", ")(?=.*");
+				userInput = "(?=.*" + userInput + ")";
+				boards = bRepo.search(category, userInput, pageable);
 			}
 		}
 
@@ -98,7 +110,7 @@ public class BoardController {
 			count = (countRow / 8) + 1;
 		}
 		model.addAttribute("currentUserInput", userInput);
-		model.addAttribute("currentCategory", category);
+		model.addAttribute("currentCategory", currentCategory);
 		model.addAttribute("currentPage", pageable.getPageNumber());
 		model.addAttribute("count", count);
 		model.addAttribute("boards", boards.getContent());
@@ -118,18 +130,18 @@ public class BoardController {
 
 	@PostMapping("/writeProc")
 	public String write(@AuthenticationPrincipal MyUserDetails userDetail, @RequestParam("state") String state,
-			@RequestParam("category") int category,@RequestParam("title") String title, @RequestParam("price") String price,
-			@RequestParam("content") String content, @RequestParam("productImages") List<MultipartFile> productImages) {
+			@RequestParam("category") int category, @RequestParam("title") String title,
+			@RequestParam("price") String price, @RequestParam("content") String content,
+			@RequestParam("productImages") List<MultipartFile> productImages) {
 		try {
 			Board board = new Board();
 			// 파일 이름 세팅 및 쓰기
 			List<String> uuidFileNames = new ArrayList<String>();
-			
-			
-			for(int i = 0 ; i < productImages.size(); i++) {
+
+			for (int i = 0; i < productImages.size(); i++) {
 				uuidFileNames.add(UUID.randomUUID() + "_" + productImages.get(i).getOriginalFilename());
 				Path filePath = Paths.get(fileRealPath + uuidFileNames.get(i));
-				Files.write(filePath, productImages.get(i).getBytes());	
+				Files.write(filePath, productImages.get(i).getBytes());
 			}
 
 			board.setUser(userDetail.getUser());
@@ -138,13 +150,21 @@ public class BoardController {
 			board.setTitle(title);
 			board.setPrice(price);
 			board.setContent(content);
-			board.setImage1(uuidFileNames.get(0));
-			board.setImage2(uuidFileNames.get(1));
-			board.setImage3(uuidFileNames.get(2));
-			board.setImage4(uuidFileNames.get(3));
-			board.setImage5(uuidFileNames.get(4));
-
-			
+			if (productImages.size() >= 1) {
+				board.setImage1(uuidFileNames.get(0));
+				if (productImages.size() >= 2) {
+					board.setImage2(uuidFileNames.get(1));
+					if (productImages.size() >= 3) {
+						board.setImage3(uuidFileNames.get(2));
+						if (productImages.size() >= 4) {
+							board.setImage4(uuidFileNames.get(3));
+							if (productImages.size() >= 5) {
+								board.setImage5(uuidFileNames.get(4));
+							}
+						}
+					}
+				}
+			}
 			bRepo.save(board);
 //			리스트 완성되면 바꿔야함
 			return "redirect:/board/page?page=0&category=1&userInput=";

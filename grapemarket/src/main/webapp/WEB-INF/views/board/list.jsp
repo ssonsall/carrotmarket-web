@@ -39,7 +39,7 @@
 						<div class="col-sm-4 mb-sm-20">
 							<select name="category" class="form-control">
 								<c:choose>
-									<c:when test="${currentCategory eq 1}">
+									<c:when test="${currentCategory eq '1'}">
 										<option value="1" selected="selected">전체</option>
 									</c:when>
 									<c:otherwise>
@@ -48,7 +48,7 @@
 								</c:choose>
 
 								<c:choose>
-									<c:when test="${currentCategory eq 2}">
+									<c:when test="${currentCategory eq '2'}">
 										<option value="2" selected="selected">인기매물</option>
 									</c:when>
 									<c:otherwise>
@@ -57,7 +57,7 @@
 								</c:choose>
 
 								<c:choose>
-									<c:when test="${currentCategory eq 3}">
+									<c:when test="${currentCategory eq '3'}">
 										<option value="3" selected="selected">디지털/가전</option>
 									</c:when>
 									<c:otherwise>
@@ -66,7 +66,7 @@
 								</c:choose>
 
 								<c:choose>
-									<c:when test="${currentCategory eq 4}">
+									<c:when test="${currentCategory eq '4'}">
 										<option value="4" selected="selected">가구/인테리어</option>
 									</c:when>
 									<c:otherwise>
@@ -75,7 +75,7 @@
 								</c:choose>
 
 								<c:choose>
-									<c:when test="${currentCategory eq 5}">
+									<c:when test="${currentCategory eq '5'}">
 										<option value="5" selected="selected">유아동/유아도서</option>
 									</c:when>
 									<c:otherwise>
@@ -84,7 +84,7 @@
 								</c:choose>
 
 								<c:choose>
-									<c:when test="${currentCategory eq 6}">
+									<c:when test="${currentCategory eq '6'}">
 										<option value="6" selected="selected">생활/가공식품</option>
 									</c:when>
 									<c:otherwise>
@@ -93,7 +93,7 @@
 								</c:choose>
 
 								<c:choose>
-									<c:when test="${currentCategory eq 7}">
+									<c:when test="${currentCategory eq '7'}">
 										<option value="7" selected="selected">여성의류</option>
 									</c:when>
 									<c:otherwise>
@@ -102,7 +102,7 @@
 								</c:choose>
 
 								<c:choose>
-									<c:when test="${currentCategory eq 8}">
+									<c:when test="${currentCategory eq '8'}">
 										<option value="8" selected="selected">여성잡화</option>
 									</c:when>
 									<c:otherwise>
@@ -111,7 +111,7 @@
 								</c:choose>
 
 								<c:choose>
-									<c:when test="${currentCategory eq 9}">
+									<c:when test="${currentCategory eq '9'}">
 										<option value="9" selected="selected">뷰티/미용</option>
 									</c:when>
 									<c:otherwise>
@@ -120,7 +120,7 @@
 								</c:choose>
 
 								<c:choose>
-									<c:when test="${currentCategory eq 10}">
+									<c:when test="${currentCategory eq '10'}">
 										<option value="10" selected="selected">남성패션/잡화</option>
 									</c:when>
 									<c:otherwise>
@@ -129,7 +129,7 @@
 								</c:choose>
 
 								<c:choose>
-									<c:when test="${currentCategory eq 11}">
+									<c:when test="${currentCategory eq '11'}">
 										<option value="11" selected="selected">스포츠/레저</option>
 									</c:when>
 									<c:otherwise>
@@ -138,7 +138,7 @@
 								</c:choose>
 
 								<c:choose>
-									<c:when test="${currentCategory eq 12}">
+									<c:when test="${currentCategory eq '12'}">
 										<option value="12" selected="selected">게임/취미</option>
 									</c:when>
 									<c:otherwise>
@@ -147,7 +147,7 @@
 								</c:choose>
 
 								<c:choose>
-									<c:when test="${currentCategory eq 13}">
+									<c:when test="${currentCategory eq '13'}">
 										<option value="13" selected="selected">도서/티켓/음반</option>
 									</c:when>
 									<c:otherwise>
@@ -156,7 +156,7 @@
 								</c:choose>
 
 								<c:choose>
-									<c:when test="${currentCategory eq 14}">
+									<c:when test="${currentCategory eq '14'}">
 										<option value="14" selected="selected">반려동물용품</option>
 									</c:when>
 									<c:otherwise>
@@ -165,7 +165,7 @@
 								</c:choose>
 
 								<c:choose>
-									<c:when test="${currentCategory eq 15}">
+									<c:when test="${currentCategory eq '15'}">
 										<option value="15" selected="selected">기타 중고물품</option>
 									</c:when>
 									<c:otherwise>
@@ -174,7 +174,7 @@
 								</c:choose>
 
 								<c:choose>
-									<c:when test="${currentCategory eq 16}">
+									<c:when test="${currentCategory eq '16'}">
 										<option value="16" selected="selected">삽니다</option>
 									</c:when>
 									<c:otherwise>
