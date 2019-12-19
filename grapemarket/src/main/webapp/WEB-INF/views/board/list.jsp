@@ -204,7 +204,7 @@
 							<div class="col-sm-6 col-md-3 col-lg-3">
 								<div class="shop-item">
 									<div class="shop-item-image">
-										<img src="/upload/${board.image1}" alt="Accessories Pack" />
+										<img src="/upload/${board.image1}" alt="Accessories Pack" style="width: 262.5px; height: 296.05px"/>
 										<div class="shop-item-detail">
 											<a href="/board/detail/${board.id}" class="btn btn-round btn-b"><span class="icon-basket">See Detail</span></a>
 										</div>
@@ -212,7 +212,8 @@
 									<h4 class="shop-item-title font-alt">
 										<a href="#">${board.title}</a>
 									</h4>
-									${board.price}
+									${board.user.address} · ${board.user.name}<br/>
+									${board.price}원
 								</div>
 							</div>
 						</c:forEach>

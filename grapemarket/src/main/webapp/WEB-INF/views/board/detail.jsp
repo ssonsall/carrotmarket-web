@@ -38,19 +38,19 @@
 					<div class="row">
 						<!-- ìí í° ì¬ì§ -->
 						<div class="col-sm-6 mb-sm-40">
-							<img width="600px" id="mainImage" src="/upload/${board.image1}"
+							<img style="width: 555px; height: 625.94px;" id="mainImage" src="/upload/${board.image1}"
 								alt="Single Product Image" />
 							<!-- ìí ìì ì¬ì§ ìì-->
 							<ul class="product-gallery">
-								<li><img id="img1" onClick="changeImg(1)"
+								<li><img style="width: 83.25px; height: 93.89px;" id="img1" onClick="changeImg(1)"
 									src="/upload/${board.image1}" alt=" No Image" /></li>
-								<li><img id="img2" onClick="changeImg(2)"
+								<li><img style="width: 83.25px; height: 93.89px;" id="img2" onClick="changeImg(2)"
 									src="/upload/${board.image2}" alt=" No Image" /></li>
-								<li><img id="img3" onClick="changeImg(3)"
+								<li><img style="width: 83.25px; height: 93.89px;" id="img3" onClick="changeImg(3)"
 									src="/upload/${board.image3}" alt=" No Image" /></li>
-								<li><img id="img4" onClick="changeImg(4)"
+								<li><img style="width: 83.25px; height: 93.89px;" id="img4" onClick="changeImg(4)"
 									src="/upload/${board.image4}" alt=" No Image" /></li>
-								<li><img id="img5" onClick="changeImg(5)"
+								<li><img style="width: 83.25px; height: 93.89px;" id="img5" onClick="changeImg(5)"
 									src="/upload/${board.image5}" alt=" No Image" /></li>
 							</ul>
 
@@ -83,13 +83,56 @@
 									<div class="row mb-20">
 										<div class="col-sm-12">
 											<div class="product_meta">
-												Category · ${board.createDate}
-												<!-- <a href="#"> enum 생성후 카테고리 입력 </a> -->
+												<c:choose>
+													<c:when test="${board.category eq 3}">
+														디지털/가전 · ${board.createDate}
+													</c:when>
+													<c:when test="${board.category eq 4}">
+														가구/인테리어 · ${board.createDate}
+													</c:when>
+													<c:when test="${board.category eq 5}">
+														유아동/유아도서 · ${board.createDate}
+													</c:when>
+													<c:when test="${board.category eq 6}">
+														생활/가공식품 · ${board.createDate}
+													</c:when>
+													<c:when test="${board.category eq 7}">
+														여성의류 · ${board.createDate}
+													</c:when>
+													<c:when test="${board.category eq 8}">
+														여성잡화 · ${board.createDate}
+													</c:when>
+													<c:when test="${board.category eq 9}">
+														뷰티/미용 · ${board.createDate}
+													</c:when>
+													<c:when test="${board.category eq 10}">
+														남성패션/잡화 · ${board.createDate}
+													</c:when>
+													<c:when test="${board.category eq 11}">
+														스포츠/레저 · ${board.createDate}
+													</c:when>
+													<c:when test="${board.category eq 12}">
+														게임/취미 · ${board.createDate}
+													</c:when>
+													<c:when test="${board.category eq 13}">
+														도서/티켓/음반 · ${board.createDate}
+													</c:when>
+													<c:when test="${board.category eq 14}">
+														반려동물용품 · ${board.createDate}
+													</c:when>
+													<c:when test="${board.category eq 15}">
+														기타 중고물품 · ${board.createDate}
+													</c:when>
+													<c:when test="${board.category eq 16}">
+														삽니다 · ${board.createDate}
+													</c:when>	
+												</c:choose>
+												<!-- <a href="#"> enum 생성후 카테고리 입력 </a> -->												
 											</div>
 										</div>
 									</div>
-									<h4 style="color: gray;">${board.user.username}</h4>
-									<h4 style="color: gray;">${board.user.address}</h4>
+									<h4 style="color: gray;">${board.user.address} · ${board.user.name}</h4>
+									<%-- <h4 style="color: gray;">${board.user.address}</h4> --%>
 								</div>
 							</div>
 							<div class="row mb-20">
@@ -108,7 +151,7 @@
 							<div class="row mb-20">
 								<div class="col-sm-12">
 									<div class="price font-alt">
-										<span class="amount">${board.price} WON</span>
+										<span class="amount">${board.price} 원</span>
 									</div>
 								</div>
 							</div>
@@ -127,6 +170,8 @@
 									<input class="form-control input-lg" type="number" name=""
 										value="1" max="40" min="1" required="required" />
 								</div> -->
+								<c:choose>
+								<c:when test="${principal.user.id ne board.user.id}">
 								<div class="col-sm-8">
 									<!-- 채팅생성 -->
 									<form id="createChat">
@@ -134,11 +179,21 @@
 											type="hidden" name="buyerId" value="${principal.user.id}">
 										<input type="hidden" name="sellerId" value="${board.user.id}">
 									</form>
-
 									<button onclick="createChat()" class="btn btn-round btn-d"
 										type="button">채팅으로 거래하기</button>
-
 								</div>
+								</c:when>
+								<c:otherwise>
+								<div class="col-sm-8">
+									<form id="boardUpdate" style="display: inline;" action="#" method="post">
+										<button class="btn btn-round btn-d" type="submit">글 수정</button>
+									</form>
+									<form id="boardDelete" style="display: inline;" action="/board/delete/${board.id}" method="get">
+										<button class="btn btn-round btn-d"	type="submit">글 삭제</button>
+									</form>
+								</div>
+								</c:otherwise>
+								</c:choose>
 							</div>
 
 

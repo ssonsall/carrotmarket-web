@@ -190,13 +190,14 @@ public class BoardController {
 	}
 
 	@GetMapping("/delete/{id}")
-	public @ResponseBody String delete(@PathVariable int id) {
+	public String delete(@PathVariable int id) {
 		try {
 			bRepo.deleteById(id);
-			return Script.href("/test/board");
+			return "redirect:/board/page?page=0&category=1&userInput=";
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return Script.back("Fail Delete");
+		return "redirect:/board/detail/"+id;
 	}
 
 	@GetMapping("/category")
@@ -210,6 +211,13 @@ public class BoardController {
 		System.out.println(list);
 		model.addAttribute("categories", list);
 		return "/board/category";
+	}
+	
+	@PostMapping("/update")
+	public String update(Board board) {
+		//이미지 파일때문에 생각 좀 해봐야 함.
+		return "redirect:/board/";
+		//return "board/writeForm";
 	}
 
 	@GetMapping("/category/{id}")

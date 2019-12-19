@@ -44,7 +44,7 @@
             </c:choose>
             </ul>
             <c:if test="${!empty principal.user.id}">
-              <span style="position: absolute; right: 10px;"><a class="dropup-toggle" href="/user/userProfile" data-toggle="dropup"><img src="/upload/${principal.user.userProfile}" style="width: 50px; height: 50px;"> ${principal.user.username}</a>
+              <span style="position: absolute; right: 10px;"><a class="dropup-toggle" href="/user/userProfile" data-toggle="dropup"><img src="/upload/${principal.user.userProfile}" style="width: 50px; height: 50px;"> ${principal.user.name}</a>
               </span>
              </c:if>
           </div>
