@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 
 
 <!DOCTYPE html>
@@ -23,9 +22,6 @@
 </head>
 <body data-spy="scroll" data-target=".onpage-navigation"
 	data-offset="60">
-	<sec:authorize access="isAuthenticated()">
-		<sec:authentication property="principal" var="principal" />
-	</sec:authorize>
 	<main>
 		<div class="page-loader">
 			<div class="loader">Loading...</div>
@@ -44,14 +40,29 @@
 							<ul class="product-gallery">
 								<li><img style="width: 83.25px; height: 93.89px;" id="img1" onClick="changeImg(1)"
 									src="/upload/${board.image1}" alt=" No Image" /></li>
-								<li><img style="width: 83.25px; height: 93.89px;" id="img2" onClick="changeImg(2)"
-									src="/upload/${board.image2}" alt=" No Image" /></li>
-								<li><img style="width: 83.25px; height: 93.89px;" id="img3" onClick="changeImg(3)"
+										<c:if test="${!empty board.image2}">
+											<li><img style="width: 83.25px; height: 93.89px;" id="img2" onClick="changeImg(2)"
+											src="/upload/${board.image2}" alt=" No Image" /></li>
+										</c:if>
+										<c:if test="${!empty board.image3}">
+											<li><img style="width: 83.25px; height: 93.89px;" id="img2" onClick="changeImg(3)"
+											src="/upload/${board.image3}" alt=" No Image" /></li>
+										</c:if>
+										<c:if test="${!empty board.image4}">
+											<li><img style="width: 83.25px; height: 93.89px;" id="img2" onClick="changeImg(4)"
+											src="/upload/${board.image4}" alt=" No Image" /></li>
+										</c:if>
+										<c:if test="${!empty board.image5}">
+											<li><img style="width: 83.25px; height: 93.89px;" id="img2" onClick="changeImg(5)"
+											src="/upload/${board.image5}" alt=" No Image" /></li>
+										</c:if>
+
+<!-- 								<li><img style="width: 83.25px; height: 93.89px;" id="img3" onClick="changeImg(3)"
 									src="/upload/${board.image3}" alt=" No Image" /></li>
 								<li><img style="width: 83.25px; height: 93.89px;" id="img4" onClick="changeImg(4)"
 									src="/upload/${board.image4}" alt=" No Image" /></li>
 								<li><img style="width: 83.25px; height: 93.89px;" id="img5" onClick="changeImg(5)"
-									src="/upload/${board.image5}" alt=" No Image" /></li>
+									src="/upload/${board.image5}" alt="" /></li> -->
 							</ul>
 
 
@@ -185,10 +196,11 @@
 								</c:when>
 								<c:otherwise>
 								<div class="col-sm-8">
-									<form id="boardUpdate" style="display: inline;" action="#" method="post">
+									<form id="boardUpdate" style="display: inline;" action="/board/updateForm/${board.id}" method="post">
+										<%-- DB Select 안할거면 여기서 다 날려야 하지만 그렇게 안할거임 귀찮 --%>
 										<button class="btn btn-round btn-d" type="submit">글 수정</button>
 									</form>
-									<form id="boardDelete" style="display: inline;" action="/board/delete/${board.id}" method="get">
+									<form id="boardDelete" style="display: inline;" action="/board/delete/${board.id}" method="post">
 										<button class="btn btn-round btn-d"	type="submit">글 삭제</button>
 									</form>
 								</div>
@@ -223,6 +235,7 @@
 												<c:if test="${principal.user.username eq comment.user.username}">
 												<span style="font-size: 20px" onclick="commentDelete(${comment.id})">🗑</span>
 												</c:if>
+												
 											</div>
 											<div class="comment-body">
 												<p>${comment.content}</p>

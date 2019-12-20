@@ -78,8 +78,32 @@
 								</div>
 						        <div class="form-group">
 									<label class="sr-only" for="price">사진</label> <input
-										class="form-control" type="file" multiple="multiple" accept="image/*" id="productImages" name="productImages"
+										class="form-control" type="file" accept="image/*" id="productImage1" name="productImage1"
 										required="required"
+										data-validation-required-message="Please enter your email address." />
+									<p class="help-block text-danger"></p>
+								</div>
+								<div class="form-group">
+									<label class="sr-only" for="price">사진</label> <input
+										class="form-control" type="file" accept="image/*" id="productImage1" name="productImage2"
+										data-validation-required-message="Please enter your email address." />
+									<p class="help-block text-danger"></p>
+								</div>
+								<div class="form-group">
+									<label class="sr-only" for="price">사진</label> <input
+										class="form-control" type="file" accept="image/*" id="productImage1" name="productImage3"
+										data-validation-required-message="Please enter your email address." />
+									<p class="help-block text-danger"></p>
+								</div>
+								<div class="form-group">
+									<label class="sr-only" for="price">사진</label> <input
+										class="form-control" type="file" accept="image/*" id="productImage1" name="productImage4"
+										data-validation-required-message="Please enter your email address." />
+									<p class="help-block text-danger"></p>
+								</div>
+								<div class="form-group">
+									<label class="sr-only" for="price">사진</label> <input
+										class="form-control" type="file" accept="image/*" id="productImage1" name="productImage5"
 										data-validation-required-message="Please enter your email address." />
 									<p class="help-block text-danger"></p>
 								</div>
