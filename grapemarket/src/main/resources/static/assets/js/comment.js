@@ -6,33 +6,43 @@ function commentWrite() {
         method: "POST",
         body: form
     }).then(function (res) {
-        return res.text();
+        return res.json();
     }).then(function (res) {
-        if (res === "ok") {
             //화면에 적용
             console.log(res);
+            console.log(res.id);
+            var commentId = res.id;
             var username = document.getElementById("username").value;
             var content = document.getElementById("comment_area").value;
             console.log(username);
             console.log(content);
-            var comment_et = commentItemForm(username,content);
+            var comment_et = commentItemForm(commentId,username,content);
             
             $("#comments_reviews").append(comment_et);
             //입력폼 초기화하기
             
             $("#comment_area").val("");
-        }
     });
-
-   
 }
 
-function commentItemForm(username, content) {
-    var commentItem = `<div class="comment clearfix">
+function commentDelete(commentId) {
+    let url = "/comment/delete/"+commentId;
+    
+    fetch(url).then(function (res) {
+        return res.text();
+    }).then(function (res) {
+        if(res==='ok'){
+            $("#comment_id_"+commentId).empty();
+        }
+    });
+}
+
+function commentItemForm(commentId,username, content) {
+    var commentItem = `<div id="comment_id_" class="comment clearfix">
 										<div class="comment-avatar">
 											<img src="" alt="avatar" />
 										</div>
-										<div class="comment-content clearfix">
+										<div id="comment_id_${commentId}"class="comment-content clearfix">
 											<div class="comment-author font-alt">
 												<a href="#">${username}</a>
 											</div>

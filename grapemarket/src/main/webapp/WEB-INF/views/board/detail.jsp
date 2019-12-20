@@ -213,13 +213,16 @@
 
 								<c:forEach var="comment" items="${comments}">
 
-									<div class="comment clearfix">
+									<div id="comment_id_${comment.id}"class="comment clearfix">
 										<div class="comment-avatar">
 											<img src="" alt="avatar" />
 										</div>
 										<div class="comment-content clearfix">
 											<div class="comment-author font-alt">
-												<a href="#">${comment.user.username}</a>
+												${comment.user.username}
+												<c:if test="${principal.user.username eq comment.user.username}">
+												<span style="font-size: 20px" onclick="commentDelete(${comment.id})">🗑</span>
+												</c:if>
 											</div>
 											<div class="comment-body">
 												<p>${comment.content}</p>
