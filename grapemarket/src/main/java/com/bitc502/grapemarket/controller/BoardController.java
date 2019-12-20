@@ -22,18 +22,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bitc502.grapemarket.common.CategoryType;
 import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Comment;
+import com.bitc502.grapemarket.model.Search;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.CommentRepository;
+import com.bitc502.grapemarket.repository.SearchRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.MyUserDetails;
-import com.bitc502.grapemarket.util.Script;
 
 @Controller
 @RequestMapping("/board")
@@ -50,6 +50,9 @@ public class BoardController {
 
 	@Autowired
 	private CommentRepository commentRepo;
+
+	@Autowired
+	private SearchRepository sRepo;
 
 	// 전체 페이지
 	@GetMapping({ "/", "" })
@@ -68,6 +71,15 @@ public class BoardController {
 			userIds.add(u.getId());
 		}
 		Page<Board> boards;
+		if (!userInput.equals("")) {
+			String[] searchContent = userInput.split(" ");
+			for (String entity : searchContent) {
+				Search search = new Search();
+				search.setContent(entity);
+				sRepo.save(search);
+			}
+
+		}
 
 		if (userInput.equals("")) {
 			if (category.equals("1")) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
