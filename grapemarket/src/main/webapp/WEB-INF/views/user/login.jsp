@@ -49,10 +49,12 @@
 									<button class="btn btn-block btn-round btn-d" id="cfsubmit" type="submit">Submit</button>
 								</div>
 							</form>
+							<a href="/oauth/naver"><img alt="" src="/upload/naverLogin.png" style="width: 555px; height: 38px;"></a>
 							<div class="ajax-response font-alt" id="contactFormResponse"></div>
 						</div>
 					</div>
 				</div>
+				
 			</section>
 			<%@include file="../include/footer.jsp" %>
 		</div>
