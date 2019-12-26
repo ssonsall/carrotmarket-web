@@ -1,20 +1,16 @@
 package com.bitc502.grapemarket.model;
 
 import java.sql.Timestamp;
-import java.util.List;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -40,11 +36,16 @@ public class Chat {
 	@JoinColumn(name = "buyerId")
 	private User buyerId;
 	
+	@Column(nullable=false, columnDefinition = "int default 1")
+	private int buyerState;
+	
 	@ManyToOne
 	@JoinColumn(name = "sellerId")
 	@JsonIgnoreProperties({"like","comment","board"})
 	private User sellerId;
 	
+	@Column(nullable=false, columnDefinition = "int default 1")
+	private int sellerState;
 	// id, title
 	@ManyToOne
 	@JoinColumn(name = "boardId")

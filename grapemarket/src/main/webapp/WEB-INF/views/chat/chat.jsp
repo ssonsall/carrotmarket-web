@@ -46,32 +46,15 @@
 							<hr class="divider-w mt-10 mb-20">
 
 							<div id="product">
-								<c:forEach var="chat" items="${chatForBuy}" begin="0" end="0">
-									<!-- 이미지 세로 크기 고정 필요 -->
-									<div class="col-sm-12 mb-sm-40">
-										<img
-											src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvH5pM8pc9EOEuK1DbpkvBG7ruBU_0rJMBX5wqDOjoFRcq2QIbJw&s"
-											alt="Single Product Image"
-											style="max-height: 300px; min-width: 232px;" />
-									</div>
-									<div id="product_info">
-										<h5>
-											<div class="col-sm-12 mb-sm-40 font-alt">판매자</div>
-										</h5>
-										<div id="product_seller" class="col-sm-12 mb-sm-40 font-alt">&nbsp
-											${chat.board.user.username}</div>
-										<h5>
-											<div class="col-sm-12 mb-sm-40 font-alt">상품명</div>
-										</h5>
-										<div id="product_title" class="col-sm-12 mb-sm-40 font-alt">&nbsp
-											${chat.board.title}</div>
-										<h5>
-											<div class="col-sm-12 mb-sm-40 font-alt">가격</div>
-										</h5>
-										<div id="product_price" class="col-sm-12 mb-sm-40 font-alt">&nbsp
-											800,000원</div>
-									</div>
-								</c:forEach>
+								<!-- 이미지 세로 크기 고정 필요 -->
+								<div class="col-sm-12 mb-sm-40">
+									<img
+										src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvH5pM8pc9EOEuK1DbpkvBG7ruBU_0rJMBX5wqDOjoFRcq2QIbJw&s"
+										alt="Single Product Image"
+										style="max-height: 300px; min-width: 232px;" />
+								</div>
+								<!-- 상품 정보 노출되는곳 -->
+								<div id="product_info"></div>
 							</div>
 						</div>
 						<!-- 현재 거래 상품 정보 끝 -->
@@ -81,80 +64,41 @@
 							<hr class="divider-w mt-10 mb-20">
 							<h3>구매</h3>
 							<c:forEach var="chat" items="${chatForBuy}">
-								<div class="alert alert-success" role="alert"
-									onclick="enterRoom(${chat.id})">
-									<button class="close" type="button" data-dismiss="alert"
-										aria-hidden="true">&times;</button>
-									<i class="fa fa-comment"></i><strong>Alert!</strong>
-									${chat.sellerId.username}님과의 채팅방입니다.
-								</div>
+								<c:if test="${chat.buyerState eq 1}">
+									<div class="alert alert-success" role="alert"
+										onclick="enterRoom(${chat.id})">
+										<button class="close" type="button" data-dismiss="alert"
+											aria-hidden="true" onclick="outChat(${chat.id},'buyer')">&times;</button>
+										<i class="fa fa-comment"></i><strong>Alert!</strong>
+										${chat.sellerId.username}님과의 채팅방입니다.
+									</div>
+								</c:if>
 							</c:forEach>
 							<h3>판매</h3>
 							<c:forEach var="chat" items="${chatForSell}">
-								<div class="alert alert-success" role="alert"
-									onclick="enterRoom(${chat.id})">
-									<button class="close" type="button" data-dismiss="alert"
-										aria-hidden="true">&times;</button>
-									<i class="fa fa-comment"></i><strong>Alert!</strong>
-									${chat.buyerId.username}님과의 채팅방입니다.
-								</div>
+								<c:if test="${chat.sellerState eq 1}">
+									<div class="alert alert-success" role="alert"
+										onclick="enterRoom(${chat.id})">
+										<button class="close" type="button" data-dismiss="alert"
+											aria-hidden="true" onclick="outChat(${chat.id},'seller')">&times;</button>
+										<i class="fa fa-comment"></i><strong>Alert!</strong>
+										${chat.buyerId.username}님과의 채팅방입니다.
+									</div>
+								</c:if>
 							</c:forEach>
 						</div>
 
-						<script>
-						function enterRoom(roomId) {
-						    localStorage.setItem('wschat.roomId', roomId);
-
-						    var ifrm = document.getElementById("chatframe");
-						    ifrm.src = "http://localhost:8080/chat/room/enter/" + roomId;
-
-						    var url = 'http://localhost:8080/chat/test/' + roomId;
-						    console.log(url);
-						    console.log('test tt');
-						    fetch(url)
-						        .then(function (response) {
-						            return response.json();
-						        })
-						        .then(function (myJson) {
-						            console.log(myJson);
-						            console.log('test');
-						            console.log(myJson.board.title);
-						            console.log(myJson.board.price);
-						            console.log(myJson.sellerId.username);
-						            var username = myJson.sellerId.username;
-						            var title = myJson.board.title;
-						            var price = myJson.board.price;
-
-						            var info = product_info(username, title, price)
-
-						            $("#product_info").empty();
-						            $("#product_info").append(info);
-						        });
-						}
-
-						function product_info(username, title, price) {
-
-						    var info = `<h5><div class="col-sm-12 mb-sm-40 font-alt">판매자</div></h5>`;
-						    info += `<div id="product_seller" class="col-sm-12 mb-sm-40 font-alt">&nbsp`+username;
-						    info += `</div><h5><div class="col-sm-12 mb-sm-40 font-alt">상품명</div></h5>`;
-						    info += `<div id="product_title" class="col-sm-12 mb-sm-40 font-alt">&nbsp` +title;
-						    info += `</div><h5><div class="col-sm-12 mb-sm-40 font-alt">가격</div></h5>`;
-						    info += `<div id="product_price" class="col-sm-12 mb-sm-40 font-alt">&nbsp` +price;
-							info += `</div>`
-						    return info;
-						}
 						
-
-						</script>
 						<!-- 채팅방 목록 끝 -->
 						<!-- 채팅방 시작 -->
 						<div class="col-sm-4 col-md-3 col-md-offset-1 sidebar">
-							<h4 class="font-alt mb-0">누구누구와의 채팅방</h4>
+							<button>구매 완료</button>
+							<button>대화방 나가기</button>
 							<hr class="divider-w mt-10 mb-20">
 							<div id="chat-page">
 								<c:forEach var="chat" items="${chatForBuy}" begin="0" end="">
 									<iframe id="chatframe" style="width: 400px; height: 500px"
-										src="http://localhost:8080/chat/room/enter/${chat.id}"></iframe>
+										src=""></iframe>
 								</c:forEach>
 
 

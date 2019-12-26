@@ -201,6 +201,7 @@
 					<div class="row multi-columns-row">
 					<c:catch var="e">
 						<c:forEach var="board" items="${boards}">
+							<%-- <c:if test="${board.state ne 1}"> --%>
 							<div class="col-sm-6 col-md-3 col-lg-3">
 								<div class="shop-item">
 									<div class="shop-item-image">
@@ -216,6 +217,7 @@
 									${board.price}원
 								</div>
 							</div>
+							<%-- </c:if> --%>
 						</c:forEach>
 					</c:catch>
 						<c:if test="${e ne null}">

@@ -203,6 +203,9 @@
 									<form id="boardDelete" style="display: inline;" action="/board/delete/${board.id}" method="post">
 										<button class="btn btn-round btn-d"	type="submit">글 삭제</button>
 									</form>
+									<form id="boardDelete" style="position: relative; top:5px;"action="/board/complete/${board.id}" method="post">
+										<button class="btn btn-round btn-d"	type="submit">거래 완료</button>
+									</form>
 								</div>
 								</c:otherwise>
 								</c:choose>

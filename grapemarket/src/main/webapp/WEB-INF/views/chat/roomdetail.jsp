@@ -119,9 +119,7 @@
                 var recv = JSON.parse(message.body);
                 vm.recvMessage(recv);
             });
-            ws.send("/pub/chat/message", {}, JSON.stringify({type:'ENTER', roomId:vm.$data.roomId, sender:vm.$data.sender}));
         }, function(error) {
-            alert("error "+error);
         });
     </script>
 	<%@include file="../include/script.jsp"%>
