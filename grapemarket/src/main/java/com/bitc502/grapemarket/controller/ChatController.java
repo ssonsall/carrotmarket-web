@@ -41,9 +41,8 @@ public class ChatController {
 					chat.getSellerId().getId());
 
 			if (check == null) {
-
-				cRepo.save(chat);
 				chat.setBuyerState(1);
+				cRepo.save(chat);
 			} else {
 				check.setBuyerState(1);
 				cRepo.save(check);
