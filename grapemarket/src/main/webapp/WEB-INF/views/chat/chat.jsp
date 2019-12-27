@@ -92,8 +92,7 @@
 						<!-- 채팅방 목록 끝 -->
 						<!-- 채팅방 시작 -->
 						<div class="col-sm-4 col-md-3 col-md-offset-1 sidebar">
-							<button>구매 완료</button>
-							<button>대화방 나가기</button>
+							<div id=buyingBtn><!-- <button>구매 완료</button> --></div>
 							<hr class="divider-w mt-10 mb-20">
 							<div id="chat-page">
 								<c:forEach var="chat" items="${chatForBuy}" begin="0" end="">
