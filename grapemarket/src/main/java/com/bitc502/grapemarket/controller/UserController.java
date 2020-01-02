@@ -3,8 +3,11 @@ package com.bitc502.grapemarket.controller;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bitc502.grapemarket.model.Search;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.MyUserDetails;
@@ -39,9 +43,15 @@ public class UserController {
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@GetMapping("/login")
-	public String loginForm() {
-
-		return "/user/login";
+	public String loginForm(HttpServletRequest request) {
+		if(request.getHeader("DeviceType") != null && request.getHeader("DeviceType").equals("android")) {
+			System.out.println("안드로이드 접속");
+			return "redirect:/android/loginFailure";
+		}else {
+			System.out.println("Web 접속");
+			return "/user/login";
+		}
+		
 	}
 
 	@GetMapping("/join")
