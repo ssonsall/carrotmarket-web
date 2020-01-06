@@ -37,7 +37,7 @@ public class Board {
 
 	// 댓글
 	@OneToMany(mappedBy = "board")
-	@JsonIgnoreProperties({ "user","board" })
+	@JsonIgnoreProperties({ "board" })
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Comment> comment;
 
@@ -54,7 +54,7 @@ public class Board {
 	// id, username, address
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "userId")
-	@JsonBackReference
+	@JsonIgnoreProperties({ "comment","board","like" })
 	private User user;
 
 	// 상품 사진 시작
