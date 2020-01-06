@@ -8,17 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.bitc502.grapemarket.common.CategoryType;
-import com.bitc502.grapemarket.model.Board;
-import com.bitc502.grapemarket.model.Comment;
-import com.bitc502.grapemarket.model.Search;
-import com.bitc502.grapemarket.model.User;
-import com.bitc502.grapemarket.repository.BoardRepository;
-import com.bitc502.grapemarket.repository.CommentRepository;
-import com.bitc502.grapemarket.repository.SearchRepository;
-import com.bitc502.grapemarket.repository.UserRepository;
-import com.bitc502.grapemarket.security.MyUserDetails;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -34,6 +23,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.bitc502.grapemarket.common.CategoryType;
+import com.bitc502.grapemarket.model.Board;
+import com.bitc502.grapemarket.model.Comment;
+import com.bitc502.grapemarket.model.Search;
+import com.bitc502.grapemarket.model.User;
+import com.bitc502.grapemarket.repository.BoardRepository;
+import com.bitc502.grapemarket.repository.CommentRepository;
+import com.bitc502.grapemarket.repository.SearchRepository;
+import com.bitc502.grapemarket.repository.UserRepository;
+import com.bitc502.grapemarket.security.UserPrincipal;
 
 @Controller
 @RequestMapping("/board")
@@ -133,15 +133,15 @@ public class BoardController {
 
 	// 글쓰기 페이지
 	@GetMapping("/writeForm") 
-	public String writeForm(@AuthenticationPrincipal MyUserDetails userDetail, Model model) {
-		Optional<User> oUser = uRepo.findById(userDetail.getUser().getId());
+	public String writeForm(@AuthenticationPrincipal UserPrincipal userPrincipal, Model model) {
+		Optional<User> oUser = uRepo.findById(userPrincipal.getUser().getId());
 		User user = oUser.get();
 		model.addAttribute("user", user);
 		return "/board/write";
 	}
 
 	@PostMapping("/writeProc")
-	public String write(@AuthenticationPrincipal MyUserDetails userDetail, @RequestParam("state") String state,
+	public String write(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("state") String state,
 			@RequestParam("category") int category, @RequestParam("title") String title,
 			@RequestParam("price") String price, @RequestParam("content") String content,
 			@RequestParam("productImage1") MultipartFile productImage1,
@@ -185,7 +185,7 @@ public class BoardController {
 				board.setImage5(imageFileName5);
 			}
 
-			board.setUser(userDetail.getUser());
+			board.setUser(userPrincipal.getUser());
 			board.setCategory(category);
 			board.setState(state);
 			board.setTitle(title);
@@ -205,7 +205,7 @@ public class BoardController {
 
 	// 상세보기 페이지
 	@GetMapping("/detail/{id}")
-	public String detail(@PathVariable int id, Model model, @AuthenticationPrincipal MyUserDetails userDetail) {
+	public String detail(@PathVariable int id, Model model, @AuthenticationPrincipal UserPrincipal userPrincipal) {
 		Optional<Board> oBoard = bRepo.findById(id);
 		Board board = oBoard.get();
 
@@ -251,7 +251,7 @@ public class BoardController {
 	}
 
 	@PostMapping("/update")
-	public String update(@AuthenticationPrincipal MyUserDetails userDetail, @RequestParam("state") String state,
+	public String update(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("state") String state,
 			@RequestParam("category") int category, @RequestParam("title") String title,
 			@RequestParam("price") String price, @RequestParam("content") String content,
 			@RequestParam("productImage1") MultipartFile productImage1,
@@ -317,7 +317,7 @@ public class BoardController {
 			}
 
 			board.setId(id);
-			board.setUser(userDetail.getUser());
+			board.setUser(userPrincipal.getUser());
 			board.setCategory(category);
 			board.setState(state);
 			board.setTitle(title);

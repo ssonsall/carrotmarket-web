@@ -45,7 +45,10 @@
 			<artifactId>tomcat-jasper</artifactId>
 			<version>9.0.22</version>
 		</dependency>
-
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
 		<!-- 사용자 라이브러리 끝 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

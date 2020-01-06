@@ -1,5 +1,10 @@
 server:
-  port: 8080
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: src/main/resources/grapemarket.p12
+    key-store-password: bitc5600
+    key-store-type: PKCS12
   servlet:
     context-path: /
     
@@ -44,7 +49,18 @@ spring:
     user:
       name: test
       password: 1234
+    oauth2:
+      client:
+        registration:
+          google: 
+            client-id: 539550640102-ttcfqed58f6vjimefs07njhkvb2atmio.apps.googleusercontent.com
+            client-secret: mJ_Aoxv9AolJSFIFYMoz7CKL
+            scope: 
+            - email
+            - profile
+          
+
       
 #파일 저장할 경로(각자 파일 경로로)
 file:
-  path: C:/Users/Administrator/Desktop/Springboot4/grapemarket/src/main/resources/static/upload/
+  path: C:/Users/kimsu/Documents/GitHub/grapemarket-web-my/grapemarket/src/main/resources/static/upload/

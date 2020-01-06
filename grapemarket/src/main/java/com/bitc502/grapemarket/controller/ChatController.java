@@ -18,7 +18,7 @@ import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.ChatRepository;
 import com.bitc502.grapemarket.repository.MessageRepository;
-import com.bitc502.grapemarket.security.MyUserDetails;
+import com.bitc502.grapemarket.security.UserPrincipal;
 
 @Controller
 @RequestMapping("/chat")
@@ -56,13 +56,13 @@ public class ChatController {
 	}
 
 	@GetMapping("/")
-	public String Chat(@AuthenticationPrincipal MyUserDetails userDetail, Model model) {
+	public String Chat(@AuthenticationPrincipal UserPrincipal userPrincipal, Model model) {
 
-		List<Chat> chatForBuy = cRepo.findByBuyerId(userDetail.getUser());
-		List<Chat> chatForSell = cRepo.findBySellerId(userDetail.getUser());
+		List<Chat> chatForBuy = cRepo.findByBuyerId(userPrincipal.getUser());
+		List<Chat> chatForSell = cRepo.findBySellerId(userPrincipal.getUser());
 //				userDetail.getUser().getId()
 
-		User user = userDetail.getUser();
+		User user = userPrincipal.getUser();
 
 		model.addAttribute("user", user);
 		model.addAttribute("chatForBuy", chatForBuy);

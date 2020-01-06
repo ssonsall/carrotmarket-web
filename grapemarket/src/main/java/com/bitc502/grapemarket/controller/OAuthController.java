@@ -7,7 +7,6 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitc502.grapemarket.model.OAuthToken;
 import com.bitc502.grapemarket.model.OAuthUser;
-import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.oauthutil.OAuthUtil;
-import com.bitc502.grapemarket.security.MyUserDetailService;
-import com.bitc502.grapemarket.security.MyUserDetails;
 import com.google.gson.Gson;
 
 @RequestMapping("/oauth")

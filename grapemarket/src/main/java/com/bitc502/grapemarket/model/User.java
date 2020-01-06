@@ -3,7 +3,10 @@ package com.bitc502.grapemarket.model;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,6 +30,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id; // 시퀀스
+	@Column(unique=true)
 	private String username; // 사용자 아이디
 	private String password; // 암호화된 패스워드
 	private String name; // 사용자 이름
@@ -42,6 +46,14 @@ public class User {
     @ColumnDefault("0")
 	private Integer addressAuth; //주소1 인증
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
+
+    private String providerId;
+    
 	@OneToMany(mappedBy = "user")
 	@JsonIgnoreProperties({ "user" })
 	@OnDelete(action = OnDeleteAction.CASCADE)

@@ -3,7 +3,6 @@ package com.bitc502.grapemarket.controller;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,10 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bitc502.grapemarket.model.Search;
+import com.bitc502.grapemarket.model.AuthProvider;
+import com.bitc502.grapemarket.model.Role;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.UserRepository;
-import com.bitc502.grapemarket.security.MyUserDetails;
+import com.bitc502.grapemarket.security.UserPrincipal;
 import com.bitc502.grapemarket.util.Script;
 
 @Controller
@@ -74,6 +74,8 @@ public class UserController {
 			user.setPassword(encPassword);
 			user.setEmail(email);
 			user.setPhone(phone);
+			user.setProvider(AuthProvider.local);
+	        user.setRole(Role.valueOf("USER"));
 
 			if (userProfile.getSize() != 0) {
 				String UUIDFileName = UUID.randomUUID() + "_" + userProfile.getOriginalFilename();
@@ -90,15 +92,15 @@ public class UserController {
 	}
 
 	@GetMapping("/userProfile")
-	public String userProfile(@AuthenticationPrincipal MyUserDetails userDetail, Model model) {
-		Optional<User> oUser = uRepo.findById(userDetail.getUser().getId());
+	public String userProfile(@AuthenticationPrincipal UserPrincipal userPrincipal, Model model) {
+		Optional<User> oUser = uRepo.findById(userPrincipal.getUser().getId());
 		User user = oUser.get();
 		model.addAttribute("user", user);
 		return "/user/userProfile";
 	}
 
 	@PostMapping("/update")
-	public String update(@AuthenticationPrincipal MyUserDetails userDetail ,@RequestParam("id") int id, @RequestParam("password") String password, @RequestParam("email") String email, 
+	public String update(@AuthenticationPrincipal UserPrincipal userPrincipal ,@RequestParam("id") int id, @RequestParam("password") String password, @RequestParam("email") String email, 
 			@RequestParam("phone") String phone, @RequestParam("currentUserProfile") String currentUserProfile, @RequestParam("userProfile") MultipartFile userProfile) {
 		try {
 			String rawPassword = password;
@@ -119,7 +121,7 @@ public class UserController {
 			}
 			
 			uRepo.update(user.getPassword(),user.getEmail(),user.getPhone(), user.getUserProfile(), user.getId());
-			userDetail.getUser().setUserProfile(user.getUserProfile());
+			userPrincipal.getUser().setUserProfile(user.getUserProfile());
 			return "redirect:/";
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,6 +1,7 @@
 package com.bitc502.grapemarket.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -12,6 +13,10 @@ import com.bitc502.grapemarket.model.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 	User findByUsername(String username);
+
+	Optional<User> findByEmail(String email);
+
+	Boolean existsByEmail(String email);
 
 	@Modifying
 	@Transactional
