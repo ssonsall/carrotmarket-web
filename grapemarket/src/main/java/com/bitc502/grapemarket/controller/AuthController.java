@@ -68,9 +68,4 @@ public class AuthController {
                 .body(new ApiResponse(true, "User registered successfully@"));
     }
 
-    @GetMapping("/user")
-    public @ResponseBody User getCurrentUser(@AuthenticationPrincipal  UserPrincipal userPrincipal) {
-        return userRepository.findById(userPrincipal.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
-    }
 }

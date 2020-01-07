@@ -101,7 +101,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.successHandler(new AuthenticationSuccessHandler() {
 					@Override
 					public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-						response.sendRedirect("/auth/user");
+						response.sendRedirect("/");
 					}
 				}).failureHandler(new AuthenticationFailureHandler() {
 					@Override
