@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,20 +45,29 @@ public class UserController {
 
 	@GetMapping("/login")
 	public String loginForm(HttpServletRequest request) {
-		if(request.getHeader("DeviceType") != null && request.getHeader("DeviceType").equals("android")) {
+		if (request.getHeader("DeviceType") != null && request.getHeader("DeviceType").equals("android")) {
 			System.out.println("안드로이드 접속");
 			return "redirect:/android/loginFailure";
-		}else {
+		} else {
 			System.out.println("Web 접속");
 			return "/user/login";
 		}
-		
+
 	}
 
 	@GetMapping("/join")
 	public String joinForm() {
 
 		return "/user/join";
+	}
+
+	@PostMapping("/usernameCheck")
+	public @ResponseBody String usernameCheck(@RequestBody String username) {
+		if (uRepo.existsByUsername(username)) {
+			return "no";
+		}else {
+			return "ok";
+		}
 	}
 
 	@PostMapping("/joinProc")
@@ -75,7 +85,7 @@ public class UserController {
 			user.setEmail(email);
 			user.setPhone(phone);
 			user.setProvider(AuthProvider.local);
-	        user.setRole(Role.valueOf("USER"));
+			user.setRole(Role.valueOf("USER"));
 
 			if (userProfile.getSize() != 0) {
 				String UUIDFileName = UUID.randomUUID() + "_" + userProfile.getOriginalFilename();
@@ -100,8 +110,10 @@ public class UserController {
 	}
 
 	@PostMapping("/update")
-	public String update(@AuthenticationPrincipal UserPrincipal userPrincipal ,@RequestParam("id") int id, @RequestParam("password") String password, @RequestParam("email") String email, 
-			@RequestParam("phone") String phone, @RequestParam("currentUserProfile") String currentUserProfile, @RequestParam("userProfile") MultipartFile userProfile) {
+	public String update(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("id") int id,
+			@RequestParam("password") String password, @RequestParam("email") String email,
+			@RequestParam("phone") String phone, @RequestParam("currentUserProfile") String currentUserProfile,
+			@RequestParam("userProfile") MultipartFile userProfile) {
 		try {
 			String rawPassword = password;
 			String encPassword = passwordEncoder.encode(rawPassword);
@@ -116,11 +128,11 @@ public class UserController {
 				user.setUserProfile(UUIDFileName);
 				Path filePath = Paths.get(fileRealPath + UUIDFileName);
 				Files.write(filePath, userProfile.getBytes());
-			}else {
+			} else {
 				user.setUserProfile(currentUserProfile);
 			}
-			
-			uRepo.update(user.getPassword(),user.getEmail(),user.getPhone(), user.getUserProfile(), user.getId());
+
+			uRepo.update(user.getPassword(), user.getEmail(), user.getPhone(), user.getUserProfile(), user.getId());
 			userPrincipal.getUser().setUserProfile(user.getUserProfile());
 			return "redirect:/";
 		} catch (Exception e) {
