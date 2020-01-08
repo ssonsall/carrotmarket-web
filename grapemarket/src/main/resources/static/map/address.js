@@ -67,10 +67,10 @@ function showPosition(position) {
 	}
 
 	if (0.0004 >= (calX * calX + calY * calY)) {
-		y.innerHTML = "인증이 성공하였습니다.";
+		alert('인증에 성공하였습니다.');
 		document.getElementById('townAuthForm').submit();
 	} else {
-		y.innerHTML = "인증에 실패하였습니다.";
+		alert('인증에 실패하였습니다.');
 	}
 	console.log(".X계산값" + calX);
 	console.log(".Y계산값" + calY);

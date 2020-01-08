@@ -122,12 +122,12 @@
 														<p class="help-block text-danger"></p>
 													</div>
 													<div class="form-group">
-														<label class="sr-only" for="name">Y좌표</label> <input class="form-control" type="text" id="entX" name="addressX" value="${user.addressX}"
+														<label class="sr-only" for="name">Y좌표</label> <input class="form-control" type="hidden" id="entX" name="addressX" value="${user.addressX}"
 															required="required" data-validation-required-message="Please enter your name." readonly="readonly" />
 														<p class="help-block text-danger"></p>
 													</div>
 													<div class="form-group">
-														<label class="sr-only" for="name">X좌표</label> <input class="form-control" type="text" id="entY" name="addressY" value="${user.addressY}"
+														<label class="sr-only" for="name">X좌표</label> <input class="form-control" type="hidden" id="entY" name="addressY" value="${user.addressY}"
 															required="required" data-validation-required-message="Please enter your name." readonly="readonly" />
 														<p class="help-block text-danger"></p>
 													</div>
@@ -151,10 +151,9 @@
 												<input type="hidden" id="addressY" name="addressY" value="${user.addressY}">
 												<div class="form-group">
 													<label class="sr-only" for="name">address Auth</label>
-
+													<div style="display: none;">
 													<p id="demo"></p>
-													<p id="check"></p>
-
+													<p id="check"></p></div>
 													<c:choose>
 														<c:when test="${user.addressAuth==1}">
 															<input class="form-control" type="text" id="username" name="username" placeholder="주소인증이 완료되었습니다."

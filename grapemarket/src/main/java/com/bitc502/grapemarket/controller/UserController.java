@@ -65,7 +65,7 @@ public class UserController {
 	public @ResponseBody String usernameCheck(@RequestBody String username) {
 		if (uRepo.existsByUsername(username)) {
 			return "no";
-		}else {
+		} else {
 			return "ok";
 		}
 	}
@@ -134,10 +134,10 @@ public class UserController {
 
 			uRepo.update(user.getPassword(), user.getEmail(), user.getPhone(), user.getUserProfile(), user.getId());
 			userPrincipal.getUser().setUserProfile(user.getUserProfile());
-			return "redirect:/";
+			return "redirect:/user/userProfile";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "/user/userProfile";
+			return "redirect:/user/userProfile";
 		}
 	}
 
@@ -145,20 +145,21 @@ public class UserController {
 	public String addUpdate(User user) {
 		try {
 			uRepo.addUpdate(user.getAddress(), user.getAddressX(), user.getAddressY(), user.getId());
-			return "redirect:/";
+			return "redirect:/user/userProfile";
 		} catch (Exception e) {
 		}
-		return "/user/userProfile";
+		return "redirect:/user/userProfile";
 	}
 
 	@PostMapping("/authupdate")
 	public String authUpdate(User user) {
 		try {
 			uRepo.authUpdate(user.getId());
-			return "redirect:/";
+			return "redirect:/user/userProfile";
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return "/user/userProfile";
+		return "redirect:/user/userProfile";
 	}
 
 	@GetMapping("/delete/{id}")
