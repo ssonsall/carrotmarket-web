@@ -5,13 +5,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.client.HttpServerErrorException;
 
+import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Search;
+import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.SearchRepository;
 
 @Controller
@@ -19,7 +19,9 @@ public class HomeController {
 
 	@Autowired
 	private SearchRepository sRepo;
-	
+
+	@Autowired
+	private BoardRepository bRepo;
 	
 	//메인 페이지
 	@GetMapping("/")
@@ -30,7 +32,9 @@ public class HomeController {
 		}else {
 			System.out.println("Web 접속");
 			List <Search> searchs = sRepo.popularKeyword();
+			List <Board> boards = bRepo.popularBoard();
 			model.addAttribute("searchs",searchs);
+			model.addAttribute("boards",boards);
 			return "index";
 		}
 		

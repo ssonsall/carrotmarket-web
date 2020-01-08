@@ -35,5 +35,9 @@ public interface BoardRepository extends JpaRepository<Board, Integer>, JpaSpeci
 
 	Page<Board> findByStateAndCategory(String state, String category, Pageable pageable);
 	
+	@Query
+	(value = " SELECT * , (SELECT count(boardId) FROM comment WHERE createDate > (now()- INTERVAL 24 hour) AND boardId = b.id) AS commentCount, (SELECT count(boardId) FROM likes WHERE createDate > (now()- INTERVAL 24 hour) AND boardId = b.id) AS likesCount, (SELECT count(boardId) FROM chat WHERE createDate > (now()- INTERVAL 24 hour) AND boardId = b.id) AS chatCount FROM board AS b ORDER BY (likesCount * 0.2) +(commentCount * 0.5) +(chatCount*0.3) DESC LIMIT 10", nativeQuery = true)
+	List<Board> popularBoard();
+	
 	
 }
