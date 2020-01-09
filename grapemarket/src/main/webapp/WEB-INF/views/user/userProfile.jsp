@@ -30,6 +30,14 @@
 
 
 						<!-- 프로필 시작 -->
+						
+						<c:if test="${authNeeded eq 1}">
+						<script>
+						alert("주소인증필요");
+						</script>
+						</c:if>
+						
+						
 						<!-- null 처리 -->
 						<div class="col-sm-4 col-md-3 sidebar">
 							<div class="widget">

@@ -63,7 +63,9 @@ public class BoardController {
 	@GetMapping("/page")
 	public String getList(Model model,
 			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable,
-			@RequestParam String category, @RequestParam String userInput) {
+			@RequestParam String category, @RequestParam String userInput,
+			@AuthenticationPrincipal UserPrincipal userPrincipal) {
+
 		String currentCategory = category;
 		List<User> users = uRepo.findByAddressContaining(userInput);
 		List<Integer> userIds = new ArrayList<>();
@@ -132,12 +134,21 @@ public class BoardController {
 	}
 
 	// 글쓰기 페이지
-	@GetMapping("/writeForm") 
+	@GetMapping("/writeForm")
 	public String writeForm(@AuthenticationPrincipal UserPrincipal userPrincipal, Model model) {
 		Optional<User> oUser = uRepo.findById(userPrincipal.getUser().getId());
 		User user = oUser.get();
 		model.addAttribute("user", user);
+
+		if (userPrincipal.getUser().getAddressAuth() == 0) {
+			int authNeeded = 1;
+			model.addAttribute("authNeeded", authNeeded);
+			
+			return "/user/userProfile";
+		}
+		
 		return "/board/write";
+
 	}
 
 	@PostMapping("/writeProc")
@@ -213,7 +224,9 @@ public class BoardController {
 
 		model.addAttribute("comments", comments);
 		model.addAttribute("board", board);
+
 		return "/board/detail";
+
 	}
 
 	@PostMapping("/delete/{id}")
@@ -259,12 +272,9 @@ public class BoardController {
 			@RequestParam("productImage3") MultipartFile productImage3,
 			@RequestParam("productImage4") MultipartFile productImage4,
 			@RequestParam("productImage5") MultipartFile productImage5,
-			@RequestParam("currentImage1") String currentImage1,
-			@RequestParam("currentImage2") String currentImage2,
-			@RequestParam("currentImage3") String currentImage3,
-			@RequestParam("currentImage4") String currentImage4,
-			@RequestParam("currentImage5") String currentImage5,
-			@RequestParam("id") int id) {
+			@RequestParam("currentImage1") String currentImage1, @RequestParam("currentImage2") String currentImage2,
+			@RequestParam("currentImage3") String currentImage3, @RequestParam("currentImage4") String currentImage4,
+			@RequestParam("currentImage5") String currentImage5, @RequestParam("id") int id) {
 		try {
 			Board board = new Board();
 			// 파일 이름 세팅 및 쓰기
@@ -279,7 +289,7 @@ public class BoardController {
 				Path filePath = Paths.get(fileRealPath + imageFileName1);
 				Files.write(filePath, productImage1.getBytes());
 				board.setImage1(imageFileName1);
-			}else{
+			} else {
 				board.setImage1(currentImage1);
 			}
 
@@ -287,7 +297,7 @@ public class BoardController {
 				Path filePath = Paths.get(fileRealPath + imageFileName2);
 				Files.write(filePath, productImage2.getBytes());
 				board.setImage2(imageFileName2);
-			}else{
+			} else {
 				board.setImage2(currentImage2);
 			}
 
@@ -295,7 +305,7 @@ public class BoardController {
 				Path filePath = Paths.get(fileRealPath + imageFileName3);
 				Files.write(filePath, productImage3.getBytes());
 				board.setImage3(imageFileName3);
-			}else{
+			} else {
 				board.setImage3(currentImage3);
 			}
 
@@ -303,8 +313,7 @@ public class BoardController {
 				Path filePath = Paths.get(fileRealPath + imageFileName4);
 				Files.write(filePath, productImage4.getBytes());
 				board.setImage4(imageFileName4);
-			}
-			else{
+			} else {
 				board.setImage4(currentImage4);
 			}
 
@@ -312,7 +321,7 @@ public class BoardController {
 				Path filePath = Paths.get(fileRealPath + imageFileName5);
 				Files.write(filePath, productImage5.getBytes());
 				board.setImage5(imageFileName5);
-			}else{
+			} else {
 				board.setImage5(currentImage5);
 			}
 
@@ -324,7 +333,9 @@ public class BoardController {
 			board.setPrice(price);
 			board.setContent(content);
 
-			bRepo.update(board.getState(), board.getCategory(), board.getTitle(), board.getPrice(), board.getContent(), board.getImage1(), board.getImage2(), board.getImage3(), board.getImage4(), board.getImage5(), board.getId());
+			bRepo.update(board.getState(), board.getCategory(), board.getTitle(), board.getPrice(), board.getContent(),
+					board.getImage1(), board.getImage2(), board.getImage3(), board.getImage4(), board.getImage5(),
+					board.getId());
 
 			// 리스트 완성되면 바꿔야함
 			return "redirect:/board/page?page=0&category=1&userInput=";
