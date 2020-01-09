@@ -152,9 +152,10 @@ public class UserController {
 	}
 
 	@PostMapping("/authupdate")
-	public String authUpdate(User user) {
+	public String authUpdate(User user, @AuthenticationPrincipal UserPrincipal userPrincipal) {
 		try {
 			uRepo.authUpdate(user.getId());
+			userPrincipal.getUser().setAddressAuth(1);
 			return "redirect:/user/userProfile";
 		} catch (Exception e) {
 			e.printStackTrace();
