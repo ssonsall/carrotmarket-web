@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 
 @Data
@@ -25,11 +27,13 @@ public class Likes {
 	//private User user; //id, username
 	@ManyToOne
 	@JoinColumn(name = "userId")
+	@JsonIgnoreProperties({ "comment","board","like" })
 	private User user;
 
 	// id, title
 	@ManyToOne
 	@JoinColumn(name = "boardId")
+	@JsonIgnoreProperties({ "user","comment","like" })
 	private Board board;
 
 	@CreationTimestamp

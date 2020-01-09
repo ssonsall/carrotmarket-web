@@ -26,3 +26,4 @@
 	<script src="/assets/js/chat.js"></script>
 	<script src="/assets/js/chatform.js"></script>
 	<script src="/assets/js/comment.js"></script>
+	<script src="/assets/js/like.js"></script>

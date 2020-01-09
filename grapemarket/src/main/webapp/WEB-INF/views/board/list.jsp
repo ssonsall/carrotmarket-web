@@ -210,11 +210,11 @@
 											<a href="/board/detail/${board.id}" class="btn btn-round btn-b"><span class="icon-basket">See Detail</span></a>
 										</div>
 									</div>
-									<h4 class="shop-item-title font-alt">
+									<h2 class="shop-item-title font-alt">
 										<a href="#">${board.title}</a>
-									</h4>
-									${board.user.address} · ${board.user.name}<br/>
-									${board.price}원
+									</h2>
+									<h5>${board.user.address} / ${board.user.name}</h5>
+									<h5>${board.price}원</h5>
 								</div>
 							</div>
 							<%-- </c:if> --%>

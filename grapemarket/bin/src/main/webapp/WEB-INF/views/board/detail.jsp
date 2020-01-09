@@ -77,6 +77,28 @@
 							<div class="row">
 								<div class="col-sm-12">
 									<h1 style="font-size: 40px;" class="product-title font-alt">${board.title}</h1>
+									<form id="likeForm">
+									<input type = "hidden" name = "boardId" value="${board.id}">
+									<span onclick="like()">❤</span>
+									</form>
+									
+									<script>
+									function like() {
+									    var form = new FormData(document.getElementById('likeForm'));
+									    let url = "/like/like";
+
+									    fetch(url, {
+									        method: "POST",
+									        body: form
+									    }).then(function (res) {
+									        return res.text();
+									    }).then(function (res) {
+									        if (res === "ok") {
+									            //화면에 적용
+									        }
+									    });
+									}
+									</script>ㅈ
 									<div class="row mb-20">
 										<div class="col-sm-12">
 											<div class="product_meta">

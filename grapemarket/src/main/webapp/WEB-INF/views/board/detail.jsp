@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 
 
 <!DOCTYPE html>
@@ -34,30 +35,35 @@
 					<div class="row">
 						<!-- ìí í° ì¬ì§ -->
 						<div class="col-sm-6 mb-sm-40">
-							<img style="width: 555px; height: 625.94px;" id="mainImage" src="/upload/${board.image1}"
-								alt="Single Product Image" />
+							<img style="width: 555px; height: 625.94px;" id="mainImage"
+								src="/upload/${board.image1}" alt="Single Product Image" />
 							<!-- ìí ìì ì¬ì§ ìì-->
 							<ul class="product-gallery">
-								<li><img style="width: 83.25px; height: 93.89px;" id="img1" onClick="changeImg(1)"
-									src="/upload/${board.image1}" alt=" No Image" /></li>
-										<c:if test="${!empty board.image2}">
-											<li><img style="width: 83.25px; height: 93.89px;" id="img2" onClick="changeImg(2)"
-											src="/upload/${board.image2}" alt=" No Image" /></li>
-										</c:if>
-										<c:if test="${!empty board.image3}">
-											<li><img style="width: 83.25px; height: 93.89px;" id="img2" onClick="changeImg(3)"
-											src="/upload/${board.image3}" alt=" No Image" /></li>
-										</c:if>
-										<c:if test="${!empty board.image4}">
-											<li><img style="width: 83.25px; height: 93.89px;" id="img2" onClick="changeImg(4)"
-											src="/upload/${board.image4}" alt=" No Image" /></li>
-										</c:if>
-										<c:if test="${!empty board.image5}">
-											<li><img style="width: 83.25px; height: 93.89px;" id="img2" onClick="changeImg(5)"
-											src="/upload/${board.image5}" alt=" No Image" /></li>
-										</c:if>
+								<li><img style="width: 83.25px; height: 93.89px;" id="img1"
+									onClick="changeImg(1)" src="/upload/${board.image1}"
+									alt=" No Image" /></li>
+								<c:if test="${!empty board.image2}">
+									<li><img style="width: 83.25px; height: 93.89px;"
+										id="img2" onClick="changeImg(2)" src="/upload/${board.image2}"
+										alt=" No Image" /></li>
+								</c:if>
+								<c:if test="${!empty board.image3}">
+									<li><img style="width: 83.25px; height: 93.89px;"
+										id="img2" onClick="changeImg(3)" src="/upload/${board.image3}"
+										alt=" No Image" /></li>
+								</c:if>
+								<c:if test="${!empty board.image4}">
+									<li><img style="width: 83.25px; height: 93.89px;"
+										id="img2" onClick="changeImg(4)" src="/upload/${board.image4}"
+										alt=" No Image" /></li>
+								</c:if>
+								<c:if test="${!empty board.image5}">
+									<li><img style="width: 83.25px; height: 93.89px;"
+										id="img2" onClick="changeImg(5)" src="/upload/${board.image5}"
+										alt=" No Image" /></li>
+								</c:if>
 
-<!-- 								<li><img style="width: 83.25px; height: 93.89px;" id="img3" onClick="changeImg(3)"
+								<!-- 								<li><img style="width: 83.25px; height: 93.89px;" id="img3" onClick="changeImg(3)"
 									src="/upload/${board.image3}" alt=" No Image" /></li>
 								<li><img style="width: 83.25px; height: 93.89px;" id="img4" onClick="changeImg(4)"
 									src="/upload/${board.image4}" alt=" No Image" /></li>
@@ -91,6 +97,38 @@
 							<div class="row">
 								<div class="col-sm-12">
 									<h1 style="font-size: 40px;" class="product-title font-alt">${board.title}</h1>
+
+
+									<form id="likeForm">
+										<input type="hidden" name="board" value="${board.id}">
+
+										<div id="liked">
+											<c:choose>
+												<c:when test="${!empty liked}">
+													<span onclick="like()" style="font-size: 30px;">🧡</span>
+												</c:when>
+												<c:otherwise>
+													<span onclick="like()" style="font-size: 30px;">🤍<span>
+												</c:otherwise>
+											</c:choose>
+										</div>
+										<div id="likeCount">
+											<p>${likeCount}명의회원이 이 상품을 좋아합니다.</p>
+										</div>
+									</form>
+									<%-- <c:choose>
+										<c:when test="${likeCount ne 0}">
+										</c:when>
+										<c:otherwise>
+											<div id="likeCount">
+												<p></p>
+											</div>
+										</c:otherwise>
+									</c:choose> --%>
+
+
+
+
 									<div class="row mb-20">
 										<div class="col-sm-12">
 											<div class="product_meta">
@@ -136,13 +174,14 @@
 													</c:when>
 													<c:when test="${board.category eq 16}">
 														삽니다 · ${board.createDate}
-													</c:when>	
+													</c:when>
 												</c:choose>
-												<!-- <a href="#"> enum 생성후 카테고리 입력 </a> -->												
+												<!-- <a href="#"> enum 생성후 카테고리 입력 </a> -->
 											</div>
 										</div>
 									</div>
-									<h4 style="color: gray;">${board.user.address} · ${board.user.name}</h4>
+									<h4 style="color: gray;">${board.user.address}·
+										${board.user.name}</h4>
 									<%-- <h4 style="color: gray;">${board.user.address}</h4> --%>
 								</div>
 							</div>
@@ -182,32 +221,39 @@
 										value="1" max="40" min="1" required="required" />
 								</div> -->
 								<c:choose>
-								<c:when test="${principal.user.id ne board.user.id}">
-								<div class="col-sm-8">
-									<!-- 채팅생성 -->
-									<form id="createChat">
-										<input type="hidden" name="board" value="${board.id}" /> <input
-											type="hidden" name="buyerId" value="${principal.user.id}">
-										<input type="hidden" name="sellerId" value="${board.user.id}">
-									</form>
-									<button onclick="createChat()" class="btn btn-round btn-d"
-										type="button">채팅으로 거래하기</button>
-								</div>
-								</c:when>
-								<c:otherwise>
-								<div class="col-sm-8">
-									<form id="boardUpdate" style="display: inline;" action="/board/updateForm/${board.id}" method="post">
-										<%-- DB Select 안할거면 여기서 다 날려야 하지만 그렇게 안할거임 귀찮 --%>
-										<button class="btn btn-round btn-d" type="submit">글 수정</button>
-									</form>
-									<form id="boardDelete" style="display: inline;" action="/board/delete/${board.id}" method="post">
-										<button class="btn btn-round btn-d"	type="submit">글 삭제</button>
-									</form>
-									<form id="boardDelete" style="position: relative; top:5px;"action="/board/complete/${board.id}" method="post">
-										<button class="btn btn-round btn-d"	type="submit">거래 완료</button>
-									</form>
-								</div>
-								</c:otherwise>
+									<c:when test="${principal.user.id ne board.user.id}">
+										<div class="col-sm-8">
+											<!-- 채팅생성 -->
+											<form id="createChat">
+												<input type="hidden" name="board" value="${board.id}" /> <input
+													type="hidden" name="buyerId" value="${principal.user.id}">
+												<input type="hidden" name="sellerId"
+													value="${board.user.id}">
+											</form>
+											<button onclick="createChat()" class="btn btn-round btn-d"
+												type="button">채팅으로 거래하기</button>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<div class="col-sm-8">
+											<form id="boardUpdate" style="display: inline;"
+												action="/board/updateForm/${board.id}" method="post">
+												<%-- DB Select 안할거면 여기서 다 날려야 하지만 그렇게 안할거임 귀찮 --%>
+												<button class="btn btn-round btn-d" type="submit">글
+													수정</button>
+											</form>
+											<form id="boardDelete" style="display: inline;"
+												action="/board/delete/${board.id}" method="post">
+												<button class="btn btn-round btn-d" type="submit">글
+													삭제</button>
+											</form>
+											<form id="boardDelete" style="position: relative; top: 5px;"
+												action="/board/complete/${board.id}" method="post">
+												<button class="btn btn-round btn-d" type="submit">거래
+													완료</button>
+											</form>
+										</div>
+									</c:otherwise>
 								</c:choose>
 							</div>
 
@@ -228,17 +274,19 @@
 
 								<c:forEach var="comment" items="${comments}">
 
-									<div id="comment_id_${comment.id}"class="comment clearfix">
+									<div id="comment_id_${comment.id}" class="comment clearfix">
 										<div class="comment-avatar">
 											<img src="" alt="avatar" />
 										</div>
 										<div class="comment-content clearfix">
 											<div class="comment-author font-alt">
 												${comment.user.username}
-												<c:if test="${principal.user.username eq comment.user.username}">
-												<span style="font-size: 20px" onclick="commentDelete(${comment.id})">🗑</span>
+												<c:if
+													test="${principal.user.username eq comment.user.username}">
+													<span style="font-size: 20px"
+														onclick="commentDelete(${comment.id})">🗑</span>
 												</c:if>
-												
+
 											</div>
 											<div class="comment-body">
 												<p>${comment.content}</p>
