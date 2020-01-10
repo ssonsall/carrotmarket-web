@@ -17,4 +17,13 @@ public class Script {
 		sb.append("</script>");
 		return sb.toString();
 	}
+	
+	public static String hrefAndAlert(String location, String msg) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<script>");
+		sb.append("location.href='"+location+"';");
+		sb.append("alert('" + msg + "');");
+		sb.append("</script>");
+		return sb.toString();
+	}
 }
