@@ -19,4 +19,14 @@ public class MapController {
 		return "map/jusoPopup";
 	}
 	
+	@GetMapping("/android/popup")
+	public String popup1android() {
+		return "map/jusoPopupAndroid";
+	}
+	
+	@PostMapping("/android/popup")
+	public String popup2android() {
+		return "map/jusoPopupAndroid";
+	}
+	
 }
