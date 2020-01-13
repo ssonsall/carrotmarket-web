@@ -26,17 +26,12 @@ public class HomeController {
 	//메인 페이지
 	@GetMapping("/")
 	public String Home(Model model, HttpServletRequest request) {
-		if(request.getHeader("DeviceType") != null && request.getHeader("DeviceType").equals("android")) {
-			System.out.println("안드로이드 접속");
-			return "redirect:/android/loginSuccess";
-		}else {
-			System.out.println("Web 접속");
 			List <Search> searchs = sRepo.popularKeyword();
 			List <Board> boards = bRepo.popularBoard();
 			model.addAttribute("searchs",searchs);
 			model.addAttribute("boards",boards);
 			return "index";
-		}
+		
 		
 	}
 	

@@ -88,8 +88,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.loginPage("/user/login")
 				// 이 주소를 타고 로그인이 된다 (로그인폼에서 아래의 주소로 액션을 타게 해야한다.)
 				.loginProcessingUrl("/user/loginProc")
-				// 로그인이 성공 할 때 이동
-				.defaultSuccessUrl("/").failureUrl("/user/login")
+				// 로그인이 성공 할 때 핸들러 탐. 성공시 안드("/android/loginSuccess"),웹("/") 구분해서 리다이렉트
+				.successHandler(successHandler())				
+				.failureUrl("/user/login")
 				.and()
 				.logout()
 				.logoutUrl("/user/logout")
@@ -117,6 +118,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				});
 
 	}
+
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+      return new MyLoginSuccessHandler();
+    }
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(encodePWD());

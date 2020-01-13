@@ -7,8 +7,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,9 +28,11 @@ import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Comment;
 import com.bitc502.grapemarket.model.Role;
 import com.bitc502.grapemarket.model.User;
+import com.bitc502.grapemarket.payload.UserLocationSetting;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.CommentRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
+import com.bitc502.grapemarket.security.UserPrincipal;
 
 @RequestMapping("/android")
 @RestController
@@ -91,8 +98,10 @@ public class AndroidController {
 		return oBoard.get();
 	}
 
-	@GetMapping("/loginSuccess")
-	public String loginSuccess() {		
+	@PostMapping("/loginSuccess")
+	public String loginSuccess(HttpServletRequest request, HttpServletResponse response) {
+		String test = (String)request.getAttribute("testSession");
+		System.out.println(">> test >> " + test);
 		return "ok";
 	}
 	
@@ -108,7 +117,7 @@ public class AndroidController {
 	}
 	
 	@PostMapping("/write")
-	public String write(@RequestParam("state") String state,@RequestParam("currentUser") String currentUserId,
+	public String write(@RequestParam("state") String state,@AuthenticationPrincipal UserPrincipal userPrincipal,
 			@RequestParam("category") int category, @RequestParam("title") String title,
 			@RequestParam("price") String price, @RequestParam("content") String content,
 			@RequestParam("productImage1") MultipartFile productImage1,
@@ -155,7 +164,7 @@ public class AndroidController {
 			
 			
 			board.setUser(new User());
-			board.getUser().setId(Integer.parseInt(currentUserId));
+			board.getUser().setId(userPrincipal.getUser().getId());
 			board.setCategory(category);
 			board.setState(state);
 			board.setTitle(title);
@@ -173,10 +182,10 @@ public class AndroidController {
 	
 	//@RequestParam("content") String content, @RequestParam("user") String userId, @RequestParam("board") String boardId
 	@PostMapping("/commentWrite")
-	public String commentWrite(Comment comment, @RequestParam("user") String user, @RequestParam("board") String board) {
+	public String commentWrite(Comment comment, @AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("board") String board) {
 		try {	
 		comment.setUser(new User());
-		comment.getUser().setId(Integer.parseInt(user));
+		comment.getUser().setId(userPrincipal.getUser().getId());
 		comment.setBoard(new Board());
 		comment.getBoard().setId(Integer.parseInt(board));
 		cRepo.save(comment);
@@ -187,8 +196,26 @@ public class AndroidController {
 		}
 	}
 	
-	@GetMapping("/addresstest")
-	public void addressTest() {
+	@GetMapping("/juso")
+	public UserLocationSetting addressSetting(@RequestParam("address") String address, 
+			@RequestParam("addressX") String addressX, 
+			@RequestParam("addressY") String addressY) {
+		return new UserLocationSetting(address, addressX, addressY);
+	}
+	
+	@PostMapping("/saveUserAddress")
+	public String saveUserAddress(@RequestParam("address") String address,
+			@RequestParam("addressX") String addressX,
+			@RequestParam("addressY") String addressY,
+			@AuthenticationPrincipal UserPrincipal userPrincipal) {
+		//uRepo.addUpdate(user.getAddress(), user.getAddressX(), user.getAddressY(), user.getId());
+		try {
+			uRepo.addUpdate(address, Double.parseDouble(addressX), Double.parseDouble(addressY), userPrincipal.getUser().getId());
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "fail";
+		}
 		
 	}
 }
