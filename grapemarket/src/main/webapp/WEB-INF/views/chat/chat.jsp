@@ -7,10 +7,6 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--  
-    Document Title
-    =============================================
-    -->
 <title>Titan | Multipurpose HTML5 Template</title>
 <%@include file="../include/favicons.jsp"%>
 <%@include file="../include/stylesheets.jsp"%>
@@ -27,16 +23,6 @@
 			<sec:authentication property="principal" var="principal" />
 		</sec:authorize>
 		<div class="main">
-			<!-- <section class="module bg-dark-60 blog-page-header" data-background="assets/images/blog_bg.jpg">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-6 col-sm-offset-3">
-                <h2 class="module-title font-alt">Blog Standard</h2>
-                <div class="module-subtitle font-serif">A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.</div>
-              </div>
-            </div>
-          </div>
-        </section> -->
 			<section class="module" style="padding: 70px 0 !important;">
 				<div class="container">
 					<div class="row">
@@ -66,7 +52,7 @@
 							<c:forEach var="chat" items="${chatForBuy}">
 								<c:if test="${chat.buyerState eq 1}">
 									<div class="alert alert-success" role="alert"
-										onclick="enterRoom(${chat.id})">
+										onclick="enterRoom(${chat.id},${principal.user.id})">
 										<button class="close" type="button" data-dismiss="alert"
 											aria-hidden="true" onclick="outChat(${chat.id},'buyer')">&times;</button>
 										<i class="fa fa-comment"></i><strong>Alert!</strong>
@@ -78,7 +64,7 @@
 							<c:forEach var="chat" items="${chatForSell}">
 								<c:if test="${chat.sellerState eq 1}">
 									<div class="alert alert-success" role="alert"
-										onclick="enterRoom(${chat.id})">
+										onclick="enterRoom(${chat.id},${principal.user.id})">
 										<button class="close" type="button" data-dismiss="alert"
 											aria-hidden="true" onclick="outChat(${chat.id},'seller')">&times;</button>
 										<i class="fa fa-comment"></i><strong>Alert!</strong>
@@ -88,45 +74,26 @@
 							</c:forEach>
 						</div>
 
-						
+
 						<!-- 채팅방 목록 끝 -->
 						<!-- 채팅방 시작 -->
 						<div class="col-sm-4 col-md-3 col-md-offset-1 sidebar">
-							<div id=buyingBtn><!-- <button>구매 완료</button> --></div>
+							<!-- div 생성 - 버튼 입력될 공간/ 구매상태 / 판매상태 결정 -->
+							<div id="tradeState"></div>
+							<!-- div 생성 - 버튼 입력될 공간/ 구매상태 / 판매상태 결정 -->
 							<hr class="divider-w mt-10 mb-20">
 							<div id="chat-page">
 								<c:forEach var="chat" items="${chatForBuy}" begin="0" end="">
 									<iframe id="chatframe" style="width: 400px; height: 500px"
 										src=""></iframe>
 								</c:forEach>
-
+								<c:forEach var="chat" items="${chatForSell}" begin="0" end="">
+									<iframe id="chatframe" style="width: 400px; height: 500px"
+										src=""></iframe>
+								</c:forEach>
 
 							</div>
 						</div>
-						<!-- 						<div class="col-sm-4 col-md-3 col-md-offset-1 sidebar">
-							<h4 class="font-alt mb-0">누구누구와의 채팅방</h4>
-							<hr class="divider-w mt-10 mb-20">
-							<form id="contactForm" role="form" method="post"
-								action="php/contact.php">
-								<div class="form-group">
-									<textarea class="form-control" rows="20" id="content"
-										name="content" readonly
-										data-validation-required-message="Please enter your message."></textarea>
-									<p class="help-block text-danger"></p>
-								</div>
-								<div class="form-group">
-									<label class="sr-only" for="message">메세지</label> <input
-										class="form-control" type="text" id="message" name="message"
-										placeholder="메세지*"
-										data-validation-required-message="Please enter your name." />
-									<p class="help-block text-danger"></p>
-								</div>
-								<div class="text-center">
-									<button class="btn btn-block btn-round btn-d" id="cfsubmit"
-										type="submit">Submit</button>
-								</div>
-							</form>
-						</div> -->
 						<!-- 채팅방 끝 -->
 					</div>
 				</div>
@@ -137,10 +104,6 @@
 			<a href="#totop"><i class="fa fa-angle-double-up"></i></a>
 		</div>
 	</main>
-	<!--  
-    JavaScripts
-    =============================================
-    -->
 	<%@include file="../include/script.jsp"%>
 </body>
 </html>

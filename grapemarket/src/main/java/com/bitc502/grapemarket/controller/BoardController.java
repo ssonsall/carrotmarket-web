@@ -29,13 +29,16 @@ import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Comment;
 import com.bitc502.grapemarket.model.Likes;
 import com.bitc502.grapemarket.model.Search;
+import com.bitc502.grapemarket.model.TradeState;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.CommentRepository;
 import com.bitc502.grapemarket.repository.LikeRepository;
 import com.bitc502.grapemarket.repository.SearchRepository;
+import com.bitc502.grapemarket.repository.TradeStateRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
+import com.bitc502.grapemarket.service.TradeStateService;
 
 @Controller
 @RequestMapping("/board")
@@ -54,10 +57,13 @@ public class BoardController {
 	private CommentRepository commentRepo;
 	
 	@Autowired
-	private LikeRepository likeRepository;
+	private LikeRepository likeRepo;
 
 	@Autowired
 	private SearchRepository sRepo;
+	
+	@Autowired
+	private TradeStateService tradeStateServ;
 
 	// 전체 페이지
 	@GetMapping({ "/", "" })
@@ -209,11 +215,16 @@ public class BoardController {
 			board.setContent(content);
 
 			bRepo.save(board);
-
+			
+			//거래 상태 추가
+			tradeStateServ.insertSellState(userPrincipal.getUser(),board);
+			
 			// 리스트 완성되면 바꿔야함
 			return "redirect:/board/page?page=0&category=1&userInput=";
+			
+			
+			
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return "redirect:/board/writeForm";
@@ -227,12 +238,12 @@ public class BoardController {
 
 		List<Comment> comments = commentRepo.findByBoardId(board.getId());
 		
-		Likes check = likeRepository.findByUserIdAndBoardId(userPrincipal.getUser().getId(), board.getId());
+		Likes check = likeRepo.findByUserIdAndBoardId(userPrincipal.getUser().getId(), board.getId());
 		if(check != null) {
 			model.addAttribute("liked","liked");
 		}
 		
-		int likeCount = likeRepository.countByBoardId(board.getId());
+		int likeCount = likeRepo.countByBoardId(board.getId());
 		
 		model.addAttribute("likeCount",likeCount);
 		model.addAttribute("comments", comments);

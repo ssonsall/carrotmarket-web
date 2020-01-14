@@ -34,6 +34,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 
+import com.bitc502.grapemarket.handler.MyLoginSuccessHandler;
 import com.bitc502.grapemarket.security.oauth2.CustomOAuth2UserService;
 
 @Configuration

@@ -10,13 +10,11 @@ function createChat() {
     }).then(function (res) {
         if (res === "ok") {
             //화면에 적용
-            location.href = "http://localhost:8080/chat/";
+            location.href = "/chat/";
         }
     });
 
-
 }
-
 
 function sendMessage2() {
     var form = new FormData(document.getElementById('messagebox'));
@@ -36,29 +34,33 @@ function sendMessage2() {
 
 
 function outChat(id, info) {
-    var url = 'http://localhost:8080/chat/outChat/' + id + '/' + info;
+    var url = '/chat/outChat/' + id + '/' + info;
     fetch(url)
         .then(function (response) {
             return response.json();
         })
         .then(function (myJson) {
-        });
+
+         });
 }
 
 
-function enterRoom(roomId) {
+function enterRoom(roomId, userId) {
     localStorage.setItem('wschat.roomId', roomId);
 
-    var ifrm = document.getElementById("chatframe");
-    ifrm.src = "http://localhost:8080/chat/room/enter/" + roomId;
 
-    var url = 'http://localhost:8080/chat/product/' + roomId;
+    var ifrm = document.getElementById("chatframe");
+    console.log('ifrm ' + ifrm);
+    ifrm.src = "/chat/room/enter/" + roomId;
+    console.log('ifrm.src ' + ifrm.src);
+    var url = '/chat/product/' + roomId;
     fetch(url)
         .then(function (response) {
             return response.json();
         })
         .then(function (myJson) {
             var username = myJson.sellerId.username;
+            var sellerId = myJson.sellerId.id;
             var title = myJson.board.title;
             var price = myJson.board.price;
             var boardId = myJson.board.id;
@@ -67,6 +69,21 @@ function enterRoom(roomId) {
 
             $("#product_info").empty();
             $("#product_info").append(info);
+
+            var tradeState;
+
+            if (sellerId === userId) {
+                tradeState = "sell";
+            } else {
+                tradeState = "buy";
+            }
+
+
+            var form = trade_state(tradeState, userId, boardId, roomId);
+
+            $("#tradeState").empty();
+            $("#tradeState").append(form);
+
         });
 }
 
@@ -82,4 +99,48 @@ function product_info(username, title, price, boardId) {
     info += `</div>`
     return info;
 }
+
+function trade_state(tradeState, userId, boardId, roomId) {
+
+    if (tradeState === 'sell') {
+        var form = `<div id="completeBtn"><button onclick="setTradeStateComplete(1,${userId},${boardId},${roomId})">판매 완료</button></div>`;
+    } else if (tradeState === 'buy') {
+        var form = `<div id="completeBtn"><button onclick="setTradeStateComplete(2,${userId},${boardId},${roomId})">구매 완료</button></div>`;
+    }
+    return form;
+}
+
+
+function setTradeStateComplete(stateNum, userId, boardId, roomId) {
+
+    if (stateNum === 1) {
+        alert("판매 완료 처리되었습니다.");
+        var form = `<button onclick="outChat(${roomId}, 'buyer')">채팅방 나가기</button></div>`;
+    } else {
+        alert("구매 완료 처리되었습니다.");
+        var form = `<button onclick="outChat(${roomId}, 'seller')">채팅방 나가기</button></div>`;
+    }
+
+    let url = "/chat/setStateComplete";
+
+    var data = { "userId": userId, "boardId": boardId };
+
+    fetch(url, {
+        method: "POST",
+        body: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8"
+    }).then(function (res) {
+        return res.text();
+    }).then(function (res) {
+        if (res === "ok") {
+
+
+
+            $("#completeBtn").empty();
+            $("#completeBtn").append(form);
+        }
+
+    });
+};
+
 
