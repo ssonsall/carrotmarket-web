@@ -63,4 +63,4 @@ spring:
       
 #파일 저장할 경로(각자 파일 경로로)
 file:
-  path: C:/dev/tools/StringBoot4/workspace/grapemarket-web/grapemarket/src/main/resources/static/upload/
+  path: C:/Users/kimsu/Documents/GitHub/grapemarket-web-my/grapemarket/src/main/resources/static/upload/

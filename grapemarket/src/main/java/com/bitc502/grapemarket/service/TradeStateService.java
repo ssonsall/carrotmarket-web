@@ -2,15 +2,17 @@ package com.bitc502.grapemarket.service;
 
 import java.io.IOException;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.TradeState;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.TradeStateRepository;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class TradeStateService {
@@ -37,7 +39,7 @@ public class TradeStateService {
 			return ts.getState();
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			System.out.println("ERROR : TradeStateRepository/checkState");
 			
 			return null;
