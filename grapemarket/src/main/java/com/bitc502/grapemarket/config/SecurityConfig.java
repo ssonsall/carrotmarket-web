@@ -10,9 +10,11 @@ import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSessionListener;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,7 +37,9 @@ import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 import com.bitc502.grapemarket.handler.MyLoginSuccessHandler;
+import com.bitc502.grapemarket.repository.VisitorRepository;
 import com.bitc502.grapemarket.security.oauth2.CustomOAuth2UserService;
+import com.bitc502.grapemarket.util.VisitorCounter;
 
 @Configuration
 @EnableWebSecurity
@@ -48,6 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private CustomOAuth2UserService customOAuth2UserService;
+	
+	@Autowired
+	private VisitorRepository vRepo;
 
 	@Bean
 	public BCryptPasswordEncoder encodePWD() {
