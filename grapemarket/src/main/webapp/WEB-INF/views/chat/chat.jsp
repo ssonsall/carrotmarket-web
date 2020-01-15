@@ -31,17 +31,13 @@
 							<h4 class="font-alt mb-0">현재 거래상품</h4>
 							<hr class="divider-w mt-10 mb-20">
 
-							<div id="product">
+							<div id="product_image">
 								<!-- 이미지 세로 크기 고정 필요 -->
-								<div class="col-sm-12 mb-sm-40">
-									<img
-										src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvH5pM8pc9EOEuK1DbpkvBG7ruBU_0rJMBX5wqDOjoFRcq2QIbJw&s"
-										alt="Single Product Image"
-										style="max-height: 300px; min-width: 232px;" />
-								</div>
-								<!-- 상품 정보 노출되는곳 -->
-								<div id="product_info"></div>
+								
 							</div>
+							<!-- 상품 정보 노출되는곳 -->
+							<div id="product_info"></div>
+
 						</div>
 						<!-- 현재 거래 상품 정보 끝 -->
 						<!-- 채팅방 목록 시작 -->
@@ -51,24 +47,29 @@
 							<h3>구매</h3>
 							<c:forEach var="chat" items="${chatForBuy}">
 								<c:if test="${chat.buyerState eq 1}">
-									<div class="alert alert-success" role="alert"
-										onclick="enterRoom(${chat.id},${principal.user.id})">
-										<button class="close" type="button" data-dismiss="alert"
-											aria-hidden="true" onclick="outChat(${chat.id},'buyer')">&times;</button>
-										<i class="fa fa-comment"></i><strong>Alert!</strong>
-										${chat.sellerId.username}님과의 채팅방입니다.
+									<div id="chatId_${chat.id}">
+										<div class="alert alert-success" role="alert"
+											onclick="enterRoom(${chat.id},${principal.user.id})">
+											<button class="close" type="button" data-dismiss="alert"
+												aria-hidden="true" onclick="outChat(${chat.id},'buyer')">&times;</button>
+											<i class="fa fa-comment"></i><strong>Alert!</strong>
+											${chat.sellerId.username}님과의 채팅방입니다.
+										</div>
 									</div>
 								</c:if>
 							</c:forEach>
 							<h3>판매</h3>
 							<c:forEach var="chat" items="${chatForSell}">
 								<c:if test="${chat.sellerState eq 1}">
-									<div class="alert alert-success" role="alert"
-										onclick="enterRoom(${chat.id},${principal.user.id})">
-										<button class="close" type="button" data-dismiss="alert"
-											aria-hidden="true" onclick="outChat(${chat.id},'seller')">&times;</button>
-										<i class="fa fa-comment"></i><strong>Alert!</strong>
-										${chat.buyerId.username}님과의 채팅방입니다.
+									<div id="chatId_${chat.id}">
+										<div id="chatId_${chat.id}" class="alert alert-success"
+											role="alert"
+											onclick="enterRoom(${chat.id},${principal.user.id})">
+											<button class="close" type="button" data-dismiss="alert"
+												aria-hidden="true" onclick="outChat(${chat.id},'seller')">&times;</button>
+											<i class="fa fa-comment"></i><strong>Alert!</strong>
+											${chat.buyerId.username}님과의 채팅방입니다.
+										</div>
 									</div>
 								</c:if>
 							</c:forEach>

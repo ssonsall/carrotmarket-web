@@ -118,12 +118,6 @@ public class ChatController {
 		cRepo.save(chat);
 	}
 	
-	@PostMapping("/setStateComplete")
-	public @ResponseBody String setTradeStateComplete(@RequestBody String json) {
-		
-		tradeStateServ.setStateComplete(json);
-		
-		return "ok";
-	}
+	
 	
 }

@@ -20,6 +20,34 @@ public class TradeStateService {
 	@Autowired
 	private TradeStateRepository tradeStateRepo;
 
+	//구매, 판매 상태 확인
+	public String checkState(String json) {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode jsonNode;
+		
+		try {
+			jsonNode = mapper.readTree(json);
+			JsonNode nodeUserId = jsonNode.get("userId");
+			JsonNode nodeBoardId = jsonNode.get("boardId");
+
+			int userId = Integer.parseInt(nodeUserId.toString());
+			int boardId = Integer.parseInt(nodeBoardId.toString());
+
+			TradeState ts = tradeStateRepo.findByUserIdAndBoardId(userId, boardId);
+
+			return ts.getState();
+			
+		} catch (IOException e) {
+			//e.printStackTrace();
+			System.out.println("ERROR : TradeStateRepository/checkState");
+			
+			return null;
+		}
+		
+	}
+	
+	//게시물 작성시 판매상태 생성
 	public void insertSellState(User user, Board board) {
 
 		TradeState tradeState = new TradeState();
@@ -30,6 +58,7 @@ public class TradeStateService {
 		tradeStateRepo.save(tradeState);
 	}
 
+	//채팅으로 거래하기 입력시 구매상태 생성
 	public void insertBuyState(User user, Board board) {
 
 		int check = tradeStateRepo.countByUserAndBoard(user, board);
@@ -44,6 +73,7 @@ public class TradeStateService {
 		}
 	}
 
+	//구매,판매 완료 처리
 	public void setStateComplete(String json) {
 
 		ObjectMapper mapper = new ObjectMapper();
