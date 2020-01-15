@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Role;
 import com.bitc502.grapemarket.model.User;
+import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.util.Script;
 
@@ -22,6 +24,8 @@ public class AdminTestController {
 
 	@Autowired
 	private UserRepository uRepo;
+	@Autowired
+	private BoardRepository bRepo;
 
 	@GetMapping({ "/", "" })
 	public String dashboard() {
@@ -65,6 +69,19 @@ public class AdminTestController {
 		}
 		uRepo.save(user);
 		return Script.hrefAndAlert("/admin/detail/" + id, "권한 변경완료");
+	}
+	
+
+
+	@GetMapping({ "/userPostList/{id}" })
+	public String userPostList(@PathVariable int id, Model model) {
+		Optional<User> oUser = uRepo.findById(id);
+		User user = oUser.get();
+		List<Board> boards= bRepo.findByUserId(id);
+
+		model.addAttribute("user", user);
+		model.addAttribute("boards", boards);
+		return "admin/userPostList";
 	}
 
 }

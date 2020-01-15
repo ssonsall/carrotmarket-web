@@ -96,7 +96,7 @@
 
 												<td style="text-align: center; margin: auto;">${user.role}</td>
 												<td style="text-align: center; margin: auto;"><button
-														class="btn btn-inverse">
+														class="btn btn-inverse" onclick="location.href = '/admin/userPostList/${user.id}'">
 														<i class="icon-shopping-cart icon-white"></i> Detail
 													</button></td>
 												<td style="text-align: center; margin: auto;"><button

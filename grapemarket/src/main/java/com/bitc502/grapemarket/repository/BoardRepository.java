@@ -15,6 +15,7 @@ import org.springframework.data.repository.query.Param;
 import com.bitc502.grapemarket.model.Board;
 
 public interface BoardRepository extends JpaRepository<Board, Integer>, JpaSpecificationExecutor<Board> {
+	
 	int countFindByCategory(int category);
 
 	@Query(value = "SELECT * FROM Board b Join User u on b.userId = u.id WHERE category regexp :category AND concat(b.title, b.content, u.address) regexp :search", nativeQuery = true)
@@ -38,6 +39,9 @@ public interface BoardRepository extends JpaRepository<Board, Integer>, JpaSpeci
 	@Query
 	(value = " SELECT * , (SELECT count(boardId) FROM comment WHERE createDate > (now()- INTERVAL 24 hour) AND boardId = b.id) AS commentCount, (SELECT count(boardId) FROM likes WHERE createDate > (now()- INTERVAL 24 hour) AND boardId = b.id) AS likesCount, (SELECT count(boardId) FROM chat WHERE createDate > (now()- INTERVAL 24 hour) AND boardId = b.id) AS chatCount FROM board AS b ORDER BY (likesCount * 0.2) +(commentCount * 0.5) +(chatCount*0.3) DESC LIMIT 10", nativeQuery = true)
 	List<Board> popularBoard();
+	
+	List<Board> findByUserId(int id);
+
 	
 	
 }
