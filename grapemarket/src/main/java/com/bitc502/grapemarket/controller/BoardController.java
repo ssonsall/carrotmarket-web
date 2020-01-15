@@ -150,7 +150,6 @@ public class BoardController {
 		Optional<User> oUser = uRepo.findById(userPrincipal.getUser().getId());
 		User user = oUser.get();
 		model.addAttribute("user", user);
-
 		if (userPrincipal.getUser().getAddressAuth() == 0) {
 			int authNeeded = 1;
 			model.addAttribute("authNeeded", authNeeded);
