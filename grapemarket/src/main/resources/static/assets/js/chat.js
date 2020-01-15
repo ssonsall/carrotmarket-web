@@ -1,5 +1,6 @@
 function createChat() {
     var form = new FormData(document.getElementById('createChat'));
+    alert(form);
     let url = "/chat/chat";
 
     fetch(url, {
@@ -66,12 +67,11 @@ function enterRoom(roomId, userId) {
             var boardId = myJson.board.id;
             var image1 = myJson.board.image1;
 
-
-
             /* 상품 이미지 입력 */
             var addImage = add_image(image1)
             $("#product_image").empty();
             $("#product_image").append(addImage);
+
             /* 상품 정보 입력 */
             var info = product_info(username, title, price, boardId)
             $("#product_info").empty();
@@ -96,9 +96,9 @@ function enterRoom(roomId, userId) {
 
             });
 
-
         });
 }
+
 function add_image(image1) {
     var add_image = `<div class="col-sm-12 mb-sm-40">
 									<img src="/upload/${image1}"
@@ -121,7 +121,7 @@ function product_info(username, title, price, boardId) {
 function trade_state(tradeState, userId, boardId, roomId) {
 
     if (tradeState === '판매중') {
-        var form = `<div id="completeBtn"><button onclick="setTradeStateComplete(1,${userId},${boardId},${roomId})">판매 완료</button></div>`;
+        var form = `<div id="completeBtn"><button onclick="location.href='/board/detail/${boardId}'">판매 완료</button></div>`;
     } else if (tradeState === '구매중') {
         var form = `<div id="completeBtn"><button onclick="setTradeStateComplete(2,${userId},${boardId},${roomId})">구매 완료</button></div>`;
     } else if (tradeState === '판매완료') {
@@ -155,8 +155,6 @@ function setTradeStateComplete(stateNum, userId, boardId, roomId) {
         return res.text();
     }).then(function (res) {
         if (res === "ok") {
-
-
 
             $("#completeBtn").empty();
             $("#completeBtn").append(form);

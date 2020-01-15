@@ -113,7 +113,7 @@
 											</c:choose>
 										</div>
 										<div id="likeCount">
-											<p>${likeCount}명의회원이 이 상품을 좋아합니다.</p>
+											<p>${likeCount}명의회원이이상품을좋아합니다.</p>
 										</div>
 									</form>
 									<%-- <c:choose>
@@ -247,11 +247,37 @@
 												<button class="btn btn-round btn-d" type="submit">글
 													삭제</button>
 											</form>
-											<form id="boardDelete" style="position: relative; top: 5px;"
-												action="/board/complete/${board.id}" method="post">
-												<button class="btn btn-round btn-d" type="submit">거래
-													완료</button>
+
+
+
+
+											<form id="selectForm">
+												<input type = "hidden" name="id" value ="${board.id}">
+												<select style="position: relative; top: 10px;" name="buyer"
+													class="form-control">
+													<c:forEach var="tradeState" items="${tradeStates}">
+														<option value="${tradeState.user.id}">${tradeState.user.name}</option>
+													</c:forEach>
+												</select>
 											</form>
+											<button style="position: relative; top: 18px;"
+												onclick="boardComplete(${board.id})" class="btn btn-round btn-d">거래
+												완료</button>
+											<script>
+											
+												function boardComplete(boardId){
+														var url = "/board/complete"
+														var data = new FormData(document.getElementById('selectForm'));
+														console.log(data);
+														fetch(url,{
+method:"post",
+body:data,
+contentType: "application/json; charset=utf-8"
+															}).then().then()
+													}
+												
+											</script>
+
 										</div>
 									</c:otherwise>
 								</c:choose>
