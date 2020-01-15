@@ -20,8 +20,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bitc502.grapemarket.common.CategoryType;
@@ -38,6 +40,7 @@ import com.bitc502.grapemarket.repository.SearchRepository;
 import com.bitc502.grapemarket.repository.TradeStateRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
+import com.bitc502.grapemarket.service.BoardService;
 import com.bitc502.grapemarket.service.TradeStateService;
 
 @Controller
@@ -63,7 +66,13 @@ public class BoardController {
 	private SearchRepository sRepo;
 	
 	@Autowired
+	private TradeStateRepository tradeStateRepo;
+	
+	@Autowired
 	private TradeStateService tradeStateServ;
+	
+	@Autowired
+	private BoardService boardServ;
 
 	// 전체 페이지
 	@GetMapping({ "/", "" })
@@ -244,13 +253,15 @@ public class BoardController {
 		}
 		
 		int likeCount = likeRepo.countByBoardId(board.getId());
+		String state = "구매완료";
+		List<TradeState> tradeStates = tradeStateRepo.findByBoardIdAndState(board.getId(),state);
 		
+		model.addAttribute("tradeStates",tradeStates);
 		model.addAttribute("likeCount",likeCount);
 		model.addAttribute("comments", comments);
 		model.addAttribute("board", board);
 
 		return "/board/detail";
-
 	}
 
 	@PostMapping("/delete/{id}")
@@ -373,6 +384,15 @@ public class BoardController {
 	public String searchByCategory(@PathVariable int id) {
 		// 카테고리별 리스트 화면
 		return null;
+	}
+	
+	@PostMapping("/complete")
+	public @ResponseBody String boardComplete(Board board) {
+
+		
+	boardServ.setBuyerId(board);
+		
+		return "";
 	}
 
 }
