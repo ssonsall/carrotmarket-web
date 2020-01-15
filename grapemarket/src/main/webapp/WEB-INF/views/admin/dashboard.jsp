@@ -47,7 +47,7 @@
 
 						<div class="navbar navbar-inner block-header">
 							<div class="muted pull-left">
-								<i class="icon-user"></i>  ${currentVisitorCount}
+								<i class="icon-user"></i>
 							</div>
 
 						</div>

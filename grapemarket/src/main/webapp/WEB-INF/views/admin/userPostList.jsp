@@ -102,16 +102,13 @@ $('.searchModal').hide();
 			<!-- block -->
 			<div class="block">
 				<div class="navbar navbar-inner block-header">
-					<div class="muted pull-left">
-						<span style="font-weight: bold; color: black">${user.username}</span>
-						's Board List
-					</div>
+					<div class="muted pull-left"><span style="font-weight: bold; color: black">${user.username}</span> 's Board List</div>
 				</div>
 				<div class="block-content collapse in">
 					<div class="span12">
 
 						<table cellpadding="0" cellspacing="0" border="0"
-							class="table table-striped table-bordered">
+							class="table table-striped table-bordered" id="example">
 							<thead>
 								<tr>
 									<th class="span2" style="text-align: center; margin: auto;">ID</th>
@@ -128,16 +125,10 @@ $('.searchModal').hide();
 										<c:choose>
 											<c:when test="${board.state eq 0}">
 												<td
-													style="text-align: center; margin: auto; font-weight: bold;"><button
-														class="btn btn-info" disabled>
-														<i class="icon-play icon-white"></i> 거래중
-													</button></td>
+													style="text-align: center; margin: auto; font-weight: bold;"><button class="btn btn-info" disabled><i class="icon-play icon-white"></i> 거래중</button></td>
 											</c:when>
 											<c:otherwise>
-												<td style="text-align: center; margin: auto;"><button
-														class="btn" disabled>
-														<i class="icon-stop"></i> 거래완료
-													</button></td>
+												<td style="text-align: center; margin: auto;"><button class="btn" disabled><i class="icon-stop"></i> 거래완료</button></td>
 											</c:otherwise>
 										</c:choose>
 										<td style="text-align: center; margin: auto;"><button

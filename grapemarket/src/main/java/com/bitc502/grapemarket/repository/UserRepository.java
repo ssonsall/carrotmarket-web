@@ -12,7 +12,6 @@ import org.springframework.data.jpa.repository.Query;
 import com.bitc502.grapemarket.model.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-	
 	User findByUsername(String username);
 
 	Optional<User> findByEmail(String email);
