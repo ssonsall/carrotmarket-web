@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.util.Script;
+import com.bitc502.grapemarket.util.VisitorCounter;
 
 @Controller
 @RequestMapping("/admin")
@@ -28,7 +30,8 @@ public class AdminTestController {
 	private BoardRepository bRepo;
 
 	@GetMapping({ "/", "" })
-	public String dashboard() {
+	public String dashboard(Model model) {
+		model.addAttribute("currentVisitorCount", VisitorCounter.currentVisitorCount);
 		return "admin/dashboard";
 	}
 
@@ -77,11 +80,11 @@ public class AdminTestController {
 	public String userPostList(@PathVariable int id, Model model) {
 		Optional<User> oUser = uRepo.findById(id);
 		User user = oUser.get();
-		List<Board> boards= bRepo.findByUserId(id);
+		List<Board> boards= bRepo.findByUserIdOrderByCreateDateDesc(id);
 
 		model.addAttribute("user", user);
 		model.addAttribute("boards", boards);
 		return "admin/userPostList";
 	}
-
+	
 }
