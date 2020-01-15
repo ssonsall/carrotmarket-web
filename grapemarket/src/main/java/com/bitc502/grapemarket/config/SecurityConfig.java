@@ -119,7 +119,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				});
 
 	}
-
+@Bean
+	public ServletListenerRegistrationBean<HttpSessionListener> sessionListener() {
+	    return new ServletListenerRegistrationBean<HttpSessionListener>(new VisitorCounter(vRepo));
+	}
     @Bean
     public AuthenticationSuccessHandler successHandler() {
       return new MyLoginSuccessHandler();
