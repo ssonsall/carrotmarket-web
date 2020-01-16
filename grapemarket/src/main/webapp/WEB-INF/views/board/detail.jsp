@@ -248,11 +248,8 @@
 													삭제</button>
 											</form>
 
-
-
-
 											<form id="selectForm">
-												<input type = "hidden" name="id" value ="${board.id}">
+												<input type="hidden" name="id" value="${board.id}">
 												<select style="position: relative; top: 10px;" name="buyer"
 													class="form-control">
 													<c:forEach var="tradeState" items="${tradeStates}">
@@ -261,23 +258,8 @@
 												</select>
 											</form>
 											<button style="position: relative; top: 18px;"
-												onclick="boardComplete(${board.id})" class="btn btn-round btn-d">거래
-												완료</button>
-											<script>
-											
-												function boardComplete(boardId){
-														var url = "/board/complete"
-														var data = new FormData(document.getElementById('selectForm'));
-														console.log(data);
-														fetch(url,{
-method:"post",
-body:data,
-contentType: "application/json; charset=utf-8"
-															}).then().then()
-													}
-												
-											</script>
-
+												onclick="boardComplete(${board.id})"
+												class="btn btn-round btn-d">거래 완료</button>
 										</div>
 									</c:otherwise>
 								</c:choose>

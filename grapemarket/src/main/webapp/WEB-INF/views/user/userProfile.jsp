@@ -73,9 +73,9 @@
 									<li><a href="#share" data-toggle="tab"><span
 											class="icon-tools-2"></span>공유하기</a></li>
 								</ul>
-								
-								
-								
+
+
+
 								<div class="tab-content">
 
 									<div class="tab-pane active" id="profile"
@@ -238,7 +238,7 @@
 												</div>
 												<div class="text-center col-md-4">
 													<input class="btn btn-block btn-round btn-d" id="cfsubmit"
-														type="button" onClick="getLocation();"
+														type="button" onActivate="getLocation();"
 														placeholder="Search" value="인증하기" />
 												</div>
 
@@ -386,12 +386,20 @@
 					</div>
 				</div>
 			</section>
+
+
 			<%@include file="../include/footer.jsp"%>
 		</div>
 		<div class="scroll-up">
 			<a href="#totop"><i class="fa fa-angle-double-up"></i></a>
 		</div>
 	</main>
+	
+	<script>
+	$(document).ready(function(){
+		alert(localsSorage.getItem('stroageTest'));});
+	</script>
+	
 	<script src='/map/address.js'></script>
 	<%@include file="../include/script.jsp"%>
 </body>
