@@ -19,5 +19,6 @@ public interface TradeStateRepository extends JpaRepository<TradeState, Integer>
 	@Query(value = "SELECT * FROM tradeState WHERE boardId=?1 AND state=?2",nativeQuery = true)
 	List<TradeState> findByBoardIdAndState(int id, String State);
 	
+	List<TradeState> findByUserId(int id);
 
 }
