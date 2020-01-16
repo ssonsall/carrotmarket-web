@@ -3,6 +3,7 @@ package com.bitc502.grapemarket.controller;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,12 +29,14 @@ import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Chat;
 import com.bitc502.grapemarket.model.Comment;
 import com.bitc502.grapemarket.model.Role;
+import com.bitc502.grapemarket.model.Search;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.payload.ChatList;
 import com.bitc502.grapemarket.payload.UserLocationSetting;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.ChatRepository;
 import com.bitc502.grapemarket.repository.CommentRepository;
+import com.bitc502.grapemarket.repository.SearchRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 
@@ -54,6 +58,9 @@ public class AndroidController {
 	
 	@Autowired
 	private ChatRepository chatRepo;
+	
+	@Autowired
+	private SearchRepository sRepo;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -123,7 +130,7 @@ public class AndroidController {
 	
 	@PostMapping("/write")
 	public String write(@RequestParam("state") String state,@AuthenticationPrincipal UserPrincipal userPrincipal,
-			@RequestParam("category") int category, @RequestParam("title") String title,
+			@RequestParam("category") String category, @RequestParam("title") String title,
 			@RequestParam("price") String price, @RequestParam("content") String content,
 			@RequestParam("productImage1") MultipartFile productImage1,
 			@RequestParam("productImage2") MultipartFile productImage2,
@@ -233,5 +240,46 @@ public class AndroidController {
 		chatList.setChatForSell(chatForSell);
 		System.out.println("Android ChatList 접근");
 		return chatList;	
+	}
+	
+	@PostMapping("/search")
+	public List<Board> search(@RequestParam("category") String category, @RequestParam("userInput") String userInput,
+			@AuthenticationPrincipal UserPrincipal userPrincipal){
+		
+		String currentCategory = category;
+		List<User> users = uRepo.findByAddressContaining(userInput);
+		List<Integer> userIds = new ArrayList<>();
+		for (User u : users) {
+			userIds.add(u.getId());
+		}
+		List<Board> boards;
+		if (!userInput.equals("")) {
+			String[] searchContent = userInput.split(" ");
+			for (String entity : searchContent) {
+				Search search = new Search();
+				search.setContent(entity);
+				sRepo.save(search);
+			}
+
+		}
+
+		if (userInput.equals("")) {
+			if (category.equals("1")) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
+				boards = bRepo.findAll();
+			} else {// 입력값 공백이면 + 카테고리 (입력값조건 무시 카테고리만 걸고)
+				boards = bRepo.findByCategory(category);
+			}
+		} else {
+			// 공백제거
+			userInput = userInput.trim();
+			// 정규식 형태 만들어주기
+			userInput = userInput.replace(" ", ")(?=.*");
+			userInput = "(?=.*" + userInput + ")";
+			if (category.equals("1")) // 입력값 + 카테고리 전체 (입력값만 걸고 카테고리 조건 무시)
+				category = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
+			boards = bRepo.search(category, userInput);
+		}
+
+		return boards;
 	}
 }
