@@ -9,7 +9,6 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,11 +24,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bitc502.grapemarket.model.AuthProvider;
 import com.bitc502.grapemarket.model.Board;
+import com.bitc502.grapemarket.model.Chat;
 import com.bitc502.grapemarket.model.Comment;
 import com.bitc502.grapemarket.model.Role;
 import com.bitc502.grapemarket.model.User;
+import com.bitc502.grapemarket.payload.ChatList;
 import com.bitc502.grapemarket.payload.UserLocationSetting;
 import com.bitc502.grapemarket.repository.BoardRepository;
+import com.bitc502.grapemarket.repository.ChatRepository;
 import com.bitc502.grapemarket.repository.CommentRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
@@ -49,6 +51,9 @@ public class AndroidController {
 	
 	@Autowired
 	private CommentRepository cRepo;
+	
+	@Autowired
+	private ChatRepository chatRepo;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -217,5 +222,16 @@ public class AndroidController {
 			return "fail";
 		}
 		
+	}
+	
+	@GetMapping("/chatList")
+	public ChatList chatList(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+		List<Chat> chatForBuy = chatRepo.findByBuyerId(userPrincipal.getUser());
+		List<Chat> chatForSell = chatRepo.findBySellerId(userPrincipal.getUser());
+		ChatList chatList = new ChatList();
+		chatList.setChatForBuy(chatForBuy);
+		chatList.setChatForSell(chatForSell);
+		System.out.println("Android ChatList 접근");
+		return chatList;	
 	}
 }
