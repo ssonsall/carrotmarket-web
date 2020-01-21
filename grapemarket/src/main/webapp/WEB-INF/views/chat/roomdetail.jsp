@@ -35,6 +35,15 @@
 [v-cloak] {
 	display: none;
 }
+
+div.container2 {
+	overflow-x: auto;
+	overflow-y: scroll;
+	display: inline-block;
+	border: solid 1px green;
+	height: 400px;
+	width: 380px;
+}
 </style>
 </head>
 <body>
@@ -43,11 +52,24 @@
 	</sec:authorize>
 	<input type="hidden" id="sendername" value="${principal.user.username}" />
 	<div class="container" id="app" v-cloak>
-		<div>
-			<h2>
-				<!-- {{room.name}} -->
-			</h2>
+
+
+		<div class="container2" id="container2">
+
+			<ul class="list-group">
+
+				<c:forEach var="message" items="${messages}">
+					<li class="list-group-item">${message.sender}-
+						${message.message}</a>
+					</li>
+				</c:forEach>
+				<li class="list-group-item" v-for="message in messages">
+					{{message.sender}} - {{message.message}}</a>
+				</li>
+			</ul>
 		</div>
+
+
 		<div class="input-group">
 			<div class="input-group-prepend">
 
@@ -58,20 +80,7 @@
 			<div class="input-group-append">
 				<button class="btn btn-primary" type="button" @click="sendMessage">보내기</button>
 			</div>
-
 		</div>
-		<ul class="list-group">
-			<li class="list-group-item" v-for="message in messages">
-				{{message.sender}} - {{message.message}}</a>
-			</li>
-			<c:forEach var="message" items="${messages}">
-				<li class="list-group-item">${message.sender} -
-					${message.message}</a>
-				</li>
-			</c:forEach>
-
-		</ul>
-		<div></div>
 	</div>
 	<!-- JavaScript -->
 	<!--     <script src="/webjars/vue/2.5.16/dist/vue.min.js"></script>
@@ -109,7 +118,7 @@
                     this.message = '';
                 },
                 recvMessage: function(recv) {
-                    this.messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
+                    this.messages.push({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
                 }
             }
         });
@@ -118,9 +127,12 @@
             ws.subscribe("/sub/chat/room/"+vm.$data.roomId, function(message) {
                 var recv = JSON.parse(message.body);
                 vm.recvMessage(recv);
+                
             });
         }, function(error) {
         });
+
+        document.getElementById('container2').scrollTop = document.getElementById('container2').scrollHeight 
     </script>
 	<%@include file="../include/script.jsp"%>
 </body>
