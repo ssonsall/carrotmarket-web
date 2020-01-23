@@ -2,6 +2,7 @@ package com.bitc502.grapemarket.repository;
 
 import java.util.List;
 
+import javax.persistence.OrderBy;
 import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
@@ -40,7 +41,8 @@ public interface BoardRepository extends JpaRepository<Board, Integer>, JpaSpeci
 	(value = " SELECT * , (SELECT count(boardId) FROM comment WHERE createDate > (now()- INTERVAL 24 hour) AND boardId = b.id) AS commentCount, (SELECT count(boardId) FROM likes WHERE createDate > (now()- INTERVAL 24 hour) AND boardId = b.id) AS likesCount, (SELECT count(boardId) FROM chat WHERE createDate > (now()- INTERVAL 24 hour) AND boardId = b.id) AS chatCount FROM board AS b ORDER BY (likesCount * 0.2) +(commentCount * 0.5) +(chatCount*0.3) DESC LIMIT 10", nativeQuery = true)
 	List<Board> popularBoard();
 	
-	List<Board> findByUserId(int id);
+
+	List<Board> findByUserIdOrderByCreateDateDesc(int id);
 
 	List<Board> findByCategory(String category);
 	
