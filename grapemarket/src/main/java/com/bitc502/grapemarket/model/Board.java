@@ -56,6 +56,12 @@ public class Board {
 	@JoinColumn(name = "userId")
 	@JsonIgnoreProperties({ "comment","board","like" })
 	private User user;
+	
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "buyerId")
+	@JsonIgnoreProperties({ "comment","board","like" })
+	private User Buyer;
+	
 
 	// 상품 사진 시작
 	private String image1;
