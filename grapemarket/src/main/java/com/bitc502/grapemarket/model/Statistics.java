@@ -1,19 +1,27 @@
 package com.bitc502.grapemarket.model;
 
+
+import java.util.List;
+import java.util.Map;
+
+import lombok.Data;
+
+@Data
 public class Statistics {
 	
 	// 방문자 수
-	private Long visitor;
+	private List<Statistic> visitorVolume;
 	// 가입자 수
-	private Long member;
+	private List<Statistic> memberVolume;
 	// 거래량
-	private Long DealVolume;
+	private List<Statistic> dealVolume;
 	// 거래완료 량
-	private Long CompletedDealVolume;
+	private List<Statistic> completedDealVolume;
 	// 채팅
-	private Long ChatVolume;
+	private List<Statistic> chatVolume;
 	// 신고
-	private Long ReportVolume;
+//	private List<Map<String, Long>> reportVolume;
 	
 
+	
 }
