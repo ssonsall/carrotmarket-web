@@ -223,6 +223,9 @@ public class AndroidController {
 		//uRepo.addUpdate(user.getAddress(), user.getAddressX(), user.getAddressY(), user.getId());
 		try {
 			uRepo.addUpdate(address, Double.parseDouble(addressX), Double.parseDouble(addressY), userPrincipal.getUser().getId());
+			userPrincipal.getUser().setAddress(address);
+			userPrincipal.getUser().setAddressX(Double.parseDouble(addressX));
+			userPrincipal.getUser().setAddressY(Double.parseDouble(addressY));
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -299,6 +302,7 @@ public class AndroidController {
 	public String saveAddressAuth(@AuthenticationPrincipal UserPrincipal userPrincipal) {
 		try {
 			uRepo.authUpdate(userPrincipal.getUser().getId());
+			userPrincipal.getUser().setAddressAuth(1);
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
