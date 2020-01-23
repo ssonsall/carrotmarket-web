@@ -247,11 +247,19 @@
 												<button class="btn btn-round btn-d" type="submit">글
 													삭제</button>
 											</form>
-											<form id="boardDelete" style="position: relative; top: 5px;"
-												action="/board/complete/${board.id}" method="post">
-												<button class="btn btn-round btn-d" type="submit">거래
-													완료</button>
+
+											<form id="selectForm">
+												<input type="hidden" name="id" value="${board.id}">
+												<select style="position: relative; top: 10px;" name="buyer"
+													class="form-control">
+													<c:forEach var="tradeState" items="${tradeStates}">
+														<option value="${tradeState.user.id}">${tradeState.user.name}</option>
+													</c:forEach>
+												</select>
 											</form>
+											<button style="position: relative; top: 18px;"
+												onclick="boardComplete(${board.id})"
+												class="btn btn-round btn-d">거래 완료</button>
 										</div>
 									</c:otherwise>
 								</c:choose>

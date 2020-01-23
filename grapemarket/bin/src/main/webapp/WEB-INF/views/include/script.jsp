@@ -25,3 +25,4 @@
 	<script src="/assets/js/main.js"></script>
 	<script src="/assets/js/chatform.js"></script>
 	<script src="/assets/js/comment.js"></script>
+	<script src="/assets/js/detail.js"></script>

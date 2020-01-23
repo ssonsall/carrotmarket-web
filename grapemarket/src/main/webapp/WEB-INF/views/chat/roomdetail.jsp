@@ -35,6 +35,61 @@
 [v-cloak] {
 	display: none;
 }
+
+div.container2 {
+	overflow-x: auto;
+	overflow-y: scroll;
+	display: inline-block;
+	border: solid 1px rgba(0, 0, 0, .125);
+	height: 400px;
+	width: 380px;
+}
+
+.list-group-item1 {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	margin-left: 0.5rem;
+	background-color: rgba(0, 0, 0, 0);
+	padding: 0.7rem;
+	text-align: right;
+}
+
+.list-group-item2 {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	margin-left: 0.5rem;
+	background-color: rgba(0, 0, 0, 0);
+	padding: 0.7rem;
+	text-align: left;
+}
+
+.test_item1 {
+	background-color: RGB(229, 229, 234);
+	/* RGB(16,136,254); */
+	/* RGB(229,229,234) */
+	color: black;
+	font-weight: 600;
+	padding: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	border-radius: 10px;
+	padding: 0.5rem;
+}
+
+.test_item2 {
+	background-color: RGB(16, 136, 254);
+	/* RGB(16,136,254); */
+	/* RGB(229,229,234) */
+	color: white;
+	font-weight: 600;
+	padding: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	border-radius: 10px;
+	padding: 0.5rem;
+}
 </style>
 </head>
 <body>
@@ -43,11 +98,42 @@
 	</sec:authorize>
 	<input type="hidden" id="sendername" value="${principal.user.username}" />
 	<div class="container" id="app" v-cloak>
-		<div>
-			<h2>
-				<!-- {{room.name}} -->
-			</h2>
+
+
+		<div class="container2" id="container2">
+
+			<ul class="list-group">
+
+				<c:forEach var="message" items="${messages}">
+
+
+
+
+					<c:choose>
+						<c:when test="${principal.user.username eq message.sender}">
+							<li class="list-group-item1"><span class="test_item1">
+
+									${message.message}</span></li>
+						</c:when>
+						<c:otherwise>
+							<li class="list-group-item2"><span class="test_item2">
+
+									${message.message}</span></li>
+						</c:otherwise>
+					</c:choose>
+
+
+
+
+				</c:forEach>
+				
+				<li class="list-group-item1" v-for="message in messages"><span
+					class="test_item1" v-if="">
+						{{message.message}}</span></li>
+			</ul>
 		</div>
+
+
 		<div class="input-group">
 			<div class="input-group-prepend">
 
@@ -58,30 +144,12 @@
 			<div class="input-group-append">
 				<button class="btn btn-primary" type="button" @click="sendMessage">보내기</button>
 			</div>
-
 		</div>
-		<ul class="list-group">
-			<li class="list-group-item" v-for="message in messages">
-				{{message.sender}} - {{message.message}}</a>
-			</li>
-			<c:forEach var="message" items="${messages}">
-				<li class="list-group-item">${message.sender} -
-					${message.message}</a>
-				</li>
-			</c:forEach>
-
-		</ul>
-		<div></div>
 	</div>
-	<!-- JavaScript -->
-	<!--     <script src="/webjars/vue/2.5.16/dist/vue.min.js"></script>
-    <script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
-    <script src="/webjars/bootstrap/4.3.1/dist/js/bootstrap.min.js"></script>
-    <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
-    <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script> -->
 	<script>
         // websocket & stomp initialize
         var sendername = document.getElementById('sendername').value;
+        
         var sock = new SockJS("/ws-stomp");
         var ws = Stomp.over(sock);
         // vue.js
@@ -109,7 +177,10 @@
                     this.message = '';
                 },
                 recvMessage: function(recv) {
-                    this.messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
+                    this.messages.push({"type":recv.type,"sender":recv.sender,"message":recv.message})
+                    $('#container2')
+                    .stop()
+                    .animate({ scrollTop: $('#container2')[0].scrollHeight }, 10);
                 }
             }
         });
@@ -118,10 +189,16 @@
             ws.subscribe("/sub/chat/room/"+vm.$data.roomId, function(message) {
                 var recv = JSON.parse(message.body);
                 vm.recvMessage(recv);
+                
             });
         }, function(error) {
         });
+
+        document.getElementById('container2').scrollTop = document.getElementById('container2').scrollHeight
     </script>
+
+
+
 	<%@include file="../include/script.jsp"%>
 </body>
 </html>

@@ -1,6 +1,5 @@
 package com.bitc502.grapemarket.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -22,8 +20,6 @@ import com.bitc502.grapemarket.repository.ChatRepository;
 import com.bitc502.grapemarket.repository.MessageRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 import com.bitc502.grapemarket.service.TradeStateService;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @RequestMapping("/chat")
@@ -84,7 +80,7 @@ public class ChatController {
 	@GetMapping("/room/enter/{roomId}")
 	public String roomDetail(Model model, @PathVariable int roomId) {
 		model.addAttribute("roomId", roomId);
-		List<Message> messages = mRepo.findByChatIdOrderByIdDesc(roomId);
+		List<Message> messages = mRepo.findByChatIdOrderById(roomId);
 		model.addAttribute("messages", messages);
 		return "chat/roomdetail";
 	}

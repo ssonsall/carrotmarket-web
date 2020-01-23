@@ -10,6 +10,8 @@ public interface MessageRepository extends JpaRepository<Message, Integer>{
 
 	List<Message> findByChatIdOrderByIdDesc(int id);
 
+	List<Message> findByChatIdOrderById(int roomId);
+
 	
 
 }
