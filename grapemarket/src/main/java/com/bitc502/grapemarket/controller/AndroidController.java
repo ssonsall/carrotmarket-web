@@ -282,4 +282,27 @@ public class AndroidController {
 
 		return boards;
 	}
+	
+	@GetMapping("/getSavedAddress")
+	public UserLocationSetting getSavedAddress(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+		try {
+			UserLocationSetting userLocationSetting = new UserLocationSetting(userPrincipal.getUser().getAddress(), 
+					userPrincipal.getUser().getAddressX().toString(), userPrincipal.getUser().getAddressY().toString());
+			return userLocationSetting;
+		}catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@GetMapping("/saveAddressAuth")
+	public String saveAddressAuth(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+		try {
+			uRepo.authUpdate(userPrincipal.getUser().getId());
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "fail";
+		}
+	}
 }
