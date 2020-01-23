@@ -97,6 +97,7 @@ div.container2 {
 		<sec:authentication property="principal" var="principal" />
 	</sec:authorize>
 	<input type="hidden" id="sendername" value="${principal.user.username}" />
+	<input type="hidden" id="roomId" value="${roomId}" />
 	<div class="container" id="app" v-cloak>
 
 
@@ -126,10 +127,17 @@ div.container2 {
 
 
 				</c:forEach>
-				
-				<li class="list-group-item1" v-for="message in messages"><span
-					class="test_item1" v-if="">
-						{{message.message}}</span></li>
+
+				<div v-for="message in messages">
+					<li class="list-group-item1" v-if="message.propertyA"><span
+						class="test_item1"> {{message.message}}</span></li>
+
+					<li class="list-group-item2" v-else><span class="test_item2">
+							{{message.message}}</span></li>
+				</div>
+
+
+
 			</ul>
 		</div>
 
@@ -149,6 +157,7 @@ div.container2 {
 	<script>
         // websocket & stomp initialize
         var sendername = document.getElementById('sendername').value;
+        var roomId = document.getElementById('roomId').value;
         
         var sock = new SockJS("/ws-stomp");
         var ws = Stomp.over(sock);
@@ -160,13 +169,15 @@ div.container2 {
                 room: {},
                 sender: '',
                 message: '',
-                messages: []
+                messages: [],
+                property:''
             },
             created() {
-                this.roomId = localStorage.getItem('wschat.roomId');
+                this.roomId = roomId;
                 this.sender = sendername;
                 this.message = '';
                 this.findRoom();
+                this.property = '';
             },
             methods: {
                 findRoom: function() {
@@ -177,7 +188,12 @@ div.container2 {
                     this.message = '';
                 },
                 recvMessage: function(recv) {
-                    this.messages.push({"type":recv.type,"sender":recv.sender,"message":recv.message})
+                	if(sendername===recv.sender){
+                		this.messages.push({"type":recv.type,"sender":recv.sender,"message":recv.message,"propertyA":true})
+                	}else{
+                		this.messages.push({"type":recv.type,"sender":recv.sender,"message":recv.message,"propertyA":false})
+                    	}
+                    
                     $('#container2')
                     .stop()
                     .animate({ scrollTop: $('#container2')[0].scrollHeight }, 10);
