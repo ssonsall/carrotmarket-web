@@ -21,7 +21,4 @@ public class Statistics {
 	private List<Statistic> chatVolume;
 	// 신고
 //	private List<Map<String, Long>> reportVolume;
-	
-
-	
 }

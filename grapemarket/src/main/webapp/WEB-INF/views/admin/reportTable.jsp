@@ -67,42 +67,21 @@
 									<thead>
 										<tr>
 											<th style="text-align: center; margin: auto;">ID</th>
-											<th style="text-align: center; margin: auto;">USERNAME</th>
-											<th style="text-align: center; margin: auto;">PROVIDER</th>
-											<th style="text-align: center; margin: auto;">ROLE</th>
-											<th class="span2" style="text-align: center; margin: auto;">Board</th>
-											<th class="span2" style="text-align: center; margin: auto;">Detail</th>
+											<th style="text-align: center; margin: auto;">TYPE</th>
+											<th style="text-align: center; margin: auto;">CONTENT</th>
+											<th style="text-align: center; margin: auto;">STATE</th>
+											<th class="span2" style="text-align: center; margin: auto;">USER</th>
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach var="user" items="${users}">
+										<c:forEach var="report" items="${reports}">
 											<tr>
-												<td style="text-align: center; margin: auto;">${user.id}</td>
-
-												<c:choose>
-													<c:when test="${user.provider eq 'local'}">
-														<td style="">${user.username}</td>
-														<td
-															style="text-align: center; margin: auto; background-color: #d9edf7">${user.provider}</td>
-
-													</c:when>
-													<c:otherwise>
-														<td>${user.email}</td>
-														<td
-															style="text-align: center; margin: auto; background-color: #dff0d8;">${user.provider}</td>
-
-													</c:otherwise>
-												</c:choose>
-
-												<td style="text-align: center; margin: auto;">${user.role}</td>
-												<td style="text-align: center; margin: auto;"><button
-														class="btn btn-inverse" onclick="location.href = '/admin/userPostList/${user.id}'">
-														<i class="icon-shopping-cart icon-white"></i> Board
-													</button></td>
-												<td style="text-align: center; margin: auto;"><button
-														class="btn btn-primary" onclick="location.href = '/admin/detail/${user.id}'">
-														<i class="icon-pencil icon-white"></i> Detail
-													</button></td>
+												<td style="text-align: center; margin: auto;">${report.id}</td>
+												<td style="text-align: center; margin: auto;">${report.reportType}</td>
+												<td style="text-align: center; margin: auto;">${report.content}</td>
+												<td style="text-align: center; margin: auto;">${report.state}</td>
+												<td style="text-align: center; margin: auto;">${report.user}</td>
+												
 											</tr>
 										</c:forEach>
 									</tbody>

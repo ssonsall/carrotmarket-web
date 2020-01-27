@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -26,21 +28,25 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bitc502.grapemarket.common.CategoryType;
+import com.bitc502.grapemarket.common.ReportType;
 import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Comment;
 import com.bitc502.grapemarket.model.Likes;
+import com.bitc502.grapemarket.model.Report;
 import com.bitc502.grapemarket.model.Search;
 import com.bitc502.grapemarket.model.TradeState;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.CommentRepository;
 import com.bitc502.grapemarket.repository.LikeRepository;
+import com.bitc502.grapemarket.repository.ReportRepository;
 import com.bitc502.grapemarket.repository.SearchRepository;
 import com.bitc502.grapemarket.repository.TradeStateRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 import com.bitc502.grapemarket.service.BoardService;
 import com.bitc502.grapemarket.service.TradeStateService;
+import com.bitc502.grapemarket.util.Script;
 
 @Controller
 @RequestMapping("/board")
@@ -66,6 +72,9 @@ public class BoardController {
 
 	@Autowired
 	private TradeStateRepository tradeStateRepo;
+	
+	@Autowired
+	private ReportRepository rRepo;
 
 	@Autowired
 	private TradeStateService tradeStateServ;
@@ -379,6 +388,26 @@ public class BoardController {
 		boardServ.setBuyerId(board);
 
 		return "";
+	}
+	
+	@GetMapping("/boardReportForm")
+	public String boardReportForm(HttpServletRequest request, Model model) {
+		int id = Integer.parseInt(request.getParameter("id"));
+		Optional<Board> oBoard = bRepo.findById(id);
+		Board board = oBoard.get();
+		model.addAttribute("board", board);
+		return "board/reportForm";
+	}
+	
+	@PostMapping("/report")
+	public @ResponseBody String boardReport(Report report) {
+		try {
+			report.setReportType(ReportType.board);
+			rRepo.save(report);
+		} catch (Exception e) {
+			return Script.back("오류");
+		}
+		return Script.back("정상적으로 처리되었습니다.");
 	}
 
 }

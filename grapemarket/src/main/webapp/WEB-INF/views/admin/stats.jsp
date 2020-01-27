@@ -15,124 +15,10 @@
 	media="screen">
 
 <script src="/AdminBoot/vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
-<script src="https://www.amcharts.com/lib/4/core.js"></script>
-<script src="https://www.amcharts.com/lib/4/charts.js"></script>
-<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
-<!-- <style>
-#chartdiv {
-	width: 100%;
-	height: 500px;
-}
-</style> -->
-<script>
-	am4core.ready(function() {
-
-		// Themes begin
-		am4core.useTheme(am4themes_animated);
-		// Themes end
-
-		// Create chart instance
-		var chart = am4core.create("chartdiv", am4charts.XYChart);
-
-		// Increase contrast by taking evey second color
-		chart.colors.step = 2;
-
-		// Add data
-		chart.data = generateChartData();
-
-		// Create axes
-		var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-		dateAxis.renderer.minGridDistance = 50;
-
-		// Create series
-		function createAxisAndSeries(field, name, opposite, bullet) {
-			var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-			if (chart.yAxes.indexOf(valueAxis) != 0) {
-				valueAxis.syncWithAxis = chart.yAxes.getIndex(0);
-			}
-
-			var series = chart.series.push(new am4charts.LineSeries());
-			series.dataFields.valueY = field;
-			series.dataFields.dateX = "date";
-			series.strokeWidth = 2;
-			series.yAxis = valueAxis;
-			series.name = name;
-			series.tooltipText = "{name}: [bold]{valueY}[/]";
-			series.tensionX = 0.8;
-			series.showOnInit = true;
-
-			var interfaceColors = new am4core.InterfaceColorSet();
-
-			switch (bullet) {
-			case "triangle":
-				var bullet = series.bullets.push(new am4charts.Bullet());
-				bullet.width = 12;
-				bullet.height = 12;
-				bullet.horizontalCenter = "middle";
-				bullet.verticalCenter = "middle";
-
-				var triangle = bullet.createChild(am4core.Triangle);
-				triangle.stroke = interfaceColors.getFor("background");
-				triangle.strokeWidth = 2;
-				triangle.direction = "top";
-				triangle.width = 12;
-				triangle.height = 12;
-				break;
-			case "rectangle":
-				var bullet = series.bullets.push(new am4charts.Bullet());
-				bullet.width = 10;
-				bullet.height = 10;
-				bullet.horizontalCenter = "middle";
-				bullet.verticalCenter = "middle";
-
-				var rectangle = bullet.createChild(am4core.Rectangle);
-				rectangle.stroke = interfaceColors.getFor("background");
-				rectangle.strokeWidth = 2;
-				rectangle.width = 10;
-				rectangle.height = 10;
-				break;
-			default:
-				var bullet = series.bullets.push(new am4charts.CircleBullet());
-				bullet.circle.stroke = interfaceColors.getFor("background");
-				bullet.circle.strokeWidth = 2;
-				break;
-			}
-
-			valueAxis.renderer.line.strokeOpacity = 1;
-			valueAxis.renderer.line.strokeWidth = 2;
-			valueAxis.renderer.line.stroke = series.stroke;
-			valueAxis.renderer.labels.template.fill = series.stroke;
-			valueAxis.renderer.opposite = opposite;
-		}
-
-		createAxisAndSeries("visits", "Visits", false, "circle");
-		createAxisAndSeries("views", "Views", true, "triangle");
-		createAxisAndSeries("hits", "Hits", true, "rectangle");
-
-		// Add legend
-		chart.legend = new am4charts.Legend();
-
-		// Add cursor
-		chart.cursor = new am4charts.XYCursor();
-
-		// generate some random data, quite different range
-		function generateChartData() {
-			var chartData = "<c:out value='${stats}'/>";
-
-			}
-			return chartData;
-		}
-
-	}); // end am4core.ready()
-</script>
-
+<script
+	src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 </head>
 <body>
-	<h1>${stats.visitorVolume[0].createDate}</h1>
-	<c:forEach var="stat" items="${stats.visitorVolume}">
-	</c:forEach>
-
-	<input id="statsDate" type="text" value="${stats.visitorVolume}">
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container-fluid">
@@ -144,40 +30,83 @@
 			</div>
 		</div>
 	</div>
-
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<%@include file="include/sidebar.jsp"%>
 			<!--/span-->
 			<div class="span9" id="content">
 
-
-
-				<div class="row-fluid">
-					<div class="span12">
-						<!-- block -->
-						<div class="block">
-							<div class="navbar navbar-inner block-header">
-								<div class="muted pull-left">Pie Chart</div>
-							</div>
-							<div class="block-content collapse in">
-								<div class="span12" id="chartdiv" style="height: 400px"></div>
-							</div>
-						</div>
-						<!-- /block -->
-					</div>
-					<div class="span6">
-
-						<div id="chartdiv"></div>
-					</div>
-				</div>
-
-				<div class="row-fluid">
+				<!-- morris graph chart -->
+				<div class="row-fluid section">
 					<!-- block -->
 					<div class="block">
+						<div class="navbar navbar-inner block-header">
+							<div class="muted pull-left">
+								사용자 통계 <small>방문자 / 가입자</small>
+							</div>
 
-						<div id="chartdiv"></div>
+						</div>
+						<div class="block-content collapse in">
+							<div class="span12">
+								<div id="hero-graph" style="height: 230px;"></div>
+							</div>
+						</div>
+					</div>
+					<!-- /block -->
+				</div>
 
+
+				<!-- morris graph chart -->
+				<div class="row-fluid section">
+					<!-- block -->
+					<div class="block">
+						<div class="navbar navbar-inner block-header">
+							<div class="muted pull-left">
+								거래 통계 <small>전체 거래 / 거래 완료</small>
+							</div>
+
+						</div>
+						<div class="block-content collapse in">
+							<div class="span12">
+								<div id="deal-graph" style="height: 230px;"></div>
+							</div>
+						</div>
+					</div>
+					<!-- /block -->
+				</div>
+
+
+				<!-- morris graph chart -->
+				<div class="row-fluid section">
+					<!-- block -->
+					<div class="block">
+						<div class="navbar navbar-inner block-header">
+							<div class="muted pull-left">채팅 통계</div>
+
+						</div>
+						<div class="block-content collapse in">
+							<div class="span12">
+								<div id="chat-graph" style="height: 230px;"></div>
+							</div>
+						</div>
+					</div>
+					<!-- /block -->
+				</div>
+				
+				
+				<!-- morris graph chart -->
+				<div class="row-fluid section">
+					<!-- block -->
+					<div class="block">
+						<div class="navbar navbar-inner block-header">
+							<div class="muted pull-left">신고 통계</div>
+
+						</div>
+						<div class="block-content collapse in">
+							<div class="span12">
+								<div id="report-graph" style="height: 230px;"></div>
+							</div>
+						</div>
 					</div>
 					<!-- /block -->
 				</div>
@@ -190,6 +119,8 @@
 		</footer>
 	</div>
 	<!--/.fluid-container-->
+	<link rel="stylesheet" href="/AdminBoot/vendors/morris/morris.css">
+
 	<script src="/AdminBoot/vendors/jquery-1.9.1.min.js"></script>
 	<script src="/AdminBoot/vendors/jquery.knob.js"></script>
 	<script src="/AdminBoot/vendors/raphael-min.js"></script>
@@ -204,7 +135,65 @@
 	<script src="/AdminBoot/vendors/flot/jquery.flot.resize.js"></script>
 
 	<script src="/AdminBoot/assets/scripts.js"></script>
+	
+	<script>
 
+		// Morris Line Chart
+		var tax_data = [<c:forEach items="${Statistics.visitorVolume}" var="item"
+			varStatus="status">{ "period" : "${item.createDate}", "visits" : ${item.count}, "signups" : ${Statistics.memberVolume[status.index].count}	}<c:if test="${!status.last}">, </c:if>
+			</c:forEach>];
+		Morris.Line({
+			element : 'hero-graph',
+			data : tax_data,
+			xkey : 'period',
+			xLabels : "month",
+			ykeys : [ 'visits', 'signups' ],
+			labels : [ '방문자', '가입자' ],
+			lineColors	:["#A854BA", "#D28BE1"]
+		});
+
+		var deal_data = [<c:forEach items="${Statistics.dealVolume}" var="item"
+			varStatus="status">{ "period" : "${item.createDate}", "visits" : ${item.count}, "signups" : ${Statistics.completedDealVolume[status.index].count}	}<c:if test="${!status.last}">, </c:if>
+			</c:forEach>];
+		Morris.Line({
+			element : 'deal-graph',
+			data : deal_data,
+			xkey : 'period',
+			xLabels : "month",
+			ykeys : [ 'visits', 'signups' ],
+			labels : [ '거래량', '거래완료량' ]
+		});
+
+
+
+		var chat_data = [<c:forEach items="${Statistics.chatVolume}" var="item"
+			varStatus="status">{ "period" : "${item.createDate}", "visits" : ${item.count}	}<c:if test="${!status.last}">, </c:if>
+			</c:forEach>];
+		Morris.Line({
+			element : 'chat-graph',
+			data : chat_data,
+			xkey : 'period',
+			xLabels : "month",
+			ykeys : [ 'visits' ],
+			labels : [ 'Chats'],
+		lineColors	:["#FFAD1E"]
+		});
+
+
+
+		var report_data = [<c:forEach items="${Statistics.chatVolume}" var="item"
+			varStatus="status">{ "period" : "${item.createDate}", "visits" : ${item.count}	}<c:if test="${!status.last}">, </c:if>
+			</c:forEach>];
+		Morris.Line({
+			element : 'report-graph',
+			data : chat_data,
+			xkey : 'period',
+			xLabels : "month",
+			ykeys : [ 'visits' ],
+			labels : [ 'Reports'],
+		lineColors	:["#D72E2E"]
+		});
+	</script>
 </body>
 
 </html>

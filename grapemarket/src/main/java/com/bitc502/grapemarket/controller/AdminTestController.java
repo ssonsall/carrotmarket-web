@@ -1,10 +1,11 @@
 package com.bitc502.grapemarket.controller;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,12 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitc502.grapemarket.model.Board;
+import com.bitc502.grapemarket.model.Report;
 import com.bitc502.grapemarket.model.Role;
 import com.bitc502.grapemarket.model.Statistic;
 import com.bitc502.grapemarket.model.Statistics;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.ChatRepository;
+import com.bitc502.grapemarket.repository.ReportRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.repository.VisitorRepository;
 import com.bitc502.grapemarket.util.Script;
@@ -38,11 +41,12 @@ public class AdminTestController {
 	private VisitorRepository vRepo;
 	@Autowired
 	private ChatRepository cRepo;
-	
+	@Autowired
+	private ReportRepository rRepo;
 
 	@GetMapping({ "/", "" })
 	public String dashboard(Model model) {
-		
+
 		model.addAttribute("currentVisitorCount", VisitorCounter.currentVisitorCount);
 		return "admin/dashboard";
 	}
@@ -62,12 +66,12 @@ public class AdminTestController {
 		stats.setDealVolume(MaptoStatistic(bRepo.DealVolume()));
 		stats.setCompletedDealVolume(MaptoStatistic(bRepo.completedDealVolume()));
 		stats.setChatVolume(MaptoStatistic(cRepo.chatVolume()));
-		//신고도 추가해야함		
+
+		// 신고도 추가해야함
 		model.addAttribute("currentVisitorCount", VisitorCounter.currentVisitorCount);
-		model.addAttribute("stats", stats);
+		model.addAttribute("Statistics", stats);
 		return "admin/stats";
 	}
-	
 
 	public List<Statistic> MaptoStatistic(List<Map<String, Object>> list) {
 		List<Statistic> statList = new ArrayList<>();
@@ -82,10 +86,9 @@ public class AdminTestController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("statList" + statList);
 		return statList;
 	}
-	
+
 	@GetMapping({ "/detail/{id}" })
 	public String stats(@PathVariable int id, Model model) {
 		Optional<User> oUser = uRepo.findById(id);
@@ -112,18 +115,25 @@ public class AdminTestController {
 		uRepo.save(user);
 		return Script.hrefAndAlert("/admin/detail/" + id, "권한 변경완료");
 	}
-	
-
 
 	@GetMapping({ "/userPostList/{id}" })
 	public String userPostList(@PathVariable int id, Model model) {
 		Optional<User> oUser = uRepo.findById(id);
 		User user = oUser.get();
-		List<Board> boards= bRepo.findByUserIdOrderByCreateDateDesc(id);
+		List<Board> boards = bRepo.findByUserIdOrderByCreateDateDesc(id);
 
 		model.addAttribute("user", user);
 		model.addAttribute("boards", boards);
 		return "admin/userPostList";
 	}
+
+	@GetMapping("/report")
+	public String reportTable(Model model) {
+		List<Report> reports = rRepo.findAll();
+		model.addAttribute("reports", reports);
+		return "admin/reportTable";
+	}
+
 	
+
 }

@@ -6,7 +6,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,14 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.bitc502.grapemarket.exception.BadRequestException;
-import com.bitc502.grapemarket.exception.ResourceNotFoundException;
 import com.bitc502.grapemarket.model.AuthProvider;
 import com.bitc502.grapemarket.model.Role;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.payload.ApiResponse;
 import com.bitc502.grapemarket.payload.SignUpRequest;
 import com.bitc502.grapemarket.repository.UserRepository;
-import com.bitc502.grapemarket.security.UserPrincipal;
 
 @Controller
 @RequestMapping("/auth")
