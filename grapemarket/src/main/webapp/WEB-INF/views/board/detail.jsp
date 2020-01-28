@@ -544,7 +544,7 @@
 	<%@include file="../include/script.jsp"%>
 	<script type="text/javascript">
 	  function reportPopup(id) {
-		  window.open("/board/boardReportForm?id="+id, "a", "width=400, height=500, left=100, top=50"); 
+		  window.open("/report/boardReportForm?id="+id, "a", "width=400, height=500, left=100, top=50"); 
 		  }
 	</script>
 </body>

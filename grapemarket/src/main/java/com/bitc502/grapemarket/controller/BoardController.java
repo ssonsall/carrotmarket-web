@@ -72,9 +72,6 @@ public class BoardController {
 
 	@Autowired
 	private TradeStateRepository tradeStateRepo;
-	
-	@Autowired
-	private ReportRepository rRepo;
 
 	@Autowired
 	private TradeStateService tradeStateServ;
@@ -388,26 +385,6 @@ public class BoardController {
 		boardServ.setBuyerId(board);
 
 		return "";
-	}
-	
-	@GetMapping("/boardReportForm")
-	public String boardReportForm(HttpServletRequest request, Model model) {
-		int id = Integer.parseInt(request.getParameter("id"));
-		Optional<Board> oBoard = bRepo.findById(id);
-		Board board = oBoard.get();
-		model.addAttribute("board", board);
-		return "board/reportForm";
-	}
-	
-	@PostMapping("/report")
-	public @ResponseBody String boardReport(Report report) {
-		try {
-			report.setReportType(ReportType.board);
-			rRepo.save(report);
-		} catch (Exception e) {
-			return Script.back("오류");
-		}
-		return Script.back("정상적으로 처리되었습니다.");
 	}
 
 }

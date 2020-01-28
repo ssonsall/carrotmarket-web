@@ -38,13 +38,12 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-6 col-sm-offset-3">
-							<form id="writeFormSubmit" action="/board/report" method="post"
+							<form id="writeFormSubmit" action="/report/boardReport" method="post"
 								enctype="multipart/form-data">
-								<%-- <input type="hidden" name="userId" value="${user.id}"> --%>
 								<input type="hidden" name="state" value="0">
 								<input type="hidden" name="reportId" value="${board.id}">
 								<input type="hidden" name="user" value="${principal.user.id}">
-
+								<h1>${principal.user}</h1>
 								<div class="form-group">
 									<label class="sr-only" for="title">제목</label> <input
 										class="form-control" type="text" id="title" name="title"
