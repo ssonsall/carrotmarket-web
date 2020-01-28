@@ -14,7 +14,7 @@ public interface ChatRepository extends JpaRepository<Chat, Integer>{
 	
 	List<Chat> findBySellerId(User sellerId);
 	
-	Chat findById(int id);
+	Chat findById(int id);	
 	
 	@Query(value = "SELECT * FROM chat WHERE boardId=?1 AND buyerId=?2 AND sellerId =?3",nativeQuery = true)
 	Chat findByBoardIdAndBuyerIdAndSellerId(int board, int buyerId, int sellerId);

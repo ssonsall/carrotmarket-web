@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bitc502.grapemarket.common.ReportType;
 import com.bitc502.grapemarket.model.Board;
+import com.bitc502.grapemarket.model.Chat;
+import com.bitc502.grapemarket.model.Comment;
 import com.bitc502.grapemarket.model.Report;
 import com.bitc502.grapemarket.model.Role;
 import com.bitc502.grapemarket.model.Statistic;
@@ -23,6 +26,7 @@ import com.bitc502.grapemarket.model.Statistics;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.ChatRepository;
+import com.bitc502.grapemarket.repository.CommentRepository;
 import com.bitc502.grapemarket.repository.ReportRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.repository.VisitorRepository;
@@ -41,6 +45,8 @@ public class AdminTestController {
 	private VisitorRepository vRepo;
 	@Autowired
 	private ChatRepository cRepo;
+	@Autowired
+	private CommentRepository commentRepo;
 	@Autowired
 	private ReportRepository rRepo;
 
@@ -66,6 +72,7 @@ public class AdminTestController {
 		stats.setDealVolume(MaptoStatistic(bRepo.DealVolume()));
 		stats.setCompletedDealVolume(MaptoStatistic(bRepo.completedDealVolume()));
 		stats.setChatVolume(MaptoStatistic(cRepo.chatVolume()));
+		stats.setReportVolume(MaptoStatistic(rRepo.reportVolume()));
 
 		// 신고도 추가해야함
 		model.addAttribute("currentVisitorCount", VisitorCounter.currentVisitorCount);
@@ -134,6 +141,48 @@ public class AdminTestController {
 		return "admin/reportTable";
 	}
 
+	@GetMapping("/reportDetail")
+	public String reportDetail(HttpServletRequest request, Model model) {
+		int id = Integer.parseInt(request.getParameter("id"));
+		Optional<Report> oReport = rRepo.findById(id);
+		Report report = oReport.get();
+		if (report.getReportType().equals(ReportType.board)) {
+			Optional<Board> oBoard = bRepo.findById(report.getReportId());
+			Board board = oBoard.get();
+			model.addAttribute("reportType", board);
+		} else if (report.getReportType().equals(ReportType.comment)) {
+			Optional<Comment> oComment = commentRepo.findById(report.getReportId());
+			Comment comment = oComment.get();
+			model.addAttribute("reportType", comment);
+		} else if (report.getReportType().equals(ReportType.chat)) {
+			Chat chat = cRepo.findById(report.getReportId());
+			model.addAttribute("reportType", chat);
+
+		}
+		model.addAttribute("report", report);
+		return "admin/reportDetail";
+	}
 	
+	@GetMapping("/restriction")
+	public @ResponseBody String restriction(HttpServletRequest request) {
+		int id = Integer.parseInt(request.getParameter("id"));
+		String sort = request.getParameter("sort");
+		try {
+			Optional<User> oUser = uRepo.findById(id);
+			User user = oUser.get();
+			if(sort.equals("caution1")) {
+				user.setRole(Role.CAUTION1);
+			}else if(sort.equals("caution2")) {
+				user.setRole(Role.CAUTION2);
+			} else if(sort.equals("ban")) {
+				user.setRole(Role.BANNED);
+			}
+			uRepo.save(user);
+		}catch (Exception e) {
+			return Script.back("오류발생");
+		}
+		
+		return Script.back("정상 처리되었습니다.");
+	}
 
 }

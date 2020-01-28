@@ -1,5 +1,7 @@
 package com.bitc502.grapemarket.model;
 
+import java.sql.Timestamp;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.bitc502.grapemarket.common.ReportType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -28,4 +32,10 @@ public class Report {
 	@JoinColumn(name = "userId")
 	@JsonIgnoreProperties({ "board","comment","like","address","addressX","addressY" })
 	private User user;
+	
+	
+
+
+	@CreationTimestamp
+	private Timestamp createDate;
 }

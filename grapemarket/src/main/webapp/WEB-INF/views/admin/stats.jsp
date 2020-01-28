@@ -181,12 +181,12 @@
 
 
 
-		var report_data = [<c:forEach items="${Statistics.chatVolume}" var="item"
+		var report_data = [<c:forEach items="${Statistics.reportVolume}" var="item"
 			varStatus="status">{ "period" : "${item.createDate}", "visits" : ${item.count}	}<c:if test="${!status.last}">, </c:if>
 			</c:forEach>];
 		Morris.Line({
 			element : 'report-graph',
-			data : chat_data,
+			data : report_data,
 			xkey : 'period',
 			xLabels : "month",
 			ykeys : [ 'visits' ],

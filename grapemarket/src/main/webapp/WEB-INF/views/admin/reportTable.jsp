@@ -66,11 +66,11 @@
 									style="vertical-align: none;" id="example2">
 									<thead>
 										<tr>
-											<th style="text-align: center; margin: auto;">ID</th>
-											<th style="text-align: center; margin: auto;">TYPE</th>
+											<th class="span2" style="text-align: center; margin: auto;">ID</th>
+											<th class="span2" style="text-align: center; margin: auto;">TYPE</th>
 											<th style="text-align: center; margin: auto;">CONTENT</th>
-											<th style="text-align: center; margin: auto;">STATE</th>
 											<th class="span2" style="text-align: center; margin: auto;">USER</th>
+											<th class="span2" style="text-align: center; margin: auto;">STATE</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -79,9 +79,16 @@
 												<td style="text-align: center; margin: auto;">${report.id}</td>
 												<td style="text-align: center; margin: auto;">${report.reportType}</td>
 												<td style="text-align: center; margin: auto;">${report.content}</td>
-												<td style="text-align: center; margin: auto;">${report.state}</td>
-												<td style="text-align: center; margin: auto;">${report.user}</td>
-												
+												<td style="text-align: center; margin: auto;">${report.user.username}</td>
+												<td style="text-align: center; margin: auto;"><c:choose>
+														<c:when test="${report.state eq 0}">
+															<button class="btn btn-danger" onclick="location.href = '/admin/reportDetail?id=${report.id}'">Button</button>
+														</c:when>
+														<c:otherwise>
+															<button class="btn">Button</button>
+														</c:otherwise>
+													</c:choose></td>
+
 											</tr>
 										</c:forEach>
 									</tbody>
