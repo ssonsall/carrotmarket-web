@@ -38,6 +38,7 @@ import com.bitc502.grapemarket.repository.CommentRepository;
 import com.bitc502.grapemarket.repository.SearchRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
+import com.google.gson.Gson;
 
 @RequestMapping("/android")
 @RestController
@@ -306,5 +307,33 @@ public class AndroidController {
 			e.printStackTrace();
 			return "fail";
 		}
+	}
+	
+	@GetMapping("/currentmyinfo")
+	public User getCunnretMyInfo(@AuthenticationPrincipal UserPrincipal userPrincipal) {
+		try {
+			return uRepo.findById(userPrincipal.getUser().getId()).get();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	@PostMapping("/changepassword")
+	public String changePassword(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("newPassword") String newPassword) {
+		try {
+			uRepo.androidPasswordUpdate(passwordEncoder.encode(newPassword), userPrincipal.getUser().getId());
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "fail";
+		}
+	}
+	
+	@PostMapping("/changeprofile")
+	public String chageProfile(@RequestParam("user") String userJson) {
+		User user = new Gson().fromJson(userJson, User.class);
+		
+		return null;
 	}
 }

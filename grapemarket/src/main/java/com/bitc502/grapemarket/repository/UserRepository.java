@@ -38,6 +38,16 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	@Transactional
 	@Query(value = "UPDATE User u set u.addressAuth=1 WHERE u.id = ?1")
 	void authUpdate(int id);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE User u set u.password=?1 WHERE u.id = ?2")
+	void androidPasswordUpdate(String password, int id);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE User u set u.email = ?1, u.phone = ?2, u.userProfile = ?3 WHERE u.id = ?4")
+	void androidUpdate(String email, String phone, String userProfile, int id);
 
 	@Query(value = "SELECT days.day AS date, COALESCE(t.cnt, 0) AS count FROM ( SELECT CURDATE() AS day UNION SELECT CURDATE() - INTERVAL 1 day UNION SELECT CURDATE() - INTERVAL 2 day UNION SELECT CURDATE() - INTERVAL 3 day UNION SELECT CURDATE() - INTERVAL 4 day UNION SELECT CURDATE() - INTERVAL 5 day UNION SELECT CURDATE() - INTERVAL 6 day UNION SELECT CURDATE() - INTERVAL 7 day UNION SELECT CURDATE() - INTERVAL 8 day UNION SELECT CURDATE() - INTERVAL 9 day ) days LEFT JOIN ( SELECT DATE(createDate) AS date, COUNT(*) AS cnt FROM user WHERE createDate >= CURDATE() - INTERVAL 9 day GROUP BY DATE(createDate) ) t ON days.day = t.date ORDER BY date DESC;", nativeQuery = true)
 	List<Map<String, Object>> memberVolume();
