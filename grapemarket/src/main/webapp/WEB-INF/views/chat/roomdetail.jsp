@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
+   uri="http://www.springframework.org/security/tags"%>
 <!doctype html>
 <html lang="en">
 <head>
@@ -10,22 +10,22 @@
 <!-- Required meta tags -->
 <meta charset="utf-8">
 <meta name="viewport"
-	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+   content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+   src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-	crossorigin="anonymous">
+   href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+   rel="stylesheet"
+   integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+   crossorigin="anonymous">
 <script
-	src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-	integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-	crossorigin="anonymous"></script>
+   src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+   integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+   crossorigin="anonymous"></script>
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+   src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
 
 
@@ -33,122 +33,131 @@
 <!-- <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/dist/css/bootstrap.min.css"> -->
 <style>
 [v-cloak] {
-	display: none;
+   display: none;
 }
 
 div.container2 {
-	overflow-x: auto;
-	overflow-y: scroll;
-	display: inline-block;
-	border: solid 1px rgba(0, 0, 0, .125);
-	height: 400px;
-	width: 380px;
+   overflow-x: auto;
+   overflow-y: scroll;
+   display: inline-block;
+   border: solid 1px rgba(0, 0, 0, .125);
+   height: 400px;
+   width: 380px;
 }
 
 .list-group-item1 {
-	padding: 0;
-	margin: 0;
-	border: 0;
-	margin-left: 0.5rem;
-	background-color: rgba(0, 0, 0, 0);
-	padding: 0.7rem;
-	text-align: right;
+   padding: 0;
+   margin: 0;
+   border: 0;
+   margin-left: 0.5rem;
+   background-color: rgba(0, 0, 0, 0);
+   padding: 0.7rem;
+   text-align: right;
 }
 
 .list-group-item2 {
-	padding: 0;
-	margin: 0;
-	border: 0;
-	margin-left: 0.5rem;
-	background-color: rgba(0, 0, 0, 0);
-	padding: 0.7rem;
-	text-align: left;
+   padding: 0;
+   margin: 0;
+   border: 0;
+   margin-left: 0.5rem;
+   background-color: rgba(0, 0, 0, 0);
+   padding: 0.7rem;
+   text-align: left;
 }
 
 .test_item1 {
-	background-color: RGB(229, 229, 234);
-	/* RGB(16,136,254); */
-	/* RGB(229,229,234) */
-	color: black;
-	font-weight: 600;
-	padding: 0.5rem;
-	padding-left: 1rem;
-	padding-right: 1rem;
-	border-radius: 10px;
-	padding: 0.5rem;
+   background-color: RGB(229, 229, 234);
+   /* RGB(16,136,254); */
+   /* RGB(229,229,234) */
+   color: black;
+   font-weight: 600;
+   padding: 0.5rem;
+   padding-left: 1rem;
+   padding-right: 1rem;
+   border-radius: 10px;
+   padding: 0.5rem;
 }
 
 .test_item2 {
-	background-color: RGB(16, 136, 254);
-	/* RGB(16,136,254); */
-	/* RGB(229,229,234) */
-	color: white;
-	font-weight: 600;
-	padding: 0.5rem;
-	padding-left: 1rem;
-	padding-right: 1rem;
-	border-radius: 10px;
-	padding: 0.5rem;
+   background-color: RGB(16, 136, 254);
+   /* RGB(16,136,254); */
+   /* RGB(229,229,234) */
+   color: white;
+   font-weight: 600;
+   padding: 0.5rem;
+   padding-left: 1rem;
+   padding-right: 1rem;
+   border-radius: 10px;
+   padding: 0.5rem;
 }
 </style>
 </head>
 <body>
-	<sec:authorize access="isAuthenticated()">
-		<sec:authentication property="principal" var="principal" />
-	</sec:authorize>
-	<input type="hidden" id="sendername" value="${principal.user.username}" />
-	<div class="container" id="app" v-cloak>
+   <sec:authorize access="isAuthenticated()">
+      <sec:authentication property="principal" var="principal" />
+   </sec:authorize>
+   <input type="hidden" id="sendername" value="${principal.user.username}" />
+   <input type="hidden" id="roomId" value="${roomId}" />
+   <div class="container" id="app" v-cloak>
 
 
-		<div class="container2" id="container2">
+      <div class="container2" id="container2">
 
-			<ul class="list-group">
+         <ul class="list-group">
 
-				<c:forEach var="message" items="${messages}">
-
-
-
-
-					<c:choose>
-						<c:when test="${principal.user.username eq message.sender}">
-							<li class="list-group-item1"><span class="test_item1">
-
-									${message.message}</span></li>
-						</c:when>
-						<c:otherwise>
-							<li class="list-group-item2"><span class="test_item2">
-
-									${message.message}</span></li>
-						</c:otherwise>
-					</c:choose>
+            <c:forEach var="message" items="${messages}">
 
 
 
 
-				</c:forEach>
-				
-				<li class="list-group-item1" v-for="message in messages"><span
-					class="test_item1" v-if="">
-						{{message.message}}</span></li>
-			</ul>
-		</div>
+               <c:choose>
+                  <c:when test="${principal.user.username eq message.sender}">
+                     <li class="list-group-item1"><span class="test_item1">
+
+                           ${message.message}</span></li>
+                  </c:when>
+                  <c:otherwise>
+                     <li class="list-group-item2"><span class="test_item2">
+
+                           ${message.message}</span></li>
+                  </c:otherwise>
+               </c:choose>
 
 
-		<div class="input-group">
-			<div class="input-group-prepend">
 
-				<label class="input-group-text">내용</label>
-			</div>
-			<input type="text" id="message" name="message" class="form-control"
-				v-model="message" @keyup.enter="sendMessage">
-			<div class="input-group-append">
-				<button class="btn btn-primary" type="button" @click="sendMessage">보내기</button>
-			</div>
-		</div>
-	</div>
-	<script>
+
+            </c:forEach>
+
+            <div v-for="message in messages">
+               <li class="list-group-item1" v-if="message.propertyA"><span
+                  class="test_item1"> {{message.message}}</span></li>
+
+               <li class="list-group-item2" v-else><span class="test_item2">
+                     {{message.message}}</span></li>
+            </div>
+
+
+
+         </ul>
+      </div>
+
+
+      <div class="input-group">
+         <div class="input-group-prepend">
+
+            <label class="input-group-text">내용</label>
+         </div>
+         <input type="text" id="message" name="message" class="form-control"
+            v-model="message" @keyup.enter="sendMessage">
+         <div class="input-group-append">
+            <button class="btn btn-primary" type="button" @click="sendMessage">보내기</button>
+         </div>
+      </div>
+   </div>
+   <script>
         // websocket & stomp initialize
         var sendername = document.getElementById('sendername').value;
+        var roomId = document.getElementById('roomId').value;
         
         var sock = new SockJS("/ws-stomp");
         var ws = Stomp.over(sock);
@@ -160,13 +169,16 @@ div.container2 {
                 room: {},
                 sender: '',
                 message: '',
-                messages: []
+                messages: [],
+                property:''
             },
             created() {
-                this.roomId = localStorage.getItem('wschat.roomId');
+                //this.roomId = localStorage.getItem('wschat.roomId');
+                this.roomId = roomId;
                 this.sender = sendername;
                 this.message = '';
                 this.findRoom();
+                this.property = '';
             },
             methods: {
                 findRoom: function() {
@@ -177,7 +189,12 @@ div.container2 {
                     this.message = '';
                 },
                 recvMessage: function(recv) {
-                    this.messages.push({"type":recv.type,"sender":recv.sender,"message":recv.message})
+                   if(sendername===recv.sender){
+                      this.messages.push({"type":recv.type,"sender":recv.sender,"message":recv.message,"propertyA":true})
+                   }else{
+                      this.messages.push({"type":recv.type,"sender":recv.sender,"message":recv.message,"propertyA":false})
+                       }
+                    
                     $('#container2')
                     .stop()
                     .animate({ scrollTop: $('#container2')[0].scrollHeight }, 10);
@@ -199,6 +216,6 @@ div.container2 {
 
 
 
-	<%@include file="../include/script.jsp"%>
+   <%@include file="../include/script.jsp"%>
 </body>
 </html>
