@@ -85,6 +85,7 @@ public class BoardController {
 		return "redirect:/board/page?page=0&category=1&userInput=";
 	}
 
+	//리스트 페이지
 	@GetMapping("/page")
 	public String getList(Model model,
 			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable,
@@ -165,6 +166,7 @@ public class BoardController {
 
 	}
 
+	//글쓰기 동작
 	@PostMapping("/writeProc")
 	public String write(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("state") String state,
 			@RequestParam("category") String category, @RequestParam("title") String title,
@@ -257,6 +259,7 @@ public class BoardController {
 
 	}
 
+	//글 삭제
 	@PostMapping("/delete/{id}")
 	public String delete(@PathVariable int id) {
 		try {
@@ -268,6 +271,7 @@ public class BoardController {
 		return "redirect:/board/detail/" + id;
 	}
 
+	//카테고리
 	@GetMapping("/category")
 	public String category(Model model) {
 		CategoryType[] categories = CategoryType.values();
@@ -281,6 +285,7 @@ public class BoardController {
 		return "/board/category";
 	}
 
+	//글 수정
 	@PostMapping("/updateForm/{id}")
 	public String updateForm(@PathVariable int id, Model model) {
 		// 이미지 파일때문에 생각 좀 해봐야 함.
@@ -291,6 +296,7 @@ public class BoardController {
 		// return "board/updateForm";
 	}
 
+	//글수정 동작
 	@PostMapping("/update")
 	public String update(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("state") String state,
 			@RequestParam("category") String category, @RequestParam("title") String title,
@@ -373,18 +379,17 @@ public class BoardController {
 		return "redirect:/board/writeForm";
 	}
 
+	//카테고리별 리스트
 	@GetMapping("/category/{id}")
 	public String searchByCategory(@PathVariable int id) {
-		// 카테고리별 리스트 화면
 		return null;
 	}
 
+	//complete
 	@PostMapping("/complete")
-	public @ResponseBody String boardComplete(Board board) {
+	public @ResponseBody void boardComplete(Board board) {
 
 		boardServ.setBuyerId(board);
-
-		return "";
 	}
 
 }
