@@ -59,7 +59,7 @@ function init(){
 		document.form.action="http://www.juso.go.kr/addrlink/addrCoordUrl.do"; //인터넷망
 		document.form.submit();
 	}else{
-		opener.jusoCallBack("<%=emdNm%>","<%=entX%>", "<%=entY%>");
+		opener.jusoCallBack("<%=emdNo%>","<%=entX%>", "<%=entY%>");
 		window.close();
 		}
 }

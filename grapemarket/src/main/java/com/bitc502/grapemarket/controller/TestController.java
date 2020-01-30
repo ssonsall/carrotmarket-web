@@ -246,5 +246,9 @@ public class TestController {
 		List<User> users = uRepo.findByGPS(nw.latitude, se.latitude, nw.longitude, se.longitude);
 
 		return users;
+	
+	@GetMapping("/maptest")
+	public String maptest() {
+		return "/map/Sample";
 	}
 }

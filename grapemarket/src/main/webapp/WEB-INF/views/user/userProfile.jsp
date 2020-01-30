@@ -236,11 +236,16 @@
 
 													<p class="help-block text-danger"></p>
 												</div>
-												<div class="text-center col-md-4">
+												<c:choose>
+														<c:when test="${user.addressAuth==0}">
+																<div class="text-center col-md-4">
 													<input class="btn btn-block btn-round btn-d" id="cfsubmit"
 														type="button" onClick="getLocation();"
 														placeholder="Search" value="인증하기" />
 												</div>
+														</c:when>
+													</c:choose>
+											
 
 
 											</form>
