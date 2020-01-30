@@ -190,4 +190,9 @@ public class TestController {
 		System.out.println("statList" + statList);
 		return statList;
 	}
+	
+	@GetMapping("/maptest")
+	public String maptest() {
+		return "/map/Sample";
+	}
 }

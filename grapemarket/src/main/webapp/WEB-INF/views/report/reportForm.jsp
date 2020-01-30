@@ -7,6 +7,7 @@
 
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
+
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,6 +22,7 @@
 <%@include file="../include/stylesheets.jsp"%>
 
 </head>
+
 <body data-spy="scroll" data-target=".onpage-navigation"
 	data-offset="60">
 	<main>
@@ -28,7 +30,7 @@
 			<div class="loader">Loading...</div>
 		</div>
 		<div class="main">
-			<section class="module" id="contact" style="padding-top: 30px">
+			<section class="module" id="contact" style="padding-top: 30px; padding-bottom: 0px;">
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-6 col-sm-offset-3">
@@ -38,18 +40,48 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-6 col-sm-offset-3">
-							<form id="writeFormSubmit" action="/report/boardReport" method="post"
-								enctype="multipart/form-data">
-								<input type="hidden" name="state" value="0">
-								<input type="hidden" name="reportId" value="${board.id}">
-								<div class="form-group">
-									<label class="sr-only" for="title">제목</label> <input
-										class="form-control" type="text" id="title" name="title"
-										placeholder="제목*" required="required"
-										data-validation-required-message="Please enter your name."
-										value="${board.title}" readonly="readonly" />
-									<p class="help-block text-danger"></p>
-								</div>
+							<form id="writeFormSubmit" action="/report/reportProc"
+								method="post" enctype="multipart/form-data">
+								<input type="hidden" name="state" value="0"> <input
+									type="hidden" name="reportType" value="${type}">
+								<c:choose>
+									<c:when test="${type eq 'board'}">
+										<input type="hidden" name="reportId" value="${board.id}">
+										<div class="form-group">
+											<label class="sr-only" for="title">제목</label> <input
+												class="form-control" type="text" id="title" name="title"
+												placeholder="제목*" required="required"
+												data-validation-required-message="Please enter your name."
+												value="${board.title}" readonly="readonly" />
+											<p class="help-block text-danger"></p>
+										</div>
+									</c:when>
+									<c:when test="${type eq 'comment'}">
+										<input type="hidden" name="reportId" value="${comment.id}">
+										<div class="form-group">
+											<label class="sr-only" for="title">제목</label> <input
+												class="form-control" type="text" id="title" name="title"
+												placeholder="제목*" required="required"
+												data-validation-required-message="Please enter your name."
+												value="${comment.content}" readonly="readonly" />
+											<p class="help-block text-danger"></p>
+										</div>
+									</c:when>
+									<c:otherwise>
+										<input type="hidden" name="reportId" value="${message.id}">
+										<div class="form-group">
+											<label class="sr-only" for="title">제목</label> <input
+												class="form-control" type="text" id="title" name="title"
+												placeholder="제목*" required="required"
+												data-validation-required-message="Please enter your name."
+												value="${message.message}" readonly="readonly" />
+											<p class="help-block text-danger"></p>
+										</div>
+									</c:otherwise>
+
+								</c:choose>
+
+
 
 
 								<div class="form-group">
@@ -81,8 +113,9 @@
 	<script type="text/javascript">
 		function reportPopup() {
 			window.open("08_2_popup.html", "a",
-					"width=400, height=500, left=100, top=50");
+					"width=500, height=600, left=100, top=50");
 		}
 	</script>
 </body>
+
 </html>

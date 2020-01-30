@@ -1,3 +1,4 @@
+
 package com.bitc502.grapemarket.controller;
 
 import java.util.ArrayList;
@@ -154,7 +155,7 @@ public class AdminTestController {
 			Optional<Comment> oComment = commentRepo.findById(report.getReportId());
 			Comment comment = oComment.get();
 			model.addAttribute("reportType", comment);
-		} else if (report.getReportType().equals(ReportType.chat)) {
+		} else if (report.getReportType().equals(ReportType.message)) {
 			Chat chat = cRepo.findById(report.getReportId());
 			model.addAttribute("reportType", chat);
 
