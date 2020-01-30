@@ -230,23 +230,21 @@ public class TestController {
 		Optional<User> oUser = uRepo.findById(id);
 		User user = oUser.get();
 
-		lat = Coordinate.fromDegrees(user.getAddressX());
-		lng = Coordinate.fromDegrees(user.getAddressY());
-		Point SeoulGPS = Point.at(lat, lng);
+//		lat = Coordinate.fromDegrees(user.getAddressX());
+//		lng = Coordinate.fromDegrees(user.getAddressY());
+//		Point SeoulGPS = Point.at(lat, lng);
+//
+//		double distance = EarthCalc.gcdDistance(SeoulGPS, Mine); // in meters
 
-		double distance = EarthCalc.gcdDistance(SeoulGPS, Mine); // in meters
-
-		String distanceKm = (distance / 1000) + "km";
-		System.out.println("distance : " + distanceKm);
+//		String distanceKm = (distance / 1000) + "km";
+//		System.out.println("distance : " + distanceKm);
 
 		BoundingArea area = EarthCalc.around(Mine, range*1000);
 		Point nw = area.northWest;
-		System.out.println(nw);
 		Point se = area.southEast;
 
 		List<User> users = uRepo.findByGPS(nw.latitude, se.latitude, nw.longitude, se.longitude);
 
-		System.out.println(se);
 		return users;
 	}
 }

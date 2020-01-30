@@ -46,6 +46,7 @@ public class ChatController {
 			Chat check = cRepo.findByBoardIdAndBuyerIdAndSellerId(chat.getBoard().getId(), chat.getBuyerId().getId(),
 					chat.getSellerId().getId());
 
+			// 채팅방에 메시지 전송시 상대방의 채팅방이 활성화 되어있지 않은 상태라면 활성화
 			if (check == null) {
 				chat.setBuyerState(1);
 				cRepo.save(chat);
@@ -61,6 +62,8 @@ public class ChatController {
 		return "ok";
 	}
 
+	
+	//채팅 페이지
 	@GetMapping("/")
 	public String Chat(@AuthenticationPrincipal UserPrincipal userPrincipal, Model model) {
 
@@ -77,6 +80,7 @@ public class ChatController {
 	}
 
 
+	//채팅 방 접속
 	@GetMapping("/room/enter/{roomId}")
 	public String roomDetail(Model model, @PathVariable int roomId) {
 		model.addAttribute("roomId", roomId);
@@ -85,12 +89,15 @@ public class ChatController {
 		return "chat/roomdetail";
 	}
 
+	//
 	@GetMapping("/room/{roomId}")
 	public Chat roomInfo(@PathVariable int roomId) {
 		Chat chat = cRepo.findById(roomId);
 		return chat;
 	}
 
+	
+	//채팅 목록이 가지고 있는 아이템 정보 받아오기
 	@GetMapping("/product/{id}")
 	public @ResponseBody Chat JsonTest(@PathVariable int id) {
 
@@ -100,6 +107,8 @@ public class ChatController {
 
 	}
 
+	
+	//채팅방 나가기
 	@GetMapping("/outChat/{id}/{info}")
 	public @ResponseBody void outChat(@PathVariable int id, @PathVariable String info) {
 

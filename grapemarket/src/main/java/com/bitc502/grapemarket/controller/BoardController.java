@@ -47,6 +47,10 @@ import com.bitc502.grapemarket.security.UserPrincipal;
 import com.bitc502.grapemarket.service.BoardService;
 import com.bitc502.grapemarket.service.TradeStateService;
 import com.bitc502.grapemarket.util.Script;
+import com.grum.geocalc.BoundingArea;
+import com.grum.geocalc.Coordinate;
+import com.grum.geocalc.EarthCalc;
+import com.grum.geocalc.Point;
 
 @Controller
 @RequestMapping("/board")
@@ -98,6 +102,18 @@ public class BoardController {
 		for (User u : users) {
 			userIds.add(u.getId());
 		}
+		
+		Coordinate lat = Coordinate.fromDegrees(userPrincipal.getUser().getAddressX());
+		Coordinate lng = Coordinate.fromDegrees(userPrincipal.getUser().getAddressY());
+		Point Mine = Point.at(lat, lng);
+
+
+		BoundingArea area = EarthCalc.around(Mine, 5000);
+		
+		Point nw = area.northWest;
+		Point se = area.southEast;
+		
+		
 		Page<Board> boards;
 		if (!userInput.equals("")) {
 			String[] searchContent = userInput.split(" ");
@@ -111,9 +127,9 @@ public class BoardController {
 
 		if (userInput.equals("")) {
 			if (category.equals("1")) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
-				boards = bRepo.findAll(pageable);
+				boards = bRepo.findAllAndGps(nw.latitude, se.latitude, nw.longitude, se.longitude,pageable);
 			} else {// 입력값 공백이면 + 카테고리 (입력값조건 무시 카테고리만 걸고)
-				boards = bRepo.findByCategory(category, pageable);
+				boards = bRepo.findByCategoryAndGps(nw.latitude, se.latitude, nw.longitude, se.longitude,category, pageable);
 			}
 		} else {
 			// 공백제거
@@ -132,7 +148,6 @@ public class BoardController {
 		}
 
 		long countRow = boards.getTotalElements();
-		System.out.println("countRow >> " + countRow);
 		long count = 0;
 		if (countRow % 8 == 0) {
 			count = countRow / 8;
