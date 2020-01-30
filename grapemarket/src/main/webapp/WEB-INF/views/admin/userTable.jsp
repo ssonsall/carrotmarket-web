@@ -70,8 +70,8 @@
 											<th style="text-align: center; margin: auto;">USERNAME</th>
 											<th style="text-align: center; margin: auto;">PROVIDER</th>
 											<th style="text-align: center; margin: auto;">ROLE</th>
+											<th class="span2" style="text-align: center; margin: auto;">Board</th>
 											<th class="span2" style="text-align: center; margin: auto;">Detail</th>
-											<th class="span2" style="text-align: center; margin: auto;">Edit</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -97,11 +97,11 @@
 												<td style="text-align: center; margin: auto;">${user.role}</td>
 												<td style="text-align: center; margin: auto;"><button
 														class="btn btn-inverse" onclick="location.href = '/admin/userPostList/${user.id}'">
-														<i class="icon-shopping-cart icon-white"></i> Detail
+														<i class="icon-shopping-cart icon-white"></i> Board
 													</button></td>
 												<td style="text-align: center; margin: auto;"><button
 														class="btn btn-primary" onclick="location.href = '/admin/detail/${user.id}'">
-														<i class="icon-pencil icon-white"></i> Edit
+														<i class="icon-pencil icon-white"></i> Detail
 													</button></td>
 											</tr>
 										</c:forEach>

@@ -19,27 +19,24 @@
 		<java.version>1.8</java.version>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+	
 	<dependencies>
-		<!-- json -->
-		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
-			<version>1.1</version>
-		</dependency>
-		<!-- json -->
 
-		<!-- jackson -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
+		<!-- 거리계산 -->
+		<!-- https://mvnrepository.com/artifact/com.github.grumlimited/geocalc -->
 
 		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-			<version>1.9.13</version>
+			<groupId>com.github.grumlimited</groupId>
+			<artifactId>geocalc</artifactId>
+			<version>0.5.8</version>
 		</dependency>
-		<!-- jackson -->
+
 		<!-- 사용자 라이브러리 시작 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>

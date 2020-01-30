@@ -36,7 +36,8 @@ spring:
   servlet:
     multipart:
       enabled: true
-      max-file-size: 2MB            
+      max-file-size: 20MB            
+      max-request-size: 20MB        
   
   http:
     encoding:
@@ -63,4 +64,4 @@ spring:
       
 #파일 저장할 경로(각자 파일 경로로)
 file:
-  path: C:/dev/tools/StringBoot4/workspace/grapemarket-web/grapemarket/src/main/resources/static/upload/
+  path: C:/Users/ssons/Documents/myWorkspace/Springboot4/grapemarket/src/main/resources/static/upload/

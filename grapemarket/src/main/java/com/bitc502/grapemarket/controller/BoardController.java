@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -20,28 +22,31 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bitc502.grapemarket.common.CategoryType;
+import com.bitc502.grapemarket.common.ReportType;
 import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Comment;
 import com.bitc502.grapemarket.model.Likes;
+import com.bitc502.grapemarket.model.Report;
 import com.bitc502.grapemarket.model.Search;
 import com.bitc502.grapemarket.model.TradeState;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.CommentRepository;
 import com.bitc502.grapemarket.repository.LikeRepository;
+import com.bitc502.grapemarket.repository.ReportRepository;
 import com.bitc502.grapemarket.repository.SearchRepository;
 import com.bitc502.grapemarket.repository.TradeStateRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 import com.bitc502.grapemarket.service.BoardService;
 import com.bitc502.grapemarket.service.TradeStateService;
+import com.bitc502.grapemarket.util.Script;
 
 @Controller
 @RequestMapping("/board")
@@ -58,19 +63,19 @@ public class BoardController {
 
 	@Autowired
 	private CommentRepository commentRepo;
-	
+
 	@Autowired
 	private LikeRepository likeRepo;
 
 	@Autowired
 	private SearchRepository sRepo;
-	
+
 	@Autowired
 	private TradeStateRepository tradeStateRepo;
-	
+
 	@Autowired
 	private TradeStateService tradeStateServ;
-	
+
 	@Autowired
 	private BoardService boardServ;
 
@@ -80,6 +85,7 @@ public class BoardController {
 		return "redirect:/board/page?page=0&category=1&userInput=";
 	}
 
+	//리스트 페이지
 	@GetMapping("/page")
 	public String getList(Model model,
 			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable,
@@ -107,27 +113,17 @@ public class BoardController {
 			if (category.equals("1")) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
 				boards = bRepo.findAll(pageable);
 			} else {// 입력값 공백이면 + 카테고리 (입력값조건 무시 카테고리만 걸고)
-				category = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
 				boards = bRepo.findByCategory(category, pageable);
 			}
 		} else {
-			if (category.equals("1")) {// 입력값 + 카테고리 전체 (입력값만 걸고 카테고리 조건 무시)
-				// 공백제거
-				userInput = userInput.trim();
-				// 정규식 형태 만들어주기
-				userInput = userInput.replace(" ", ")(?=.*");
-				userInput = "(?=.*" + userInput + ")";
-				if (category.equals("1"))
-					category = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
-				boards = bRepo.search(category, userInput, pageable);
-			} else {// 입력값 + 카테고리
-				// 공백제거
-				userInput = userInput.trim();
-				// 정규식 형태 만들어주기
-				userInput = userInput.replace(" ", ")(?=.*");
-				userInput = "(?=.*" + userInput + ")";
-				boards = bRepo.search(category, userInput, pageable);
-			}
+			// 공백제거
+			userInput = userInput.trim();
+			// 정규식 형태 만들어주기
+			userInput = userInput.replace(" ", ")(?=.*");
+			userInput = "(?=.*" + userInput + ")";
+			if (category.equals("1")) // 입력값 + 카테고리 전체 (입력값만 걸고 카테고리 조건 무시)
+				category = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
+			boards = bRepo.search(category, userInput, pageable);
 		}
 
 		if (pageable.getPageNumber() >= boards.getTotalPages() && boards.getTotalPages() > 0) {
@@ -159,21 +155,21 @@ public class BoardController {
 		Optional<User> oUser = uRepo.findById(userPrincipal.getUser().getId());
 		User user = oUser.get();
 		model.addAttribute("user", user);
-
 		if (userPrincipal.getUser().getAddressAuth() == 0) {
 			int authNeeded = 1;
 			model.addAttribute("authNeeded", authNeeded);
-			
+
 			return "/user/userProfile";
 		}
-		
+
 		return "/board/write";
 
 	}
 
+	//글쓰기 동작
 	@PostMapping("/writeProc")
 	public String write(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("state") String state,
-			@RequestParam("category") int category, @RequestParam("title") String title,
+			@RequestParam("category") String category, @RequestParam("title") String title,
 			@RequestParam("price") String price, @RequestParam("content") String content,
 			@RequestParam("productImage1") MultipartFile productImage1,
 			@RequestParam("productImage2") MultipartFile productImage2,
@@ -224,15 +220,13 @@ public class BoardController {
 			board.setContent(content);
 
 			bRepo.save(board);
-			
-			//거래 상태 추가
-			tradeStateServ.insertSellState(userPrincipal.getUser(),board);
-			
+
+			// 거래 상태 추가
+			tradeStateServ.insertSellState(userPrincipal.getUser(), board);
+
 			// 리스트 완성되면 바꿔야함
 			return "redirect:/board/page?page=0&category=1&userInput=";
-			
-			
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -246,24 +240,26 @@ public class BoardController {
 		Board board = oBoard.get();
 
 		List<Comment> comments = commentRepo.findByBoardId(board.getId());
-		
+
 		Likes check = likeRepo.findByUserIdAndBoardId(userPrincipal.getUser().getId(), board.getId());
-		if(check != null) {
-			model.addAttribute("liked","liked");
+		if (check != null) {
+			model.addAttribute("liked", "liked");
 		}
-		
+
 		int likeCount = likeRepo.countByBoardId(board.getId());
 		String state = "구매완료";
-		List<TradeState> tradeStates = tradeStateRepo.findByBoardIdAndState(board.getId(),state);
-		
-		model.addAttribute("tradeStates",tradeStates);
-		model.addAttribute("likeCount",likeCount);
+		List<TradeState> tradeStates = tradeStateRepo.findByBoardIdAndState(board.getId(), state);
+
+		model.addAttribute("tradeStates", tradeStates);
+		model.addAttribute("likeCount", likeCount);
 		model.addAttribute("comments", comments);
 		model.addAttribute("board", board);
 
 		return "/board/detail";
+
 	}
 
+	//글 삭제
 	@PostMapping("/delete/{id}")
 	public String delete(@PathVariable int id) {
 		try {
@@ -275,6 +271,7 @@ public class BoardController {
 		return "redirect:/board/detail/" + id;
 	}
 
+	//카테고리
 	@GetMapping("/category")
 	public String category(Model model) {
 		CategoryType[] categories = CategoryType.values();
@@ -288,6 +285,7 @@ public class BoardController {
 		return "/board/category";
 	}
 
+	//글 수정
 	@PostMapping("/updateForm/{id}")
 	public String updateForm(@PathVariable int id, Model model) {
 		// 이미지 파일때문에 생각 좀 해봐야 함.
@@ -298,9 +296,10 @@ public class BoardController {
 		// return "board/updateForm";
 	}
 
+	//글수정 동작
 	@PostMapping("/update")
 	public String update(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("state") String state,
-			@RequestParam("category") int category, @RequestParam("title") String title,
+			@RequestParam("category") String category, @RequestParam("title") String title,
 			@RequestParam("price") String price, @RequestParam("content") String content,
 			@RequestParam("productImage1") MultipartFile productImage1,
 			@RequestParam("productImage2") MultipartFile productImage2,
@@ -380,19 +379,17 @@ public class BoardController {
 		return "redirect:/board/writeForm";
 	}
 
+	//카테고리별 리스트
 	@GetMapping("/category/{id}")
 	public String searchByCategory(@PathVariable int id) {
-		// 카테고리별 리스트 화면
 		return null;
 	}
-	
-	@PostMapping("/complete")
-	public @ResponseBody String boardComplete(Board board) {
 
-		
-	boardServ.setBuyerId(board);
-		
-		return "";
+	//complete
+	@PostMapping("/complete")
+	public @ResponseBody void boardComplete(Board board) {
+
+		boardServ.setBuyerId(board);
 	}
 
 }

@@ -77,11 +77,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.headers().frameOptions().disable();
-
 		http.authorizeRequests()
 				// 해당주소를 타는 것은 전부 시큐리티가 막는다.
 				// ex) board/접근을 세분화해서 막고싶으면 먼저 추가해주고 밑에 다막으면된다 순서 잘지켜라!!
-
 				.antMatchers("/admin/**").access("hasRole('ADMIN')")
 				.antMatchers("/board/list").permitAll()
 				.antMatchers("/board/**", "/chat/**")
@@ -126,7 +124,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				});
 
 	}
-@Bean
+	@Bean
 	public ServletListenerRegistrationBean<HttpSessionListener> sessionListener() {
 	    return new ServletListenerRegistrationBean<HttpSessionListener>(new VisitorCounter(vRepo));
 	}

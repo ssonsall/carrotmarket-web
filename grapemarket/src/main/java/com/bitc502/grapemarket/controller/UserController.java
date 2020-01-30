@@ -29,6 +29,7 @@ import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 import com.bitc502.grapemarket.util.Script;
+import com.bitc502.grapemarket.util.VisitorCounter;
 
 @Controller
 @RequestMapping("/user")
@@ -47,6 +48,7 @@ public class UserController {
 	public String loginForm(HttpServletRequest request) {
 		if (request.getHeader("DeviceType") != null && request.getHeader("DeviceType").equals("android")) {
 			System.out.println("안드로이드 접속");
+			VisitorCounter.currentVisitorCount--;
 			return "redirect:/android/loginFailure";
 		} else {
 			System.out.println("Web 접속");
@@ -142,9 +144,10 @@ public class UserController {
 	}
 
 	@PostMapping("/addupdate")
-	public String addUpdate(User user) {
+	public String addUpdate(User user, @AuthenticationPrincipal UserPrincipal userPrincipal) {
 		try {
 			uRepo.addUpdate(user.getAddress(), user.getAddressX(), user.getAddressY(), user.getId());
+			userPrincipal.getUser().setAddressAuth(0);
 			return "redirect:/user/userProfile";
 		} catch (Exception e) {
 		}
