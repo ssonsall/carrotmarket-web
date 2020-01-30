@@ -1,6 +1,8 @@
 package com.bitc502.grapemarket.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitc502.grapemarket.model.Board;
+import com.bitc502.grapemarket.model.Statistic;
+import com.bitc502.grapemarket.model.Statistics;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
+import com.bitc502.grapemarket.repository.ChatRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
+import com.bitc502.grapemarket.repository.VisitorRepository;
 import com.bitc502.grapemarket.util.Script;
 
 @Controller
@@ -29,9 +35,12 @@ public class TestController {
 
 	@Autowired
 	private UserRepository uRepo;
-
 	@Autowired
 	private BoardRepository bRepo;
+	@Autowired
+	private VisitorRepository vRepo;
+	@Autowired
+	private ChatRepository cRepo;
 
 	@GetMapping("/userAll")
 	public @ResponseBody List<User> userAll() {
@@ -142,14 +151,43 @@ public class TestController {
 	@GetMapping("/liketest")
 	public @ResponseBody Page<Board> liketest(@RequestParam("con") String temp, @RequestParam("cate") String cate,
 			Pageable page) {
-		//공백제거
+		// 공백제거
 		temp = temp.trim();
-		//정규식 형태 만들어주기
+		// 정규식 형태 만들어주기
 		temp = temp.replace(" ", ")(?=.*");
 		temp = "(?=.*" + temp + ")";
 		if (cate.equals("1"))
 			cate = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
 		Page<Board> testU = bRepo.search(cate, temp, page);
 		return testU;
+	}
+
+	@GetMapping("/stest")
+	public @ResponseBody Statistics dashboard(Model model) {
+		Statistics stats = new Statistics();
+		stats.setVisitorVolume(MaptoStatistic(vRepo.visitorVolume()));
+		stats.setMemberVolume(MaptoStatistic(uRepo.memberVolume()));
+		stats.setDealVolume(MaptoStatistic(bRepo.DealVolume()));
+		stats.setCompletedDealVolume(MaptoStatistic(bRepo.completedDealVolume()));
+		stats.setChatVolume(MaptoStatistic(cRepo.chatVolume()));
+//		//신고도 추가해야함
+		return stats;
+	}
+
+	public List<Statistic> MaptoStatistic(List<Map<String, Object>> list) {
+		List<Statistic> statList = new ArrayList<>();
+		try {
+			for (Map<String, Object> map : list) {
+				Statistic stat = new Statistic();
+				stat.setCreateDate(map.get("date").toString());
+				Long count = (long) Integer.parseInt(map.get("count").toString());
+				stat.setCount(count);
+				statList.add(stat);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("statList" + statList);
+		return statList;
 	}
 }

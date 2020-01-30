@@ -47,6 +47,7 @@ public class Chat {
 	@Column(nullable=false, columnDefinition = "int default 1")
 	private int sellerState;
 	// id, title
+	
 	@ManyToOne
 	@JoinColumn(name = "boardId")
 	@JsonIgnoreProperties({"like","comment","user"})

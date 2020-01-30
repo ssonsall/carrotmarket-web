@@ -238,7 +238,7 @@
 												</div>
 												<div class="text-center col-md-4">
 													<input class="btn btn-block btn-round btn-d" id="cfsubmit"
-														type="button" onActivate="getLocation();"
+														type="button" onClick="getLocation();"
 														placeholder="Search" value="인증하기" />
 												</div>
 

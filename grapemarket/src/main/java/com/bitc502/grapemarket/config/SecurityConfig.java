@@ -126,7 +126,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				});
 
 	}
-@Bean
+	@Bean
 	public ServletListenerRegistrationBean<HttpSessionListener> sessionListener() {
 	    return new ServletListenerRegistrationBean<HttpSessionListener>(new VisitorCounter(vRepo));
 	}

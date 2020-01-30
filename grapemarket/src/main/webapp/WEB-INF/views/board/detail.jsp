@@ -113,7 +113,7 @@
 											</c:choose>
 										</div>
 										<div id="likeCount">
-											<p>${likeCount}명의회원이 이 상품을 좋아합니다.</p>
+											<p>${likeCount}명의회원이이상품을좋아합니다.</p>
 										</div>
 									</form>
 									<%-- <c:choose>
@@ -232,6 +232,9 @@
 											</form>
 											<button onclick="createChat()" class="btn btn-round btn-d"
 												type="button">채팅으로 거래하기</button>
+
+											<button onclick="reportPopup(${board.id})"
+												class="btn btn-round btn-d" type="button">게시글 신고하기</button>
 										</div>
 									</c:when>
 									<c:otherwise>
@@ -539,5 +542,10 @@
 		</div>
 	</main>
 	<%@include file="../include/script.jsp"%>
+	<script type="text/javascript">
+	  function reportPopup(id) {
+		  window.open("/report/boardReportForm?id="+id, "a", "width=400, height=500, left=100, top=50"); 
+		  }
+	</script>
 </body>
 </html>

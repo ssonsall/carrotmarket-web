@@ -8,13 +8,11 @@
 				class="icon-chevron-right"></i> Dashboard</a></li>
 		<li id="statsLi"><a href="/admin/stats"><i class="icon-chevron-right"></i>
 				Statistics</a></li>
-		<li id="userLi"><a href="/admin/user"><i class="icon-chevron-right"></i>
-				User</a></li>
 		<li><a href="buttons.html"><i class="icon-chevron-right"></i>
 				Buttons & Icons</a></li>
 		<li><a href="interface.html"><i class="icon-chevron-right"></i>
 				UI & Interface</a></li>
-		<li><a href="#"><span class="badge badge-info pull-right">1,234</span>
+		<li><a href="/admin/user"><span class="badge badge-info pull-right">1,234</span>
 				Users</a></li>
 		<li><a href="#"><span class="badge badge-success pull-right">731</span>
 				Product</a></li>
@@ -22,7 +20,7 @@
 				Deal</a></li>
 		<li><a href="#"><span class="badge badge-warning pull-right">4,231</span>
 				Chats</a></li>
-		<li><a href="#"><span
+		<li><a href="/admin/report"><span
 				class="badge badge-important pull-right">83</span> Report</a></li>
 	</ul>
 </div>
