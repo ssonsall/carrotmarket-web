@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -28,25 +26,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bitc502.grapemarket.common.CategoryType;
-import com.bitc502.grapemarket.common.ReportType;
 import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Comment;
 import com.bitc502.grapemarket.model.Likes;
-import com.bitc502.grapemarket.model.Report;
 import com.bitc502.grapemarket.model.Search;
 import com.bitc502.grapemarket.model.TradeState;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.CommentRepository;
 import com.bitc502.grapemarket.repository.LikeRepository;
-import com.bitc502.grapemarket.repository.ReportRepository;
 import com.bitc502.grapemarket.repository.SearchRepository;
 import com.bitc502.grapemarket.repository.TradeStateRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 import com.bitc502.grapemarket.service.BoardService;
 import com.bitc502.grapemarket.service.TradeStateService;
-import com.bitc502.grapemarket.util.Script;
 import com.grum.geocalc.BoundingArea;
 import com.grum.geocalc.Coordinate;
 import com.grum.geocalc.EarthCalc;
@@ -97,6 +91,7 @@ public class BoardController {
 			@AuthenticationPrincipal UserPrincipal userPrincipal) {
 
 		String currentCategory = category;
+		String originUserInput = userInput.trim();
 		List<User> users = uRepo.findByAddressContaining(userInput);
 		List<Integer> userIds = new ArrayList<>();
 		for (User u : users) {
@@ -106,8 +101,6 @@ public class BoardController {
 		Coordinate lat = Coordinate.fromDegrees(userPrincipal.getUser().getAddressX());
 		Coordinate lng = Coordinate.fromDegrees(userPrincipal.getUser().getAddressY());
 		Point Mine = Point.at(lat, lng);
-
-
 		BoundingArea area = EarthCalc.around(Mine, 5000);
 		
 		Point nw = area.northWest;
@@ -119,8 +112,12 @@ public class BoardController {
 			String[] searchContent = userInput.split(" ");
 			for (String entity : searchContent) {
 				Search search = new Search();
-				search.setContent(entity);
-				sRepo.save(search);
+				System.out.println("저장중");
+				entity.trim();
+				if (!entity.equals("")) {
+					search.setContent(entity);
+					sRepo.save(search);
+				}
 			}
 
 		}
@@ -154,6 +151,7 @@ public class BoardController {
 		} else {
 			count = (countRow / 8) + 1;
 		}
+		model.addAttribute("originUserInput",originUserInput);
 		model.addAttribute("currentUserInput", userInput);
 		model.addAttribute("currentCategory", currentCategory);
 		model.addAttribute("currentPage", pageable.getPageNumber());

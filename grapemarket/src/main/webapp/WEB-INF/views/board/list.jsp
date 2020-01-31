@@ -184,7 +184,7 @@
 							</select>
 						</div>
 						<div class="col-sm-4 mb-sm-20">
-							<input class="form-control" type="text" name="userInput" value="${currentUserInput}" placeholder="*검색어를 입력해주세요." />
+							<input class="form-control" type="text" name="userInput" value="${originUserInput}" placeholder="*검색어를 입력해주세요." />
 						</div>
 
 						<div class="col-sm-3">
