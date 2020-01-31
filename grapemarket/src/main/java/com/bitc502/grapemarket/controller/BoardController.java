@@ -93,19 +93,23 @@ public class BoardController {
 			@AuthenticationPrincipal UserPrincipal userPrincipal) {
 
 		String currentCategory = category;
+		String originUserInput = userInput.trim();
 		List<User> users = uRepo.findByAddressContaining(userInput);
 		List<Integer> userIds = new ArrayList<>();
 		for (User u : users) {
 			userIds.add(u.getId());
 		}
-
 		Page<Board> boards;
 		if (!userInput.equals("")) {
 			String[] searchContent = userInput.split(" ");
 			for (String entity : searchContent) {
 				Search search = new Search();
-				search.setContent(entity);
-				sRepo.save(search);
+				System.out.println("저장중");
+				entity.trim();
+				if (!entity.equals("")) {
+					search.setContent(entity);
+					sRepo.save(search);
+				}
 			}
 
 		}
@@ -144,6 +148,7 @@ public class BoardController {
 		List<Board> board2 = boardServ.getGps(userPrincipal,boards.getContent(),range);
 		
 
+		model.addAttribute("originUserInput",originUserInput);
 		model.addAttribute("currentUserInput", userInput);
 		model.addAttribute("currentCategory", currentCategory);
 		model.addAttribute("currentPage", pageable.getPageNumber());

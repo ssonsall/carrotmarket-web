@@ -89,10 +89,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService implements
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByUsername(username);
 		if(user != null) {
-			System.out.println("1111111111111111111111");
 			return UserPrincipal.create(user);
 		}else {
-			System.out.println("2222222222222222222222");
 			throw new UsernameNotFoundException("유저네임이 없어요: "+username);
 		}
 	}

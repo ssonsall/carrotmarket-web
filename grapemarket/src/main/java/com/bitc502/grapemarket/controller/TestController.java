@@ -249,6 +249,7 @@ public class TestController {
 		System.out.println("se.longitude : "+se.longitude);
 
 		return users;
+	}
 	
 	@GetMapping("/maptest")
 	public String maptest() {
