@@ -24,9 +24,7 @@ public class Message {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id; // 시퀀스
 	private String message; //메시지 내용
-	
-	private String sender; //메시지 내용
-	
+	private String sender; //username
 	
 	@ManyToOne
 	@JoinColumn(name="chatId")

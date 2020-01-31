@@ -51,7 +51,7 @@
 										</div>
 									</div>
 									<div class="col-sm-5 col-md-5 col-lg-3"
-										style="float: left; margin-left: 10%; background-color: #d4c8db; padding: 20px; min-width: 150px; border-radius: 5px; color: black; font-weight: bold;">
+										style="float: left; margin-left: 10%; background-color: #ebe1ed; padding: 20px; min-width: 150px; border-radius: 5px; color: black; font-weight: bold;">
 
 										<div style="text-align: left;">
 											<p style="text-align: center; font-size: 25px; color: #3f0c59;">포도마켓 인기검색어</p>

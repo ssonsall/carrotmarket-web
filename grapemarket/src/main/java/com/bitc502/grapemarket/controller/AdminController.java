@@ -20,6 +20,7 @@ import com.bitc502.grapemarket.common.ReportType;
 import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Chat;
 import com.bitc502.grapemarket.model.Comment;
+import com.bitc502.grapemarket.model.Message;
 import com.bitc502.grapemarket.model.Report;
 import com.bitc502.grapemarket.model.Role;
 import com.bitc502.grapemarket.model.Statistic;
@@ -28,6 +29,7 @@ import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.ChatRepository;
 import com.bitc502.grapemarket.repository.CommentRepository;
+import com.bitc502.grapemarket.repository.MessageRepository;
 import com.bitc502.grapemarket.repository.ReportRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.repository.VisitorRepository;
@@ -36,7 +38,7 @@ import com.bitc502.grapemarket.util.VisitorCounter;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminTestController {
+public class AdminController {
 
 	@Autowired
 	private UserRepository uRepo;
@@ -48,6 +50,8 @@ public class AdminTestController {
 	private ChatRepository cRepo;
 	@Autowired
 	private CommentRepository commentRepo;
+	@Autowired
+	private MessageRepository mRepo;
 	@Autowired
 	private ReportRepository rRepo;
 
@@ -156,8 +160,11 @@ public class AdminTestController {
 			Comment comment = oComment.get();
 			model.addAttribute("reportType", comment);
 		} else if (report.getReportType().equals(ReportType.message)) {
-			Chat chat = cRepo.findById(report.getReportId());
-			model.addAttribute("reportType", chat);
+			Optional<Message> oMessage= mRepo.findById(report.getReportId());
+			Message message = oMessage.get();
+			Chat chat = cRepo.findById(message.getChat().getId());
+			model.addAttribute("reportType", message);
+			model.addAttribute("chat",chat);
 
 		}
 		model.addAttribute("report", report);
