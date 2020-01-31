@@ -87,6 +87,7 @@ div.container2 {
 		<sec:authentication property="principal" var="principal" />
 	</sec:authorize>
 	<input type="hidden" id="sendername" value="${principal.user.username}" />
+	<input type="hidden" id="senderId" value="${principal.user.id}" />
 	<input type="hidden" id="roomId" value="${roomId}" />
 	<div class="container" id="app" v-cloak>
 
@@ -135,6 +136,7 @@ div.container2 {
 	<script>
         // websocket & stomp initialize
         var sendername = document.getElementById('sendername').value;
+        var senderId = document.getElementById('senderId').value;
         var roomId = document.getElementById('roomId').value;
         
         var sock = new SockJS("/ws-stomp");
@@ -146,6 +148,7 @@ div.container2 {
                 roomId: '',
                 room: {},
                 sender: '',
+                senderId:'',
                 message: '',
                 messages: [],
                 property:''
@@ -153,6 +156,7 @@ div.container2 {
             created() {
                 this.roomId = roomId;
                 this.sender = sendername;
+                this.senderId = senderId;
                 this.message = '';
                 this.findRoom();
                 this.property = '';
@@ -162,7 +166,7 @@ div.container2 {
                     axios.get('/chat/room/'+this.roomId).then(response => { this.room = response.data; });
                 },
                 sendMessage: function() {
-                    ws.send("/pub/chat/message", {}, JSON.stringify({temp:this.roomId, sender:this.sender, message:this.message}));
+                    ws.send("/pub/chat/message", {}, JSON.stringify({temp:this.roomId, sender:this.sender, temp2:this.senderId, message:this.message}));
                     this.message = '';
                 },
                 recvMessage: function(recv) {

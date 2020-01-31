@@ -2,6 +2,7 @@ package com.bitc502.grapemarket.model;
 
 import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -25,7 +26,12 @@ public class Message {
 	private int id; // 시퀀스
 	private String message; //메시지 내용
 	
-	private String sender; //메시지 내용
+	
+	
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "senderId")
+	@JsonIgnoreProperties({ "comment","board","like" })
+	private User senderId; 
 	
 	
 	@ManyToOne
@@ -37,6 +43,11 @@ public class Message {
 	@CreationTimestamp 
 	private Timestamp updateDate;
 	
+	private String sender; 
+	
 	@Transient
 	private int temp;
+	
+	@Transient
+	private int temp2;
 }
