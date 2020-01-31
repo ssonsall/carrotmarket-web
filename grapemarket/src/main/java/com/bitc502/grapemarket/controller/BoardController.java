@@ -4,11 +4,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,25 +27,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bitc502.grapemarket.common.CategoryType;
-import com.bitc502.grapemarket.common.ReportType;
 import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Comment;
 import com.bitc502.grapemarket.model.Likes;
-import com.bitc502.grapemarket.model.Report;
 import com.bitc502.grapemarket.model.Search;
 import com.bitc502.grapemarket.model.TradeState;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.CommentRepository;
 import com.bitc502.grapemarket.repository.LikeRepository;
-import com.bitc502.grapemarket.repository.ReportRepository;
 import com.bitc502.grapemarket.repository.SearchRepository;
 import com.bitc502.grapemarket.repository.TradeStateRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 import com.bitc502.grapemarket.service.BoardService;
 import com.bitc502.grapemarket.service.TradeStateService;
-import com.bitc502.grapemarket.util.Script;
 import com.grum.geocalc.BoundingArea;
 import com.grum.geocalc.Coordinate;
 import com.grum.geocalc.EarthCalc;
@@ -89,11 +84,12 @@ public class BoardController {
 		return "redirect:/board/page?page=0&category=1&userInput=";
 	}
 
-	//리스트 페이지
+	// 리스트 페이지
 	@GetMapping("/page")
 	public String getList(Model model,
 			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable,
 			@RequestParam String category, @RequestParam String userInput,
+			@RequestParam int range,
 			@AuthenticationPrincipal UserPrincipal userPrincipal) {
 
 		String currentCategory = category;
@@ -102,18 +98,7 @@ public class BoardController {
 		for (User u : users) {
 			userIds.add(u.getId());
 		}
-		
-		Coordinate lat = Coordinate.fromDegrees(userPrincipal.getUser().getAddressX());
-		Coordinate lng = Coordinate.fromDegrees(userPrincipal.getUser().getAddressY());
-		Point Mine = Point.at(lat, lng);
 
-
-		BoundingArea area = EarthCalc.around(Mine, 5000);
-		
-		Point nw = area.northWest;
-		Point se = area.southEast;
-		
-		
 		Page<Board> boards;
 		if (!userInput.equals("")) {
 			String[] searchContent = userInput.split(" ");
@@ -127,9 +112,9 @@ public class BoardController {
 
 		if (userInput.equals("")) {
 			if (category.equals("1")) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
-				boards = bRepo.findAllAndGps(nw.latitude, se.latitude, nw.longitude, se.longitude,pageable);
+				boards = bRepo.findAll(pageable);
 			} else {// 입력값 공백이면 + 카테고리 (입력값조건 무시 카테고리만 걸고)
-				boards = bRepo.findByCategoryAndGps(nw.latitude, se.latitude, nw.longitude, se.longitude,category, pageable);
+				boards = bRepo.findByCategory(category, pageable);
 			}
 		} else {
 			// 공백제거
@@ -154,11 +139,17 @@ public class BoardController {
 		} else {
 			count = (countRow / 8) + 1;
 		}
+
+		
+		List<Board> board2 = boardServ.getGps(userPrincipal,boards.getContent(),range);
+		
+
 		model.addAttribute("currentUserInput", userInput);
 		model.addAttribute("currentCategory", currentCategory);
 		model.addAttribute("currentPage", pageable.getPageNumber());
 		model.addAttribute("count", count);
-		model.addAttribute("boards", boards.getContent());
+//		model.addAttribute("boards", boards.getContent());
+		model.addAttribute("boards", board2);
 
 		return "board/list";
 
@@ -181,7 +172,7 @@ public class BoardController {
 
 	}
 
-	//글쓰기 동작
+	// 글쓰기 동작
 	@PostMapping("/writeProc")
 	public String write(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("state") String state,
 			@RequestParam("category") String category, @RequestParam("title") String title,
@@ -274,7 +265,7 @@ public class BoardController {
 
 	}
 
-	//글 삭제
+	// 글 삭제
 	@PostMapping("/delete/{id}")
 	public String delete(@PathVariable int id) {
 		try {
@@ -286,7 +277,7 @@ public class BoardController {
 		return "redirect:/board/detail/" + id;
 	}
 
-	//카테고리
+	// 카테고리
 	@GetMapping("/category")
 	public String category(Model model) {
 		CategoryType[] categories = CategoryType.values();
@@ -300,7 +291,7 @@ public class BoardController {
 		return "/board/category";
 	}
 
-	//글 수정
+	// 글 수정
 	@PostMapping("/updateForm/{id}")
 	public String updateForm(@PathVariable int id, Model model) {
 		// 이미지 파일때문에 생각 좀 해봐야 함.
@@ -311,7 +302,7 @@ public class BoardController {
 		// return "board/updateForm";
 	}
 
-	//글수정 동작
+	// 글수정 동작
 	@PostMapping("/update")
 	public String update(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("state") String state,
 			@RequestParam("category") String category, @RequestParam("title") String title,
@@ -394,13 +385,13 @@ public class BoardController {
 		return "redirect:/board/writeForm";
 	}
 
-	//카테고리별 리스트
+	// 카테고리별 리스트
 	@GetMapping("/category/{id}")
 	public String searchByCategory(@PathVariable int id) {
 		return null;
 	}
 
-	//complete
+	// complete
 	@PostMapping("/complete")
 	public @ResponseBody void boardComplete(Board board) {
 
