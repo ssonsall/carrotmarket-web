@@ -233,9 +233,7 @@ public class TestController {
 //		lat = Coordinate.fromDegrees(user.getAddressX());
 //		lng = Coordinate.fromDegrees(user.getAddressY());
 //		Point SeoulGPS = Point.at(lat, lng);
-//
 //		double distance = EarthCalc.gcdDistance(SeoulGPS, Mine); // in meters
-
 //		String distanceKm = (distance / 1000) + "km";
 //		System.out.println("distance : " + distanceKm);
 
@@ -244,6 +242,11 @@ public class TestController {
 		Point se = area.southEast;
 
 		List<User> users = uRepo.findByGPS(nw.latitude, se.latitude, nw.longitude, se.longitude);
+		
+		System.out.println("nw.latitude : "+nw.latitude);
+		System.out.println("se.latitude : "+se.latitude);
+		System.out.println("nw.longitude : "+nw.longitude);
+		System.out.println("se.longitude : "+se.longitude);
 
 		return users;
 	

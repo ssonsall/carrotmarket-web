@@ -19,7 +19,7 @@
             <ul class="nav navbar-nav navbar-right">
               <li class="dropup"><a class="dropup-toggle" href="/" data-toggle="dropup">홈화면</a>
               </li>
-              <li class="dropup"><a class="dropup-toggle" href="/board/page?page=0&category=1&userInput=" data-toggle="dropup">포도장터</a>
+              <li class="dropup"><a class="dropup-toggle" href="/board/page?page=0&category=1&userInput=&range=5" data-toggle="dropup">포도장터</a>
               </li>
               <li class="dropup"><a class="dropup-toggle" href="/board/writeForm" data-toggle="dropup">상품등록</a>
               </li>
