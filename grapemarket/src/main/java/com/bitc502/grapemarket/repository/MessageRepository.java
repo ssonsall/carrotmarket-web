@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.bitc502.grapemarket.model.Chat;
 import com.bitc502.grapemarket.model.Message;
 
 public interface MessageRepository extends JpaRepository<Message, Integer>{
@@ -12,6 +13,7 @@ public interface MessageRepository extends JpaRepository<Message, Integer>{
 
 	List<Message> findByChatIdOrderById(int roomId);
 
+	List<Message> findByChatOrderByCreateDateDesc(int id);
 	
 
 }

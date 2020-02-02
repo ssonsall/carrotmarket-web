@@ -24,12 +24,6 @@ public class Chat {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id; // 시퀀스
 	
-	//id, content, createDate
-//	@OneToMany(mappedBy = "chat")
-//	@JsonIgnoreProperties({ "user","chat" })
-//	@OnDelete(action = OnDeleteAction.CASCADE)
-//	private List<Message> message;
-	
 	//누르는 사람
 	//private User user; //id, username
 	@ManyToOne

@@ -57,7 +57,6 @@ public class ReportController {
 			model.addAttribute("comment", comment);
 			model.addAttribute("type", ReportType.comment);
 		} else if (type.equals("message")) {
-			System.out.println("11111111111111111111");
 			Optional<Message> oMessage = mRepo.findById(id);
 			Message message = oMessage.get();
 			model.addAttribute("message", message);
