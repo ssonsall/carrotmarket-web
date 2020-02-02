@@ -177,7 +177,7 @@
 											<c:when test="${report.reportType eq 'message'}">
 												<tr>
 													<th>내용</th>
-													<td>${reportType.message}<a href="/chat/chatLog/${chat.id}">[해당 게시글로 이동하기]</a></td>
+													<td>${reportType.message}<a href="/chat/chatLog/${reportType.chat.id}">[해당 게시글로 이동하기]</a></td>
 												</tr>
 											</c:when>
 
