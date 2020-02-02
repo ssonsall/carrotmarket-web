@@ -11,4 +11,5 @@ public class UserLocationSetting {
 	private String address;
 	private String addressX;
 	private String addressY;
+	private Integer addressAuth;
 }
