@@ -4,7 +4,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,10 +41,6 @@ import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 import com.bitc502.grapemarket.service.BoardService;
 import com.bitc502.grapemarket.service.TradeStateService;
-import com.grum.geocalc.BoundingArea;
-import com.grum.geocalc.Coordinate;
-import com.grum.geocalc.EarthCalc;
-import com.grum.geocalc.Point;
 
 @Controller
 @RequestMapping("/board")
@@ -146,14 +141,12 @@ public class BoardController {
 
 		
 		List<Board> board2 = boardServ.getGps(userPrincipal,boards.getContent(),range);
-		
 
 		model.addAttribute("originUserInput",originUserInput);
 		model.addAttribute("currentUserInput", userInput);
 		model.addAttribute("currentCategory", currentCategory);
 		model.addAttribute("currentPage", pageable.getPageNumber());
 		model.addAttribute("count", count);
-//		model.addAttribute("boards", boards.getContent());
 		model.addAttribute("boards", board2);
 
 		return "board/list";
