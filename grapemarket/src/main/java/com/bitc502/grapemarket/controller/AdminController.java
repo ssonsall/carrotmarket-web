@@ -26,6 +26,7 @@ import com.bitc502.grapemarket.model.Role;
 import com.bitc502.grapemarket.model.Statistic;
 import com.bitc502.grapemarket.model.Statistics;
 import com.bitc502.grapemarket.model.User;
+import com.bitc502.grapemarket.payload.StatisticVolumes;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.ChatRepository;
 import com.bitc502.grapemarket.repository.CommentRepository;
@@ -57,8 +58,8 @@ public class AdminController {
 
 	@GetMapping({ "/", "" })
 	public String dashboard(Model model) {
-
 		model.addAttribute("currentVisitorCount", VisitorCounter.currentVisitorCount);
+		model.addAttribute("countStatVol",countStatVol());
 		return "admin/dashboard";
 	}
 
@@ -66,6 +67,7 @@ public class AdminController {
 	public String userTable(Model model) {
 		List<User> users = uRepo.findAll();
 		model.addAttribute("users", users);
+		model.addAttribute("countStatVol",countStatVol());
 		return "admin/userTable";
 	}
 
@@ -82,6 +84,7 @@ public class AdminController {
 		// 신고도 추가해야함
 		model.addAttribute("currentVisitorCount", VisitorCounter.currentVisitorCount);
 		model.addAttribute("Statistics", stats);
+		model.addAttribute("countStatVol",countStatVol());
 		return "admin/stats";
 	}
 
@@ -106,6 +109,7 @@ public class AdminController {
 		Optional<User> oUser = uRepo.findById(id);
 		User user = oUser.get();
 		model.addAttribute("user", user);
+		model.addAttribute("countStatVol",countStatVol());
 		return "admin/userDetail";
 	}
 
@@ -136,6 +140,7 @@ public class AdminController {
 
 		model.addAttribute("user", user);
 		model.addAttribute("boards", boards);
+		model.addAttribute("countStatVol",countStatVol());
 		return "admin/userPostList";
 	}
 
@@ -143,6 +148,7 @@ public class AdminController {
 	public String reportTable(Model model) {
 		List<Report> reports = rRepo.findAll();
 		model.addAttribute("reports", reports);
+		model.addAttribute("countStatVol",countStatVol());
 		return "admin/reportTable";
 	}
 
@@ -168,6 +174,7 @@ public class AdminController {
 
 		}
 		model.addAttribute("report", report);
+		model.addAttribute("countStatVol",countStatVol());
 		return "admin/reportDetail";
 	}
 	
@@ -191,6 +198,16 @@ public class AdminController {
 		}
 		
 		return Script.back("정상 처리되었습니다.");
+	}
+	
+	
+	public StatisticVolumes countStatVol() {
+		StatisticVolumes sv = new StatisticVolumes();
+		sv.setMemberVolume(uRepo.count());
+		sv.setDealVolume(bRepo.count());
+		sv.setChatVolume(mRepo.count());
+		sv.setReportVolume(rRepo.count());
+		return sv;
 	}
 
 }

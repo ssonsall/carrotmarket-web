@@ -140,7 +140,7 @@ $('.searchModal').hide();
 													</button></td>
 											</c:otherwise>
 										</c:choose>
-										<td style="text-align: center; margin: auto;"><button
+										<td style="text-align: center; margin: auto;"><button onclick="boardReportPopup(${board.id})" 
 												class="btn btn-danger">
 												<i class="icon-bullhorn icon-white"></i>
 											</button></td>
@@ -193,6 +193,15 @@ $('.searchModal').hide();
 			
 		}
 	</script>
+	 <script type="text/javascript">
+        var popupX = (window.screen.width / 2) - (500 / 2);
+        var popupY = (window.screen.height / 2) - (600 / 2);
+
+
+        function boardReportPopup(id) {
+            window.open("/report/boardReportForm?id=" + id + "&type=board", "a", "width=500, height=600, left="+popupX + ", top=" + popupY);
+        }
+    </script>
 
 	<script src="/AdminBoot/vendors/jquery-1.9.1.js"></script>
 	<script src="/AdminBoot/bootstrap/js/bootstrap.min.js"></script>

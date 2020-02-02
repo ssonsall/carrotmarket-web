@@ -541,11 +541,11 @@
         var popupY = (window.screen.height / 2) - (600 / 2);
 
         function boardReportPopup(id) {
-            window.open("/report/boardReportForm?id=" + id + "&type=board", "a", "width=500, height=600, left="popupX + ", top=" + popupY);
+            window.open("/report/boardReportForm?id=" + id + "&type=board", "a", "width=500, height=600, left="+popupX + ", top=" + popupY);
         }
 
         function commentReportPopup(id) {
-            window.open("/report/boardReportForm?id=" + id + "&type=board", "a", "width=500, height=600, left="popupX + ", top=" + popupY);
+            window.open("/report/boardReportForm?id=" + id + "&type=board", "a", "width=500, height=600, left="+popupX + ", top=" + popupY);
         }
     </script>
 </body>

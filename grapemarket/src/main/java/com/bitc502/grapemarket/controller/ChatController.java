@@ -125,7 +125,7 @@ public class ChatController {
 	
 	@GetMapping("/chatLog/{id}")
 	public @ResponseBody List<Message> chatLog(@PathVariable int id) {
-		List<Message> chatLog = mRepo.findByChatOrderByCreateDateDesc(id);
+		List<Message> chatLog = mRepo.findByChatIdOrderByCreateDateDesc(id);
 		return chatLog;
 		
 	}

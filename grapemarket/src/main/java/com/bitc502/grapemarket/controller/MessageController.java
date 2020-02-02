@@ -40,7 +40,7 @@ public class MessageController {
 		Chat chat = chatRepo.findById(message.getTemp());
 		Optional<User> oUser = uRepo.findById(message.getTemp2());
 		User user = oUser.get();
-		message.setSenderId(user);
+		message.setUser(user);
 		message.setChat(chat);
 		mRepo.save(message);
 

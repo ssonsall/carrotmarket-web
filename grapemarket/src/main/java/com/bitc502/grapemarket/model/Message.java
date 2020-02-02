@@ -31,7 +31,7 @@ public class Message {
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "senderId")
 	@JsonIgnoreProperties({ "comment","board","like" })
-	private User senderId; 
+	private User user; 
 	
 	
 	@ManyToOne
