@@ -75,6 +75,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService implements
         user.setName(oAuth2UserInfo.getName());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setUserProfile(oAuth2UserInfo.getImageUrl());
+        user.setUsername(oAuth2UserInfo.getName());
         user.setRole(Role.valueOf("USER")); // 추가
         return userRepository.save(user);
     }

@@ -108,7 +108,7 @@
 					<!-- block -->
 					<div class="block">
 						<div class="navbar navbar-inner block-header">
-							<div class="muted pull-left">REPORT DETAIL</div>
+							<div class="muted pull-left">신고 상세보기</div>
 						</div>
 						<div class="block-content collapse in">
 							<div class="span12">
@@ -118,11 +118,23 @@
 									style="vertical-align: none;">
 									<thead>
 										<tr>
-											<th class="span3" style="text-align: center; margin: auto;">TITLE</th>
-											<th style="text-align: center; margin: auto;">CONTENT</th>
+											<th class="span3" style="text-align: center; margin: auto;">-</th>
+											<th style="text-align: center; margin: auto;">-</th>
 										</tr>
 									</thead>
 									<tbody>
+										<tr>
+											<th>신고 번호</th>
+											<td>${report.id}</td>
+										</tr>
+										<tr>
+											<th></th>
+											<td></td>
+										</tr>
+										<tr>
+											<th>신고자 ID</th>
+											<td>${report.user.id}</td>
+										</tr>
 										<tr>
 											<th>신고자</th>
 											<td>${report.user.username}</td>
@@ -136,17 +148,17 @@
 											<td></td>
 										</tr>
 										<tr>
-											<th>ID</th>
-											<td>${report.id}</td>
+											<th>피신고자 ID</th>
+											<td>${reportType.user.id}</td>
 										</tr>
-												<tr>
-													<th>유저</th>
-													<td>${reportType.user.username}</td>
-												</tr>
-												<tr>
-													<th>유저권한</th>
-													<td>${reportType.user.role}</td>
-												</tr>
+										<tr>
+											<th>피신고자</th>
+											<td>${reportType.user.username}</td>
+										</tr>
+										<tr>
+											<th>피신고자 등급</th>
+											<td>${reportType.user.role}</td>
+										</tr>
 										<tr>
 											<th>게시글 유형</th>
 											<td>${report.reportType}</td>
@@ -161,7 +173,7 @@
 												<tr>
 													<th>제목</th>
 													<td>${reportType.title}<a
-														href="/board/detail/${reportType.id}">[해당 게시글로 이동하기]</a></td>
+														href="/board/detail/${reportType.id}">  [해당 게시글로 이동하기]</a></td>
 												</tr>
 												<tr>
 													<th>내용</th>
@@ -190,7 +202,7 @@
 												<tr>
 													<th>내용</th>
 													<td>${reportType.content}<a
-														href="/board/detail/${reportType.board.id}">[해당 게시글로
+														href="/board/detail/${reportType.board.id}">  [해당 게시글로
 															이동하기]</a></td>
 												</tr>
 											</c:when>
@@ -199,8 +211,8 @@
 												<tr>
 													<th>내용</th>
 													<td>${reportType.message}<a
-														href="/chat/chatLog/${reportType.chat.id}">[해당 게시글로
-															이동하기]</a></td>
+														href="/admin/chatLog?id=${reportType.chat.id}&reportId=${report.id}">  [해당
+															게시글로 이동하기]</a></td>
 												</tr>
 											</c:when>
 

@@ -27,14 +27,12 @@ public class Report {
 	private String state; // 신고상태 (미해결: 0, 해결: 1)
 	private ReportType reportType;
 	private int reportId;
+	
 	//신고자
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "userId")
 	@JsonIgnoreProperties({ "board","comment","like","address","addressX","addressY" })
 	private User user;
-	
-	
-
 
 	@CreationTimestamp
 	private Timestamp createDate;

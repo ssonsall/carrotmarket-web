@@ -70,7 +70,7 @@
 											<th class="span2" style="text-align: center; margin: auto;">TYPE</th>
 											<th style="text-align: center; margin: auto;">CONTENT</th>
 											<th class="span2" style="text-align: center; margin: auto;">USER</th>
-											<th class="span2" style="text-align: center; margin: auto;">STATE</th>
+											<th class="span2" style="text-align: center; margin: auto;">상세보기</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -82,7 +82,7 @@
 												<td style="text-align: center; margin: auto;">${report.user.username}</td>
 												<td style="text-align: center; margin: auto;"><c:choose>
 														<c:when test="${report.state eq 0}">
-															<button class="btn btn-danger" onclick="location.href = '/admin/reportDetail?id=${report.id}'">Button</button>
+															<button class="btn" onclick="location.href = '/admin/reportDetail?id=${report.id}'">상세보기</button>
 														</c:when>
 														<c:otherwise>
 															<button class="btn">Button</button>

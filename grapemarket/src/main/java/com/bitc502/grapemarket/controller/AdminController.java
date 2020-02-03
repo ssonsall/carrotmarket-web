@@ -24,6 +24,7 @@ import com.bitc502.grapemarket.model.Comment;
 import com.bitc502.grapemarket.model.Message;
 import com.bitc502.grapemarket.model.Report;
 import com.bitc502.grapemarket.model.User;
+import com.bitc502.grapemarket.payload.AdminDashBoard;
 import com.bitc502.grapemarket.payload.Statistic;
 import com.bitc502.grapemarket.payload.StatisticVolumes;
 import com.bitc502.grapemarket.payload.Statistics;
@@ -32,6 +33,7 @@ import com.bitc502.grapemarket.repository.ChatRepository;
 import com.bitc502.grapemarket.repository.CommentRepository;
 import com.bitc502.grapemarket.repository.MessageRepository;
 import com.bitc502.grapemarket.repository.ReportRepository;
+import com.bitc502.grapemarket.repository.SearchRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.repository.VisitorRepository;
 import com.bitc502.grapemarket.util.Script;
@@ -54,12 +56,20 @@ public class AdminController {
 	@Autowired
 	private MessageRepository mRepo;
 	@Autowired
+	private SearchRepository sRepo;
+	@Autowired
 	private ReportRepository rRepo;
 
 	@GetMapping({ "/", "" })
 	public String dashboard(Model model) {
-		model.addAttribute("currentVisitorCount", VisitorCounter.currentVisitorCount);
-		model.addAttribute("countStatVol",countStatVol());
+		AdminDashBoard ad = new AdminDashBoard();
+		ad.setCurrentVisitorCount(VisitorCounter.currentVisitorCount);
+		ad.setUsers(uRepo.findTop3ByOrderByIdDesc());
+		ad.setBoards(bRepo.findTop3ByOrderByIdDesc());
+		ad.setReports(rRepo.findTop3ByOrderByIdDesc());
+		ad.setSearchs(sRepo.wholeTimePopularThreeKeyword());
+		model.addAttribute("AdminDashBoard", ad);
+		model.addAttribute("countStatVol", countStatVol());
 		return "admin/dashboard";
 	}
 
@@ -67,7 +77,7 @@ public class AdminController {
 	public String userTable(Model model) {
 		List<User> users = uRepo.findAll();
 		model.addAttribute("users", users);
-		model.addAttribute("countStatVol",countStatVol());
+		model.addAttribute("countStatVol", countStatVol());
 		return "admin/userTable";
 	}
 
@@ -84,7 +94,7 @@ public class AdminController {
 		// 신고도 추가해야함
 		model.addAttribute("currentVisitorCount", VisitorCounter.currentVisitorCount);
 		model.addAttribute("Statistics", stats);
-		model.addAttribute("countStatVol",countStatVol());
+		model.addAttribute("countStatVol", countStatVol());
 		return "admin/stats";
 	}
 
@@ -109,7 +119,7 @@ public class AdminController {
 		Optional<User> oUser = uRepo.findById(id);
 		User user = oUser.get();
 		model.addAttribute("user", user);
-		model.addAttribute("countStatVol",countStatVol());
+		model.addAttribute("countStatVol", countStatVol());
 		return "admin/userDetail";
 	}
 
@@ -140,7 +150,7 @@ public class AdminController {
 
 		model.addAttribute("user", user);
 		model.addAttribute("boards", boards);
-		model.addAttribute("countStatVol",countStatVol());
+		model.addAttribute("countStatVol", countStatVol());
 		return "admin/userPostList";
 	}
 
@@ -148,7 +158,7 @@ public class AdminController {
 	public String reportTable(Model model) {
 		List<Report> reports = rRepo.findAll();
 		model.addAttribute("reports", reports);
-		model.addAttribute("countStatVol",countStatVol());
+		model.addAttribute("countStatVol", countStatVol());
 		return "admin/reportTable";
 	}
 
@@ -166,18 +176,18 @@ public class AdminController {
 			Comment comment = oComment.get();
 			model.addAttribute("reportType", comment);
 		} else if (report.getReportType().equals(ReportType.message)) {
-			Optional<Message> oMessage= mRepo.findById(report.getReportId());
+			Optional<Message> oMessage = mRepo.findById(report.getReportId());
 			Message message = oMessage.get();
 			Chat chat = cRepo.findById(message.getChat().getId());
 			model.addAttribute("reportType", message);
-			model.addAttribute("chat",chat);
+			model.addAttribute("chat", chat);
 
 		}
 		model.addAttribute("report", report);
-		model.addAttribute("countStatVol",countStatVol());
+		model.addAttribute("countStatVol", countStatVol());
 		return "admin/reportDetail";
 	}
-	
+
 	@GetMapping("/restriction")
 	public @ResponseBody String restriction(HttpServletRequest request) {
 		int id = Integer.parseInt(request.getParameter("id"));
@@ -185,22 +195,21 @@ public class AdminController {
 		try {
 			Optional<User> oUser = uRepo.findById(id);
 			User user = oUser.get();
-			if(sort.equals("caution1")) {
+			if (sort.equals("caution1")) {
 				user.setRole(Role.CAUTION1);
-			}else if(sort.equals("caution2")) {
+			} else if (sort.equals("caution2")) {
 				user.setRole(Role.CAUTION2);
-			} else if(sort.equals("ban")) {
+			} else if (sort.equals("ban")) {
 				user.setRole(Role.BANNED);
 			}
 			uRepo.save(user);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return Script.back("오류발생");
 		}
-		
+
 		return Script.back("정상 처리되었습니다.");
 	}
-	
-	
+
 	public StatisticVolumes countStatVol() {
 		StatisticVolumes sv = new StatisticVolumes();
 		sv.setMemberVolume(uRepo.count());
@@ -208,6 +217,19 @@ public class AdminController {
 		sv.setChatVolume(mRepo.count());
 		sv.setReportVolume(rRepo.count());
 		return sv;
+	}
+
+	@GetMapping("/chatLog")
+	public String chatLog(HttpServletRequest request, Model model) {
+		int id = Integer.parseInt(request.getParameter("id"));
+		int reportId = Integer.parseInt(request.getParameter("reportId"));
+		List<Message> messages = mRepo.findByChatIdOrderByCreateDateDesc(id);
+		Optional<Report> oReport = rRepo.findById(reportId);
+		Report report = oReport.get();
+		model.addAttribute("messages", messages);
+		model.addAttribute("report", report);
+		return "admin/userChatList";
+
 	}
 
 }
