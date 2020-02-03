@@ -15,5 +15,5 @@ public class AdminDashBoard {
 	private List<User> users;
 	private List<Board> boards;
 	private List<Report> reports;
-	private List<Search> searchs; 
+	private List<Search> searchs;
 }
