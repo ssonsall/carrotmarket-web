@@ -44,14 +44,18 @@
 						<div class="col-sm-4 col-md-3 sidebar">
 							<div class="widget">
 								<div class="col-sm-12 col-md-9" style="margin-bottom: 10%;">
-									<img src="assets/images/market/default.jpg" alt="">
+									<span style="position: absolute;"> <c:choose>
+												<c:when test="${user.provider eq 'local'}">
+													<img src="/upload/${user.userProfile}"
+														style="width: 150px; height: 150px;">
+												</c:when>
+												<c:otherwise>
+													<img src="${user.userProfile}"
+														style="width: 150px; height: 150px;">
+												</c:otherwise>
+											</c:choose> <h1>${user.name}</h1>
+									</span>
 								</div>
-							</div>
-							<div class="widget">
-								<h1>${user.username}</h1>
-							</div>
-							<div class="widget">
-								<h1>유저 address</h1>
 							</div>
 						</div>
 						<!-- 프로필 끝 -->
@@ -237,15 +241,15 @@
 													<p class="help-block text-danger"></p>
 												</div>
 												<c:choose>
-														<c:when test="${user.addressAuth==0}">
-																<div class="text-center col-md-4">
-													<input class="btn btn-block btn-round btn-d" id="cfsubmit"
-														type="button" onClick="getLocation();"
-														placeholder="Search" value="인증하기" />
-												</div>
-														</c:when>
-													</c:choose>
-											
+													<c:when test="${user.addressAuth==0}">
+														<div class="text-center col-md-4">
+															<input class="btn btn-block btn-round btn-d"
+																id="cfsubmit" type="button" onClick="getLocation();"
+																placeholder="Search" value="인증하기" />
+														</div>
+													</c:when>
+												</c:choose>
+
 
 
 											</form>
@@ -399,12 +403,13 @@
 			<a href="#totop"><i class="fa fa-angle-double-up"></i></a>
 		</div>
 	</main>
-	
+
 	<script>
-	$(document).ready(function(){
-		alert(localsSorage.getItem('stroageTest'));});
+		$(document).ready(function() {
+			alert(localsSorage.getItem('stroageTest'));
+		});
 	</script>
-	
+
 	<script src='/map/address.js'></script>
 	<%@include file="../include/script.jsp"%>
 </body>
