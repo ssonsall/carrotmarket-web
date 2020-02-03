@@ -62,9 +62,6 @@ public class BoardController {
 	private LikeRepository likeRepo;
 
 	@Autowired
-	private SearchRepository sRepo;
-
-	@Autowired
 	private TradeStateRepository tradeStateRepo;
 
 	@Autowired
@@ -83,66 +80,30 @@ public class BoardController {
 	@GetMapping("/page")
 	public String getList(Model model,
 			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable,
-			@RequestParam String category, @RequestParam String userInput,
-			@RequestParam int range,
+			@RequestParam String category, @RequestParam String userInput, @RequestParam int range,
 			@AuthenticationPrincipal UserPrincipal userPrincipal) {
 
 		String currentCategory = category;
 		String originUserInput = userInput.trim();
-		List<User> users = uRepo.findByAddressContaining(userInput);
-		List<Integer> userIds = new ArrayList<>();
-		for (User u : users) {
-			userIds.add(u.getId());
-		}
-		Page<Board> boards;
-		if (!userInput.equals("")) {
-			String[] searchContent = userInput.split(" ");
-			for (String entity : searchContent) {
-				Search search = new Search();
-				System.out.println("저장중");
-				entity.trim();
-				if (!entity.equals("")) {
-					search.setContent(entity);
-					sRepo.save(search);
-				}
-			}
 
-		}
+		// 검색어 저장
+		boardServ.saveKeyword(userInput);
 
-		if (userInput.equals("")) {
-			if (category.equals("1")) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
-				boards = bRepo.findAll(pageable);
-			} else {// 입력값 공백이면 + 카테고리 (입력값조건 무시 카테고리만 걸고)
-				boards = bRepo.findByCategory(category, pageable);
-			}
-		} else {
-			// 공백제거
-			userInput = userInput.trim();
-			// 정규식 형태 만들어주기
-			userInput = userInput.replace(" ", ")(?=.*");
-			userInput = "(?=.*" + userInput + ")";
-			if (category.equals("1")) // 입력값 + 카테고리 전체 (입력값만 걸고 카테고리 조건 무시)
-				category = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
-			boards = bRepo.search(category, userInput, pageable);
-		}
+		// 검색어 있는지 확인하고 board 데이터 불러오기
+		Page<Board> boards = boardServ.getBoard(userInput, category, pageable);
 
 		if (pageable.getPageNumber() >= boards.getTotalPages() && boards.getTotalPages() > 0) {
 			return "redirect:/board/page?page=" + (boards.getTotalPages() - 1) + "&category=" + category + "&userInput="
 					+ userInput;
 		}
 
-		long countRow = boards.getTotalElements();
-		long count = 0;
-		if (countRow % 8 == 0) {
-			count = countRow / 8;
-		} else {
-			count = (countRow / 8) + 1;
-		}
+		// 카운트값 받아오기
+		long count = boardServ.getCount(boards.getTotalElements());
 
-		
-		List<Board> board2 = boardServ.getGps(userPrincipal,boards.getContent(),range);
+		// 거리값 계산후 출력될 보드데이터 불러오기
+		List<Board> board2 = boardServ.getGps(userPrincipal, boards.getContent(), range);
 
-		model.addAttribute("originUserInput",originUserInput);
+		model.addAttribute("originUserInput", originUserInput);
 		model.addAttribute("currentUserInput", userInput);
 		model.addAttribute("currentCategory", currentCategory);
 		model.addAttribute("currentPage", pageable.getPageNumber());
@@ -170,18 +131,38 @@ public class BoardController {
 
 	}
 
+	/*
+	 * @PostMapping("/writeProcTest") public String write(@AuthenticationPrincipal
+	 * UserPrincipal userPrincipal, Board board,
+	 * 
+	 * @RequestParam(value="productImage", required=true) List<MultipartFile>
+	 * productImage) {
+	 * 
+	 * System.out.println("productImage : "+productImage.size());
+	 * 
+	 * 
+	 * for (MultipartFile multipartFile : productImage) {
+	 * System.out.println(multipartFile.getOriginalFilename()); }
+	 * 
+	 * 
+	 * for (int i = 0; i < productImage.size(); i++) {
+	 * 
+	 * if(!productImage.get(i).getOriginalFilename().equals(""))
+	 * System.out.println(i + ": "+ productImage.get(i)); }
+	 * 
+	 * return "redirect:/board/page?page=0&category=1&userInput=&range=5"; }
+	 */
+
 	// 글쓰기 동작
 	@PostMapping("/writeProc")
-	public String write(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("state") String state,
-			@RequestParam("category") String category, @RequestParam("title") String title,
-			@RequestParam("price") String price, @RequestParam("content") String content,
+	public String write(@AuthenticationPrincipal UserPrincipal userPrincipal, Board board,
 			@RequestParam("productImage1") MultipartFile productImage1,
 			@RequestParam("productImage2") MultipartFile productImage2,
 			@RequestParam("productImage3") MultipartFile productImage3,
 			@RequestParam("productImage4") MultipartFile productImage4,
 			@RequestParam("productImage5") MultipartFile productImage5) {
+
 		try {
-			Board board = new Board();
 			// 파일 이름 세팅 및 쓰기
 
 			String imageFileName1 = UUID.randomUUID() + "_" + productImage1.getOriginalFilename();
@@ -217,11 +198,6 @@ public class BoardController {
 			}
 
 			board.setUser(userPrincipal.getUser());
-			board.setCategory(category);
-			board.setState(state);
-			board.setTitle(title);
-			board.setPrice(price);
-			board.setContent(content);
 
 			bRepo.save(board);
 
@@ -229,7 +205,7 @@ public class BoardController {
 			tradeStateServ.insertSellState(userPrincipal.getUser(), board);
 
 			// 리스트 완성되면 바꿔야함
-			return "redirect:/board/page?page=0&category=1&userInput=";
+			return "redirect:/board/page?page=0&category=1&userInput=&range=5";
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -243,16 +219,18 @@ public class BoardController {
 		Optional<Board> oBoard = bRepo.findById(id);
 		Board board = oBoard.get();
 
+		// 댓글 불러오기
 		List<Comment> comments = commentRepo.findByBoardId(board.getId());
 
+		// 좋아요 불러오기
 		Likes check = likeRepo.findByUserIdAndBoardId(userPrincipal.getUser().getId(), board.getId());
 		if (check != null) {
 			model.addAttribute("liked", "liked");
 		}
-
 		int likeCount = likeRepo.countByBoardId(board.getId());
-		String state = "구매완료";
-		List<TradeState> tradeStates = tradeStateRepo.findByBoardIdAndState(board.getId(), state);
+
+		// 구매완료 누른 사용자 불러오기
+		List<TradeState> tradeStates = tradeStateRepo.findByBoardIdAndState(board.getId());
 
 		model.addAttribute("tradeStates", tradeStates);
 		model.addAttribute("likeCount", likeCount);
@@ -268,7 +246,7 @@ public class BoardController {
 	public String delete(@PathVariable int id) {
 		try {
 			bRepo.deleteById(id);
-			return "redirect:/board/page?page=0&category=1&userInput=";
+			return "redirect:/board/page?page=0&category=1&userInput=&range=5";
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -297,7 +275,6 @@ public class BoardController {
 		Board board = oBoard.get();
 		model.addAttribute("board", board);
 		return "board/updateForm";
-		// return "board/updateForm";
 	}
 
 	// 글수정 동작
@@ -376,7 +353,7 @@ public class BoardController {
 					board.getId());
 
 			// 리스트 완성되면 바꿔야함
-			return "redirect:/board/page?page=0&category=1&userInput=";
+			return "redirect:/board/page?page=0&category=1&userInput=&range=5";
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

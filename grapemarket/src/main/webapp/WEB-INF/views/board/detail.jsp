@@ -251,8 +251,18 @@
                                                 <select style="position: relative; top: 10px;" name="buyer"
                                                     class="form-control">
                                                     <c:forEach var="tradeState" items="${tradeStates}">
-                                                        <option value="${tradeState.user.id}">${tradeState.user.name}
-                                                        </option>
+                                                    
+                                                    <c:choose>
+                                                    <c:when test="${tradeState.state eq '구매완료'}">
+                                                    <option value="${tradeState.user.id}">${tradeState.user.name} ★</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                    <option value="${tradeState.user.id}">${tradeState.user.name}</option>
+                                                    </c:otherwise>
+                                                    </c:choose>
+                                                    
+                                                        
+                                                        
                                                     </c:forEach>
                                                 </select>
                                             </form>
