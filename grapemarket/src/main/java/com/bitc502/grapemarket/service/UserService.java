@@ -16,8 +16,6 @@ import com.bitc502.grapemarket.common.AuthProvider;
 import com.bitc502.grapemarket.common.Role;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.UserRepository;
-import com.bitc502.grapemarket.security.UserPrincipal;
-import com.bitc502.grapemarket.util.Script;
 
 @Service
 public class UserService {
@@ -76,12 +74,13 @@ public class UserService {
 		
 	}
 	
-	public int update(UserPrincipal userPrincipal, User user,String currentUserProfile, MultipartFile userProfile) {
-		try {
+	public int update(User user,String currentUserProfile, MultipartFile userProfile) {
+		try { 
 			String rawPassword = user.getPassword();
 			String encPassword = passwordEncoder.encode(rawPassword);
+			Optional<User> oUser = uRepo.findById(user.getId());
+			user = oUser.get();
 			user.setPassword(encPassword);
-
 			if (userProfile.getSize() != 0) {
 				String UUIDFileName = UUID.randomUUID() + "_" + userProfile.getOriginalFilename();
 				user.setUserProfile(UUIDFileName);
@@ -90,8 +89,7 @@ public class UserService {
 			} else {
 				user.setUserProfile(currentUserProfile);
 			}
-			uRepo.update(user.getPassword(), user.getEmail(), user.getPhone(), user.getUserProfile(), user.getId());
-			userPrincipal.getUser().setUserProfile(user.getUserProfile());
+			uRepo.save(user);
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,17 +1,9 @@
 package com.bitc502.grapemarket.controller;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Optional;
-import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bitc502.grapemarket.common.AuthProvider;
-import com.bitc502.grapemarket.common.Role;
 import com.bitc502.grapemarket.model.User;
-import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 import com.bitc502.grapemarket.service.UserService;
 import com.bitc502.grapemarket.util.Script;
@@ -84,10 +73,12 @@ public class UserController {
 	public @ResponseBody String update(@AuthenticationPrincipal UserPrincipal userPrincipal, User user,
 			@RequestParam("currentUserProfile") String currentUserProfile,
 			@RequestParam("profile") MultipartFile userProfile) {
-		int result = userServ.update(userPrincipal, user, currentUserProfile, userProfile);
+		int result = userServ.update(user, currentUserProfile, userProfile);
 		if (result == -1) {
 			return Script.hrefAndAlert("/user/userProfile", "오류 발생");
 		}
+		user = userServ.getUserById(user.getId());
+		userPrincipal.setUser(user);
 		return Script.href("/user/userProfile");
 
 	}
