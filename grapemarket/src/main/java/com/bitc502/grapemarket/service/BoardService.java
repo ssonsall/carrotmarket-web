@@ -75,13 +75,14 @@ public class BoardService {
 
 	
 	//검색어 있는지 확인하고 board 데이터 불러오기
-	public Page<Board> getBoard(String userInput, String category, Pageable pageable) {
+	public Page<Board> getBoard(String userInput, String category, double latitude, double latitude2,
+			double longitude, double longitude2,Pageable pageable) {
 		Page<Board> boards;
 		if (userInput.equals("")) {
 			if (category.equals("1")) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
-				boards = bRepo.findAll(pageable);
+				boards = bRepo.findAllAndGps(latitude, latitude2, longitude, longitude2, pageable);
 			} else {// 입력값 공백이면 + 카테고리 (입력값조건 무시 카테고리만 걸고)
-				boards = bRepo.findByCategory(category, pageable);
+				boards = bRepo.findByCategoryAndGps(latitude, latitude2, longitude, longitude2, category, pageable);
 			}
 		} else {
 			// 공백제거
@@ -91,7 +92,7 @@ public class BoardService {
 			userInput = "(?=.*" + userInput + ")";
 			if (category.equals("1")) // 입력값 + 카테고리 전체 (입력값만 걸고 카테고리 조건 무시)
 				category = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
-			boards = bRepo.search(category, userInput, pageable);
+			boards = bRepo.searchAndGps(latitude, latitude2, longitude, longitude2,category, userInput, pageable);
 		}
 		return boards;
 	}

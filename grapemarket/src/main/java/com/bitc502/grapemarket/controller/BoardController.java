@@ -41,6 +41,10 @@ import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 import com.bitc502.grapemarket.service.BoardService;
 import com.bitc502.grapemarket.service.TradeStateService;
+import com.grum.geocalc.BoundingArea;
+import com.grum.geocalc.Coordinate;
+import com.grum.geocalc.EarthCalc;
+import com.grum.geocalc.Point;
 
 @Controller
 @RequestMapping("/board")
@@ -86,23 +90,36 @@ public class BoardController {
 		String currentCategory = category;
 		int currentRange = range;
 		String originUserInput = userInput.trim();
+		
+		Coordinate lat = Coordinate.fromDegrees(userPrincipal.getUser().getAddressX());
+		Coordinate lng = Coordinate.fromDegrees(userPrincipal.getUser().getAddressY());
+		Point Mine = Point.at(lat, lng);
+		
+		BoundingArea area = EarthCalc.around(Mine, range*1000);
+		Point nw = area.northWest;
+		Point se = area.southEast;
+		
+		
 
 		// 검색어 저장
 		boardServ.saveKeyword(userInput);
 
 		// 검색어 있는지 확인하고 board 데이터 불러오기
-		Page<Board> boards = boardServ.getBoard(userInput, category, pageable);
+		Page<Board> boards = boardServ.getBoard(userInput, category,nw.latitude, se.latitude, nw.longitude, se.longitude, pageable);
 
 		if (pageable.getPageNumber() >= boards.getTotalPages() && boards.getTotalPages() > 0) {
 			return "redirect:/board/page?page=" + (boards.getTotalPages() - 1) + "&category=" + category + "&userInput="
-					+ userInput;
+					+ userInput+"&range=5";
 		}
 
 		// 카운트값 받아오기
 		long count = boardServ.getCount(boards.getTotalElements());
 
 		// 거리값 계산후 출력될 보드데이터 불러오기
-		List<Board> board2 = boardServ.getGps(userPrincipal, boards.getContent(), range);
+		/*
+		 * List<Board> board2 = boardServ.getGps(userPrincipal, boards.getContent(),
+		 * range);
+		 */
 
 		model.addAttribute("originUserInput", originUserInput);
 		model.addAttribute("currentUserInput", userInput);
@@ -110,7 +127,7 @@ public class BoardController {
 		model.addAttribute("currentRange", currentRange);
 		model.addAttribute("currentPage", pageable.getPageNumber());
 		model.addAttribute("count", count);
-		model.addAttribute("boards", board2);
+		model.addAttribute("boards", boards.getContent());
 
 		return "board/list";
 
