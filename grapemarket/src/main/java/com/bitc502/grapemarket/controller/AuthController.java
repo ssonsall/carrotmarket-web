@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.bitc502.grapemarket.common.AuthProvider;
+import com.bitc502.grapemarket.common.Role;
 import com.bitc502.grapemarket.exception.BadRequestException;
-import com.bitc502.grapemarket.model.AuthProvider;
-import com.bitc502.grapemarket.model.Role;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.payload.ApiResponse;
 import com.bitc502.grapemarket.payload.SignUpRequest;

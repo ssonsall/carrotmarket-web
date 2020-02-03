@@ -2,8 +2,8 @@ package com.bitc502.grapemarket.security.oauth2.user;
 
 import java.util.Map;
 
+import com.bitc502.grapemarket.common.AuthProvider;
 import com.bitc502.grapemarket.exception.OAuth2AuthenticationProcessingException;
-import com.bitc502.grapemarket.model.AuthProvider;
 
 public class OAuth2UserInfoFactory {
 

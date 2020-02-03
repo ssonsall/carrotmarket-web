@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bitc502.grapemarket.model.AuthProvider;
+import com.bitc502.grapemarket.common.AuthProvider;
+import com.bitc502.grapemarket.common.Role;
 import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Chat;
 import com.bitc502.grapemarket.model.Comment;
-import com.bitc502.grapemarket.model.Role;
 import com.bitc502.grapemarket.model.Search;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.payload.ChatList;

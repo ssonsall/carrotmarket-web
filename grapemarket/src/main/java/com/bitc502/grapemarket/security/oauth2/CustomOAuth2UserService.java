@@ -10,19 +10,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import com.bitc502.grapemarket.common.AuthProvider;
+import com.bitc502.grapemarket.common.Role;
 import com.bitc502.grapemarket.exception.OAuth2AuthenticationProcessingException;
-import com.bitc502.grapemarket.model.AuthProvider;
-import com.bitc502.grapemarket.model.Role;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 import com.bitc502.grapemarket.security.oauth2.user.OAuth2UserInfo;
 import com.bitc502.grapemarket.security.oauth2.user.OAuth2UserInfoFactory;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.util.StringUtils;
 
 
 @Service

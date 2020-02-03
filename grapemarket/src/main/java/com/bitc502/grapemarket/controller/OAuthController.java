@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bitc502.grapemarket.model.OAuthToken;
-import com.bitc502.grapemarket.model.OAuthUser;
 import com.bitc502.grapemarket.oauthutil.OAuthUtil;
+import com.bitc502.grapemarket.payload.OAuthToken;
+import com.bitc502.grapemarket.payload.OAuthUser;
 import com.google.gson.Gson;
 
 @RequestMapping("/oauth")

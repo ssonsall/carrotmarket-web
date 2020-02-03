@@ -1,4 +1,4 @@
-package com.bitc502.grapemarket.model;
+package com.bitc502.grapemarket.common;
 
 public enum AuthProvider {
     local,

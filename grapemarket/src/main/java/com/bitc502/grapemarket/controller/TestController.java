@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitc502.grapemarket.model.Board;
-import com.bitc502.grapemarket.model.Statistic;
-import com.bitc502.grapemarket.model.Statistics;
 import com.bitc502.grapemarket.model.User;
+import com.bitc502.grapemarket.payload.Statistic;
+import com.bitc502.grapemarket.payload.Statistics;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.ChatRepository;
 import com.bitc502.grapemarket.repository.UserRepository;

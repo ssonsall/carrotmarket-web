@@ -18,6 +18,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.bitc502.grapemarket.common.AuthProvider;
+import com.bitc502.grapemarket.common.Role;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;

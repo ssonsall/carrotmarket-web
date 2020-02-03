@@ -1,4 +1,4 @@
-package com.bitc502.grapemarket.model;
+package com.bitc502.grapemarket.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

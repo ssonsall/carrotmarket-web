@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bitc502.grapemarket.model.AuthProvider;
-import com.bitc502.grapemarket.model.Role;
+import com.bitc502.grapemarket.common.AuthProvider;
+import com.bitc502.grapemarket.common.Role;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
