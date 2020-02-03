@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
 
 import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Search;
+import com.bitc502.grapemarket.model.TradeState;
+import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.SearchRepository;
+import com.bitc502.grapemarket.repository.TradeStateRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 import com.grum.geocalc.BoundingArea;
@@ -31,8 +34,11 @@ public class BoardService {
 
 	@Autowired
 	private SearchRepository sRepo;
+	
+	@Autowired
+	private TradeStateRepository tRepo;
 
-	public void setBuyerId(Board board) {
+	public void setBuyerId(User user, Board board) {
 
 		Optional<Board> oBoard = bRepo.findById(board.getId());
 		Board board2 = oBoard.get();
@@ -40,6 +46,14 @@ public class BoardService {
 		board2.setBuyer(board.getBuyer());
 		board2.setState("1");
 		bRepo.save(board2);
+		
+		TradeState state = tRepo.findByUserIdAndBoardId(user.getId(),board.getId());
+		if(state.getState().equals("판매중")) {
+			state.setState("판매완료");
+		}
+		
+		tRepo.save(state);
+		
 
 	}
 	

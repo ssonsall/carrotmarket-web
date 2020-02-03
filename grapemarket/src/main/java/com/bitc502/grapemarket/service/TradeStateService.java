@@ -89,11 +89,9 @@ public class TradeStateService {
 
 			TradeState ts = tradeStateRepo.findByUserIdAndBoardId(userId, boardId);
 
-			if (ts.getState().equals("판매중")) {
-				ts.setState("판매완료");
-			} else if (ts.getState().equals("구매중")) {
+			if (ts.getState().equals("구매중")) {
 				ts.setState("구매완료");
-			}
+			} 
 
 			tradeStateRepo.save(ts);
 

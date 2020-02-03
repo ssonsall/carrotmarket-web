@@ -73,7 +73,7 @@ public class BoardController {
 	// 전체 페이지
 	@GetMapping({ "/", "" })
 	public String list() {
-		return "redirect:/board/page?page=0&category=1&userInput=";
+		return "redirect:/board/page?page=0&category=1&userInput=&range=5";
 	}
 
 	// 리스트 페이지
@@ -84,6 +84,7 @@ public class BoardController {
 			@AuthenticationPrincipal UserPrincipal userPrincipal) {
 
 		String currentCategory = category;
+		int currentRange = range;
 		String originUserInput = userInput.trim();
 
 		// 검색어 저장
@@ -106,6 +107,7 @@ public class BoardController {
 		model.addAttribute("originUserInput", originUserInput);
 		model.addAttribute("currentUserInput", userInput);
 		model.addAttribute("currentCategory", currentCategory);
+		model.addAttribute("currentRange", currentRange);
 		model.addAttribute("currentPage", pageable.getPageNumber());
 		model.addAttribute("count", count);
 		model.addAttribute("boards", board2);
@@ -368,9 +370,9 @@ public class BoardController {
 
 	// complete
 	@PostMapping("/complete")
-	public @ResponseBody void boardComplete(Board board) {
+	public @ResponseBody void boardComplete(@AuthenticationPrincipal UserPrincipal userPrincipal,Board board) {
 
-		boardServ.setBuyerId(board);
+		boardServ.setBuyerId(userPrincipal.getUser(),board);
 	}
 
 }
