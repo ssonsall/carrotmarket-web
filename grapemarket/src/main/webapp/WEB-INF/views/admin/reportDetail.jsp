@@ -5,7 +5,7 @@
 <html>
 
 <head>
-<title>Tables</title>
+<title>신고 상세내용</title>
 <!-- Bootstrap -->
 <link href="/AdminBoot/bootstrap/css/bootstrap.min.css" rel="stylesheet"
 	media="screen">
@@ -67,7 +67,7 @@
 					<div>
 						<p>
 							현재 유저의 권한은 [ <span style="font-style: italic; font-weight: bold;">
-								${reportType.user.role} </span> ] 입니다.
+								${AdminReportDetail.reportType.user.role} </span> ] 입니다.
 						</p>
 						<p>계정을 제재하시겠습니까?</p>
 					</div>
@@ -75,21 +75,21 @@
 			</div>
 			<hr>
 			<div style="width: auto;">
-				<c:if test="${reportType.user.role eq 'USER' }">
+				<c:if test="${AdminReportDetail.reportType.user.role eq 'USER' }">
 					<button class="btn btn-warning"
-						onclick="changeRoleToCaution1(${reportType.user.id},${report.id })">경고1</button>
+						onclick="changeRoleToCaution1(${AdminReportDetail.reportType.user.id},${AdminReportDetail.report.id })">경고1</button>
 
 				</c:if>
 				<c:if
-					test="${reportType.user.role eq 'USER' or reportType.user.role eq'CAUTION1' }">
+					test="${AdminReportDetail.reportType.user.role eq 'USER' or AdminReportDetail.reportType.user.role eq'CAUTION1' }">
 					<button class="btn btn-danger"
-						onclick="changeRoleToCaution2(${reportType.user.id},${report.id })">경고2</button>
+						onclick="changeRoleToCaution2(${AdminReportDetail.reportType.user.id},${AdminReportDetail.report.id })">경고2</button>
 
 				</c:if>
 				<button class="btn btn-inverse"
-						onclick="changeRoleToBan(${reportType.user.id},${report.id })">정지</button>
+						onclick="changeRoleToBan(${AdminReportDetail.reportType.user.id},${AdminReportDetail.report.id })">정지</button>
 				<button class="btn btn-inverse"
-						onclick="deleteReport(${reportType.user.id},${report.id })">취소</button>
+						onclick="deleteReport(${AdminReportDetail.reportType.user.id},${AdminReportDetail.report.id })">취소</button>
 				<button class="btn" style="float: right" onclick="closeModal()">X</button>
 			</div>
 		</div>
@@ -134,7 +134,7 @@
 									<tbody>
 										<tr>
 											<th>신고 번호</th>
-											<td>${report.id}</td>
+											<td>${AdminReportDetail.report.id}</td>
 										</tr>
 										<tr>
 											<th></th>
@@ -142,15 +142,15 @@
 										</tr>
 										<tr>
 											<th>신고자 ID</th>
-											<td>${report.user.id}</td>
+											<td>${AdminReportDetail.report.user.id}</td>
 										</tr>
 										<tr>
 											<th>신고자</th>
-											<td>${report.user.username}</td>
+											<td>${AdminReportDetail.report.user.username}</td>
 										</tr>
 										<tr>
 											<th>신고내용</th>
-											<td>${report.content}</td>
+											<td>${AdminReportDetail.report.content}</td>
 										</tr>
 										<tr>
 											<th></th>
@@ -158,19 +158,19 @@
 										</tr>
 										<tr>
 											<th>피신고자 ID</th>
-											<td>${reportType.user.id}</td>
+											<td>${AdminReportDetail.reportType.user.id}</td>
 										</tr>
 										<tr>
 											<th>피신고자</th>
-											<td>${reportType.user.username}</td>
+											<td>${AdminReportDetail.reportType.user.username}</td>
 										</tr>
 										<tr>
 											<th>피신고자 등급</th>
-											<td>${reportType.user.role}</td>
+											<td>${AdminReportDetail.reportType.user.role}</td>
 										</tr>
 										<tr>
 											<th>게시글 유형</th>
-											<td>${report.reportType}</td>
+											<td>${AdminReportDetail.report.reportType}</td>
 										</tr>
 										<tr>
 											<th></th>
@@ -178,49 +178,49 @@
 										</tr>
 										<!-- 보드의 경우 -->
 										<c:choose>
-											<c:when test="${report.reportType eq 'board'}">
+											<c:when test="${AdminReportDetail.report.reportType eq 'board'}">
 												<tr>
 													<th>제목</th>
-													<td>${reportType.title}<a
-														href="/board/detail/${reportType.id}"> [해당 게시글로 이동하기]</a></td>
+													<td>${AdminReportDetail.reportType.title}<a
+														href="/board/detail/${AdminReportDetail.reportType.id}"> [해당 게시글로 이동하기]</a></td>
 												</tr>
 												<tr>
 													<th>내용</th>
-													<td>${reportType.content}</td>
+													<td>${AdminReportDetail.reportType.content}</td>
 												</tr>
 												<tr>
 													<th>사진</th>
 													<td><img style="width: 50px; height: 50px;"
-														src="/upload/${reportType.image1}" alt=" No Image" />
-														</li> <c:if test="${!empty reportType.image2}">
+														src="/upload/${AdminReportDetail.reportType.image1}" alt=" No Image" />
+														</li> <c:if test="${!empty AdminReportDetail.reportType.image2}">
 															<li><img style="width: 50px; height: 50px;"
-																src="/upload/${reportType.image2}" alt=" No Image" /></li>
-														</c:if> <c:if test="${!empty reportType.image3}">
+																src="/upload/${AdminReportDetail.reportType.image2}" alt=" No Image" /></li>
+														</c:if> <c:if test="${!empty AdminReportDetail.reportType.image3}">
 															<li><img style="width: 50px; height: 50px;"
-																src="/upload/${reportType.image3}" alt=" No Image" /></li>
-														</c:if> <c:if test="${!empty reportType.image4}">
+																src="/upload/${AdminReportDetail.reportType.image3}" alt=" No Image" /></li>
+														</c:if> <c:if test="${!empty AdminReportDetail.reportType.image4}">
 															<li><img style="width: 50px; height: 50px;"
-																src="/upload/${reportType.image4}" alt=" No Image" /></li>
-														</c:if> <c:if test="${!empty reportType.image5}">
+																src="/upload/${AdminReportDetail.reportType.image4}" alt=" No Image" /></li>
+														</c:if> <c:if test="${!empty AdminReportDetail.reportType.image5}">
 															<li><img style="width: 50px; height: 50px;"
-																src="/upload/${reportType.image5}" alt=" No Image" /></li>
+																src="/upload/${AdminReportDetail.reportType.image5}" alt=" No Image" /></li>
 														</c:if></td>
 												</tr>
 											</c:when>
-											<c:when test="${report.reportType eq 'comment'}">
+											<c:when test="${AdminReportDetail.report.reportType eq 'comment'}">
 												<tr>
 													<th>내용</th>
-													<td>${reportType.content}<a
-														href="/board/detail/${reportType.board.id}"> [해당 게시글로
+													<td>${AdminReportDetail.reportType.content}<a
+														href="/board/detail/${AdminReportDetail.reportType.board.id}"> [해당 게시글로
 															이동하기]</a></td>
 												</tr>
 											</c:when>
 
-											<c:when test="${report.reportType eq 'message'}">
+											<c:when test="${AdminReportDetail.report.reportType eq 'message'}">
 												<tr>
 													<th>내용</th>
-													<td>${reportType.message}<a
-														href="/admin/chatLog?id=${reportType.chat.id}&reportId=${report.id}">
+													<td>${AdminReportDetail.reportType.message}<a
+														href="/admin/chatLog?id=${AdminReportDetail.reportType.chat.id}&reportId=${AdminReportDetail.report.id}">
 															[해당 게시글로 이동하기]</a></td>
 												</tr>
 											</c:when>

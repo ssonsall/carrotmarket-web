@@ -5,7 +5,7 @@
 <html class="no-js">
 
 <head>
-<title>Admin Home Page</title>
+<title>포도마켓 관리자 페이지</title>
 <!-- Bootstrap -->
 <link href="/AdminBoot/bootstrap/css/bootstrap.min.css" rel="stylesheet"
 	media="screen">
@@ -15,10 +15,7 @@
 	rel="stylesheet" media="screen">
 <link href="/AdminBoot/assets/styles.css" rel="stylesheet"
 	media="screen">
-<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-<!--[if lt IE 9]>
-            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+
 <script src="/AdminBoot/vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 </head>
 
@@ -200,14 +197,6 @@
 	<script src="/AdminBoot/bootstrap/js/bootstrap.min.js"></script>
 	<script src="/AdminBoot/vendors/easypiechart/jquery.easy-pie-chart.js"></script>
 	<script src="/AdminBoot/assets/scripts.js"></script>
-	<script>
-		$(function() {
-			// Easy pie charts
-			$('.chart').easyPieChart({
-				animate : 1000
-			});
-		});
-	</script>
 </body>
 
 </html>

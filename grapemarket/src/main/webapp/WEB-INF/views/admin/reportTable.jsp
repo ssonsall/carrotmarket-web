@@ -5,7 +5,7 @@
 <html>
 
 <head>
-<title>Tables</title>
+<title>신고 내역</title>
 <!-- Bootstrap -->
 <link href="/AdminBoot/bootstrap/css/bootstrap.min.css" rel="stylesheet"
 	media="screen">

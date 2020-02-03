@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitc502.grapemarket.common.ReportType;
 import com.bitc502.grapemarket.model.Board;
-import com.bitc502.grapemarket.model.Chat;
 import com.bitc502.grapemarket.model.Comment;
 import com.bitc502.grapemarket.model.Message;
 import com.bitc502.grapemarket.model.Report;
