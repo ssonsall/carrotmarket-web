@@ -47,54 +47,12 @@
 
 						<div class="navbar navbar-inner block-header">
 							<div class="muted pull-left">
-								<i class="icon-user"></i>  ${currentVisitorCount}
+								<i class="icon-user"></i> ${AdminDashBoard.currentVisitorCount}
 							</div>
 
 						</div>
 					</div>
 
-					<div class="block">
-
-						<div class="navbar navbar-inner block-header">
-							<div class="muted pull-left">Statistics</div>
-							<div class="pull-right">
-								<span class="badge badge-warning">View More</span>
-
-							</div>
-						</div>
-
-						<div class="block-content collapse in">
-							<div class="span3">
-								<div class="chart" data-percent="73">73%</div>
-								<div class="chart-bottom-heading">
-									<span class="label label-info">Visitors</span>
-
-								</div>
-							</div>
-							<div class="span3">
-								<div class="chart" data-percent="53">53%</div>
-								<div class="chart-bottom-heading">
-									<span class="label label-info">Page Views</span>
-
-								</div>
-							</div>
-							<div class="span3">
-								<div class="chart" data-percent="83">83%</div>
-								<div class="chart-bottom-heading">
-									<span class="label label-info">Users</span>
-
-								</div>
-							</div>
-							<div class="span3">
-								<div class="chart" data-percent="13">13%</div>
-								<div class="chart-bottom-heading">
-									<span class="label label-info">Orders</span>
-
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- /block -->
 				</div>
 				<div class="row-fluid">
 					<div class="span6">
@@ -103,39 +61,29 @@
 							<div class="navbar navbar-inner block-header">
 								<div class="muted pull-left">Users</div>
 								<div class="pull-right">
-									<span class="badge badge-info">1,234</span>
-
+									<span class="badge badge-info">${countStatVol.memberVolume}</span>
 								</div>
 							</div>
 							<div class="block-content collapse in">
 								<table class="table table-striped">
 									<thead>
 										<tr>
-											<th>#</th>
-											<th>First Name</th>
-											<th>Last Name</th>
+											<th>ID</th>
 											<th>Username</th>
+											<th>Address</th>
+											<th>CreateDate</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>1</td>
-											<td>Mark</td>
-											<td>Otto</td>
-											<td>@mdo</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>Jacob</td>
-											<td>Thornton</td>
-											<td>@fat</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>Vincent</td>
-											<td>Gabriel</td>
-											<td>@gabrielva</td>
-										</tr>
+										<c:forEach var="user" items="${AdminDashBoard.users }">
+
+											<tr>
+												<td>${user.id }</td>
+												<td>${user.username }</td>
+												<td>${user.address }</td>
+												<td>${user.createDate }</td>
+											</tr>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>
@@ -146,9 +94,9 @@
 						<!-- block -->
 						<div class="block">
 							<div class="navbar navbar-inner block-header">
-								<div class="muted pull-left">Orders</div>
+								<div class="muted pull-left">Deals</div>
 								<div class="pull-right">
-									<span class="badge badge-info">752</span>
+									<span class="badge badge-info">${countStatVol.dealVolume}</span>
 
 								</div>
 							</div>
@@ -156,31 +104,18 @@
 								<table class="table table-striped">
 									<thead>
 										<tr>
-											<th>#</th>
-											<th>Product</th>
-											<th>Date</th>
-											<th>Amount</th>
+											<th>ID</th>
+											<th>Title</th>
+											<th>Price</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody><c:forEach var="board" items="${AdminDashBoard.boards }">
 										<tr>
-											<td>1</td>
-											<td>Coat</td>
-											<td>02/02/2013</td>
-											<td>$25.12</td>
+											<td>${board.id }</td>
+											<td>${board.title }</td>
+											<td>${board.price }원</td>
 										</tr>
-										<tr>
-											<td>2</td>
-											<td>Jacket</td>
-											<td>01/02/2013</td>
-											<td>$335.00</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>Shoes</td>
-											<td>01/02/2013</td>
-											<td>$29.99</td>
-										</tr>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>
@@ -193,9 +128,9 @@
 						<!-- block -->
 						<div class="block">
 							<div class="navbar navbar-inner block-header">
-								<div class="muted pull-left">Clients</div>
+								<div class="muted pull-left">Reports</div>
 								<div class="pull-right">
-									<span class="badge badge-info">17</span>
+									<span class="badge badge-info">${countStatVol.reportVolume}</span>
 
 								</div>
 							</div>
@@ -203,31 +138,19 @@
 								<table class="table table-striped">
 									<thead>
 										<tr>
-											<th>#</th>
-											<th>First Name</th>
-											<th>Last Name</th>
+											<th>ID</th>
+											<th>reportType</th>
 											<th>Username</th>
 										</tr>
 									</thead>
 									<tbody>
+									<c:forEach var="report" items="${AdminDashBoard.reports }">
 										<tr>
-											<td>1</td>
-											<td>Mark</td>
-											<td>Otto</td>
-											<td>@mdo</td>
+											<td>${report.id }</td>
+											<td>${report.reportType }</td>
+											<td>${report.user.username }</td>
 										</tr>
-										<tr>
-											<td>2</td>
-											<td>Jacob</td>
-											<td>Thornton</td>
-											<td>@fat</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>Vincent</td>
-											<td>Gabriel</td>
-											<td>@gabrielva</td>
-										</tr>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>
@@ -238,37 +161,25 @@
 						<!-- block -->
 						<div class="block">
 							<div class="navbar navbar-inner block-header">
-								<div class="muted pull-left">Invoices</div>
-								<div class="pull-right">
-									<span class="badge badge-info">812</span>
-
-								</div>
+								<div class="muted pull-left">인기검색어</div>
+								
 							</div>
 							<div class="block-content collapse in">
 								<table class="table table-striped">
 									<thead>
 										<tr>
-											<th>#</th>
-											<th>Date</th>
-											<th>Amount</th>
+											<th>순위</th>
+											<th>검색어</th>
 										</tr>
 									</thead>
 									<tbody>
+									<c:forEach var="search" items="${AdminDashBoard.searchs }" varStatus="status">
 										<tr>
-											<td>1</td>
-											<td>02/02/2013</td>
-											<td>$25.12</td>
+											<td>${status.count }</td>
+											<td>${search.content }</td>
 										</tr>
-										<tr>
-											<td>2</td>
-											<td>01/02/2013</td>
-											<td>$335.00</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>01/02/2013</td>
-											<td>$29.99</td>
-										</tr>
+										
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>

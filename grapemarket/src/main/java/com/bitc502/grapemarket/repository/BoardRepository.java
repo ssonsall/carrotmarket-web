@@ -63,7 +63,7 @@ public interface BoardRepository extends JpaRepository<Board, Integer>, JpaSpeci
 //	@Query(value = "SELECT * FROM board b JOIN user u ON b.userid = u.id WHERE category regexp :category AND concat(b.title, b.content, u.address) regexp :search ", nativeQuery = true)
 //	Page<Board> searchAndGps(double latitude, double latitude2, double longitude, double longitude2, @Param("category") String cate, @Param("search") String search, Pageable pageable);
 	
-	
+	List<Board> findTop3ByOrderByIdDesc();
 
 	
 }

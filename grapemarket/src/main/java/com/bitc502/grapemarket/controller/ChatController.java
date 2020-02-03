@@ -123,13 +123,7 @@ public class ChatController {
 		cRepo.save(chat);
 	}
 	
-	@GetMapping("/chatLog/{id}")
-	public @ResponseBody List<Message> chatLog(@PathVariable int id) {
-		List<Message> chatLog = mRepo.findByChatIdOrderByCreateDateDesc(id);
-		return chatLog;
-		
-	}
-	
+
 	
 	
 }

@@ -55,4 +55,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	@Query(value = "SELECT * from user WHERE addressX < ?1 and addressX > ?2 and addressY > ?3 and addressY < ?4", nativeQuery = true)
 	List<User> findByGPS(double nwLatitude, double seLatitude, double nwLongitude, double seLongitude);
+	
+	List<User> findTop3ByOrderByIdDesc();
 }
