@@ -75,13 +75,22 @@
 			</div>
 			<hr>
 			<div style="width: auto;">
-				<button class="btn btn-warning"
-					onclick="changeRoleToCaution1(${reportType.user.id})">경고1</button>
-				<button class="btn btn-danger"
-					" onclick="changeRoleToCaution2(${reportType.user.id})">경고2</button>
+				<c:if test="${reportType.user.role eq 'USER' }">
+					<button class="btn btn-warning"
+						onclick="changeRoleToCaution1(${reportType.user.id},${report.id })">경고1</button>
+
+				</c:if>
+				<c:if
+					test="${reportType.user.role eq 'USER' or reportType.user.role eq'CAUTION1' }">
+					<button class="btn btn-danger"
+						onclick="changeRoleToCaution2(${reportType.user.id},${report.id })">경고2</button>
+
+				</c:if>
 				<button class="btn btn-inverse"
-					onclick="changeRoleToBan(${reportType.user.id})">정지</button>
-				<button class="btn" style="float: right" onclick="closeModal()">CANCLE</button>
+						onclick="changeRoleToBan(${reportType.user.id},${report.id })">정지</button>
+				<button class="btn btn-inverse"
+						onclick="deleteReport(${reportType.user.id},${report.id })">취소</button>
+				<button class="btn" style="float: right" onclick="closeModal()">X</button>
 			</div>
 		</div>
 	</div>
@@ -173,7 +182,7 @@
 												<tr>
 													<th>제목</th>
 													<td>${reportType.title}<a
-														href="/board/detail/${reportType.id}">  [해당 게시글로 이동하기]</a></td>
+														href="/board/detail/${reportType.id}"> [해당 게시글로 이동하기]</a></td>
 												</tr>
 												<tr>
 													<th>내용</th>
@@ -202,7 +211,7 @@
 												<tr>
 													<th>내용</th>
 													<td>${reportType.content}<a
-														href="/board/detail/${reportType.board.id}">  [해당 게시글로
+														href="/board/detail/${reportType.board.id}"> [해당 게시글로
 															이동하기]</a></td>
 												</tr>
 											</c:when>
@@ -211,8 +220,8 @@
 												<tr>
 													<th>내용</th>
 													<td>${reportType.message}<a
-														href="/admin/chatLog?id=${reportType.chat.id}&reportId=${report.id}">  [해당
-															게시글로 이동하기]</a></td>
+														href="/admin/chatLog?id=${reportType.chat.id}&reportId=${report.id}">
+															[해당 게시글로 이동하기]</a></td>
 												</tr>
 											</c:when>
 
@@ -265,30 +274,40 @@
             }
         }
 
-        function changeRoleToCaution1(id) {
+        function changeRoleToCaution1(id, reportId) {
             if (confirm("해당 계정을 '경고 1' 조치하시겠습니까? ") == true) { //확인
-                location.href = '/admin/restriction?id=' + id + '&sort=caution1';
+                location.href = '/admin/restriction?id=' + id + '&sort=caution1&reportId='+reportId;
             } else { //취소
                 alert("취소하였습니다.");
             }
         }
 
-        function changeRoleToCaution2(id) {
+        function changeRoleToCaution2(id, reportId) {
             if (confirm("해당 계정을 '경고 2' 조치하시겠습니까? ") == true) { //확인
-                location.href = '/admin/restriction?id=' + id + '&sort=caution2';
+                location.href = '/admin/restriction?id=' + id + '&sort=caution2&reportId='+reportId;
             } else { //취소
                 alert("취소하였습니다.");
             }
         }
 
-        function changeRoleToBan(id) {
+        function changeRoleToBan(id, reportId) {
             if (confirm("해당 계정을 '정지' 조치하시겠습니까? ") == true) { //확인
-                location.href = '/admin/restriction?id=' + id + '&sort=ban';
+                location.href = '/admin/restriction?id=' + id + '&sort=ban&reportId='+reportId;
             } else { //취소
                 alert("취소하였습니다.");
             }
 
         }
+        function deleteReport(id, reportId) {
+            if (confirm("해당 신고를 취소하시겠습니까? ") == true) { //확인
+                location.href = '/admin/restriction?id=' + id + '&sort=deleteReport&reportId='+reportId;
+            } else { //취소
+                alert("취소하였습니다.");
+            }
+
+        }
+
+        
     </script>
 
 	<script src="/AdminBoot/vendors/jquery-1.9.1.js"></script>

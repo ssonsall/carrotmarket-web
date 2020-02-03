@@ -156,7 +156,7 @@ public class AdminController {
 
 	@GetMapping("/report")
 	public String reportTable(Model model) {
-		List<Report> reports = rRepo.findAll();
+		List<Report> reports = rRepo.findByState("0");
 		model.addAttribute("reports", reports);
 		model.addAttribute("countStatVol", countStatVol());
 		return "admin/reportTable";
@@ -191,23 +191,30 @@ public class AdminController {
 	@GetMapping("/restriction")
 	public @ResponseBody String restriction(HttpServletRequest request) {
 		int id = Integer.parseInt(request.getParameter("id"));
+		int reportId = Integer.parseInt(request.getParameter("reportId"));
 		String sort = request.getParameter("sort");
 		try {
-			Optional<User> oUser = uRepo.findById(id);
-			User user = oUser.get();
-			if (sort.equals("caution1")) {
-				user.setRole(Role.CAUTION1);
-			} else if (sort.equals("caution2")) {
-				user.setRole(Role.CAUTION2);
-			} else if (sort.equals("ban")) {
-				user.setRole(Role.BANNED);
+			if (!sort.equals("deleteReport")) {
+				Optional<User> oUser = uRepo.findById(id);
+				User user = oUser.get();
+				if (sort.equals("caution1")) {
+					user.setRole(Role.CAUTION1);
+				} else if (sort.equals("caution2")) {
+					user.setRole(Role.CAUTION2);
+				} else if (sort.equals("ban")) {
+					user.setRole(Role.BANNED);
+				}
+				uRepo.save(user);
 			}
-			uRepo.save(user);
+			Optional<Report> oReport = rRepo.findById(reportId);
+			Report report = oReport.get();
+			report.setState("1");
+			rRepo.save(report);
 		} catch (Exception e) {
 			return Script.back("오류발생");
 		}
 
-		return Script.back("정상 처리되었습니다.");
+		return Script.hrefAndAlert("/admin/report", "정상 처리되었습니다.");
 	}
 
 	public StatisticVolumes countStatVol() {
@@ -215,7 +222,7 @@ public class AdminController {
 		sv.setMemberVolume(uRepo.count());
 		sv.setDealVolume(bRepo.count());
 		sv.setChatVolume(mRepo.count());
-		sv.setReportVolume(rRepo.count());
+		sv.setReportVolume(rRepo.countByState("0"));
 		return sv;
 	}
 

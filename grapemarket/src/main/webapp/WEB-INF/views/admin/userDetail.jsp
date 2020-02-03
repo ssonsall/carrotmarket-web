@@ -70,10 +70,14 @@ $('.searchModal').hide();
 				</div>
 			</div>
 			<hr>
-			
+
 			<div style="width: auto;">
-				<button class="btn btn-danger" onclick="changeRoleToAdmin(${user.id},'${user.role}')">ADMIN 으로 변경</button>
-				<button class="btn btn-info" onclick="changeRoleToUser(${user.id},'${user.role}')">USER 로 변경</button>
+				<button class="btn btn-danger"
+					onclick="changeRoleToAdmin(${user.id},'${user.role}')">ADMIN
+					으로 변경</button>
+				<button class="btn btn-info"
+					onclick="changeRoleToUser(${user.id},'${user.role}')">USER
+					로 변경</button>
 				<button class="btn" style="float: right" onclick="closeModal()">CANCLE</button>
 			</div>
 		</div>
@@ -208,19 +212,20 @@ $('.searchModal').hide();
 					alert("권한변경을 취소하였습니다.");
 					}
 				}else{
-					alert("현재 유저의 권한이 어드민입니다. ");
+					alert("해당 유저를 어드민으로 변경할 수 없습니다.");
 					}
 			}
 		function changeRoleToUser(id, role) {
-			if(role == 'ADMIN'){
-				if (confirm("해당 유저의 권한을 유저로 변경하시겠습니까?") == true) { //확인
-					location.href = '/admin/changeRole/'+id+'/USER';
-				} else { //취소
-				alert("권한변경을 취소하였습니다.");
-				}
-			}else{
-				alert("현재 유저의 권한이 유저입니다. ");
-				}
+			 if(role == 'USER'){
+				alert("현재 유저의 권한이 유저입니다.");
+				} else {
+					if (confirm("해당 유저의 권한을 유저로 변경하시겠습니까?") == true) { //확인
+						location.href = '/admin/changeRole/'+id+'/USER';
+					} else { //취소
+					alert("권한변경을 취소하였습니다.");
+					}
+				} 
+			
 			
 		}
 	</script>
