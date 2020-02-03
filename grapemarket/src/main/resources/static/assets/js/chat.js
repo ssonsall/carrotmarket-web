@@ -9,7 +9,7 @@ function createChat() {
         return res.text();
     }).then(function (res) {
         if (res === "ok") {
-            //화면에 적용
+            // 화면에 적용
             location.href = "/chat/";
         }
     });
@@ -27,7 +27,7 @@ function sendMessage2() {
         return res.text();
     }).then(function (res) {
         if (res === "ok") {
-            //화면에 적용
+            // 화면에 적용
         }
     });
 }
@@ -121,9 +121,9 @@ function product_info(username, title, price, boardId) {
 function trade_state(tradeState, userId, boardId, roomId) {
 
     if (tradeState === '판매중') {
-        var form = `<div id="completeBtn"><button onclick="setTradeStateComplete(1,${userId},${boardId},${roomId})">판매 완료</button></div>`;
+        var form = `<div id="completeBtn"><button onclick="location.href='/board/detail/${boardId}'">게시물로 이동</button></div><button onclick="outChat(${roomId},'seller')">채팅방 나가기</button>`;
     } else if (tradeState === '구매중') {
-        var form = `<div id="completeBtn"><button onclick="setTradeStateComplete(2,${userId},${boardId},${roomId})">구매 완료</button></div>`;
+        var form = `<div id="completeBtn"><button onclick="setTradeStateComplete(2,${userId},${boardId},${roomId})">구매 완료</button></div><button onclick="outChat(${roomId},'buyer')">채팅방 나가기</button>`;
     } else if (tradeState === '판매완료') {
         var form = `<button onclick="outChat(${roomId},'seller')">채팅방 나가기</button>`;
     } else if (tradeState === '구매완료') {
@@ -135,13 +135,10 @@ function trade_state(tradeState, userId, boardId, roomId) {
 
 function setTradeStateComplete(stateNum, userId, boardId, roomId) {
 
-    if (stateNum === 1) {
-        alert("판매 완료 처리되었습니다.");
-        var form = `<button onclick="outChat(${roomId}, 'buyer')">채팅방 나가기</button></div>`;
-    } else {
-        alert("구매 완료 처리되었습니다.");
+    if (!stateNum === 1) {
+    	alert("구매 완료 처리되었습니다.");
         var form = `<button onclick="outChat(${roomId}, 'seller')">채팅방 나가기</button></div>`;
-    }
+    } 
 
     let url = "/tradeState/setStateComplete";
 

@@ -28,3 +28,4 @@
 	<script src="/assets/js/comment.js"></script>
 	<script src="/assets/js/like.js"></script>
 	<script src="/assets/js/state.js"></script>
+	<script src="/assets/js/detail.js"></script>

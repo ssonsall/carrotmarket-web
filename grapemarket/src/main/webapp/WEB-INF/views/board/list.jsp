@@ -286,7 +286,7 @@
 
 								<c:if test="${navPage ne 0}">
 									<a
-										href="/board/page?page=${navPage*4}&category=${currentCategory}&userInput=${currentUserInput}"><i
+										href="/board/page?page=${navPage*4}&category=${currentCategory}&userInput=${currentUserInput}&range=${currentRange}"><i
 										class="fa fa-angle-left"></i></a>
 								</c:if>
 								<c:forEach var="i" begin="${navPage*4+1}" end="${navPage*4+4}">
@@ -294,18 +294,18 @@
 										<c:choose>
 											<c:when test="${i-1 eq currentPage}">
 												<a class="active" style="background-color: black;"
-													href="/board/page?page=${i-1}&category=${currentCategory}&userInput=${currentUserInput}">${i}</a>
+													href="/board/page?page=${i-1}&category=${currentCategory}&userInput=${currentUserInput}&range=${currentRange}">${i}</a>
 											</c:when>
 											<c:otherwise>
 												<a
-													href="/board/page?page=${i-1}&category=${currentCategory}&userInput=${currentUserInput}">${i}</a>
+													href="/board/page?page=${i-1}&category=${currentCategory}&userInput=${currentUserInput}&range=${currentRange}">${i}</a>
 											</c:otherwise>
 										</c:choose>
 									</c:if>
 								</c:forEach>
 								<c:if test="${navPage lt totalPage}">
 									<a
-										href="/board/page?page=${navPage*4+4}&category=${currentCategory}&userInput=${currentUserInput}"><i
+										href="/board/page?page=${navPage*4+4}&category=${currentCategory}&userInput=${currentUserInput}&range=${currentRange}"><i
 										class="fa fa-angle-right"></i></a>
 								</c:if>
 							</div>
