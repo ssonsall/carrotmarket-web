@@ -197,7 +197,7 @@
         var popupY = (window.screen.height / 2) - (600 / 2);
 
         function c(id) {
-            window.open("/report/boardReportForm?id=" + id + "&type=message", "a", "width=500, height=600, left=" +
+            window.open("/report/ReportForm?id=" + id + "&type=message", "a", "width=500, height=600, left=" +
                 popupX + ", top=" + popupY);
         }
     </script>

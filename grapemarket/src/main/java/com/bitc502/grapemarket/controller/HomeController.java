@@ -11,28 +11,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Search;
-import com.bitc502.grapemarket.repository.BoardRepository;
-import com.bitc502.grapemarket.repository.SearchRepository;
+import com.bitc502.grapemarket.service.BoardService;
+import com.bitc502.grapemarket.service.SearchService;
 
 @Controller
 public class HomeController {
 
 	@Autowired
-	private SearchRepository sRepo;
+	private BoardService boardServ;
 
 	@Autowired
-	private BoardRepository bRepo;
-	
-	//메인 페이지
+	private SearchService searchServ;
+
+	// 메인 페이지
 	@GetMapping("/")
 	public String Home(Model model, HttpServletRequest request) {
-			List <Search> searchs = sRepo.popularKeyword();
-			List <Board> boards = bRepo.popularBoard();
-			model.addAttribute("searchs",searchs);
-			model.addAttribute("boards",boards);
-			return "index";
-		
-		
+		List<Board> boards = boardServ.getPopularBoard();
+		List<Search> searchs = searchServ.getPopularKeyWords();
+		model.addAttribute("searchs", searchs);
+		model.addAttribute("boards", boards);
+		return "index";
 	}
-	
+
 }

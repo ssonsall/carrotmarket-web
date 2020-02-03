@@ -197,7 +197,7 @@ div.container2 {
     var popupX = (window.screen.width / 2) - (500 / 2);
     var popupY = (window.screen.height / 2) - (600 / 2);
     	function messageReportPopup(id) {
-            window.open("/report/boardReportForm?id=" + id + "&type=message", "a", "width=500, height=600, left="+popupX+", top="+popupY);
+            window.open("/report/ReportForm?id=" + id + "&type=message", "a", "width=500, height=600, left="+popupX+", top="+popupY);
         }
     
     </script>

@@ -94,7 +94,7 @@
 
 
         function boardReportPopup(id) {
-            window.open("/report/boardReportForm?id=" + id + "&type=board", "a", "width=500, height=600, left=" +
+            window.open("/report/ReportForm?id=" + id + "&type=board", "a", "width=500, height=600, left=" +
                 popupX + ", top=" + popupY);
         }
     </script>

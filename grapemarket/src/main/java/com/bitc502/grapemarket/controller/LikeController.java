@@ -12,38 +12,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bitc502.grapemarket.model.Likes;
 import com.bitc502.grapemarket.repository.LikeRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
+import com.bitc502.grapemarket.service.LikeService;
 
 @Controller
 @RequestMapping("like")
 public class LikeController {
 
 	@Autowired
-	private LikeRepository likeRepository;
+	private LikeService likeServ;
 
 	@PostMapping("/like")
-	public @ResponseBody HashMap<String, Object> Like(Likes like, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-
-		like.setUser(userPrincipal.getUser());
-		
-		HashMap<String, Object> statusMap = new HashMap<>();
-		Likes check = likeRepository.findByUserIdAndBoardId(userPrincipal.getUser().getId(), like.getBoard().getId());
-		
-		if (check == null) {
-			likeRepository.save(like);
-			int likeCount = likeRepository.countByBoardId(like.getBoard().getId());
-			statusMap.put("status", "save");
-			statusMap.put("likeCount", likeCount);
-
-			return statusMap;
-		} else {
-			likeRepository.delete(check);
-			int likeCount = likeRepository.countByBoardId(like.getBoard().getId());
-			statusMap.put("status", "delete");
-			statusMap.put("likeCount", likeCount);
-			
-			return statusMap;
-		}
-
+	public @ResponseBody HashMap<String, Object> Like(Likes like,
+			@AuthenticationPrincipal UserPrincipal userPrincipal) {
+		return likeServ.like(like, userPrincipal.getUser());
 	}
 
 }
