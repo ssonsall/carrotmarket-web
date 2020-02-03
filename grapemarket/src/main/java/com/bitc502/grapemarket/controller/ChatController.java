@@ -31,14 +31,12 @@ public class ChatController {
 	@Autowired
 	private MessageRepository mRepo;
 
-	@Autowired
-	private BoardRepository bRepo;
 	
 	@Autowired
 	private TradeStateService tradeStateServ;
 
 	@PostMapping("/chat")
-	public @ResponseBody String CreateChat(Chat chat) {
+	public @ResponseBody Chat CreateChat(Chat chat) {
 
 		tradeStateServ.insertBuyState(chat.getBuyerId(), chat.getBoard());
 		
@@ -50,16 +48,19 @@ public class ChatController {
 			if (check == null) {
 				chat.setBuyerState(1);
 				cRepo.save(chat);
+				return chat;
 			} else {
 				check.setBuyerState(1);
 				cRepo.save(check);
+				return check;
 			}
-
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		return "ok";
+		
+		return null;
 	}
 
 	

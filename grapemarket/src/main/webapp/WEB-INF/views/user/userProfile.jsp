@@ -59,18 +59,18 @@
 
 						<div class="col-sm-8 col-sm-offset-1">
 							<div role="tabpanel">
-								<ul class="nav nav-tabs font-alt" role="tablist">
-									<li class="active"><a href="#profile" data-toggle="tab"><span
-											class="icon-profile-male"></span>유저정보</a></li>
-									<li><a href="#myTown" data-toggle="tab"><span
-											class="icon-globe"></span>동네설정</a></li>
-									<li><a href="#townAuth" data-toggle="tab"><span
-											class="icon-compass"></span>동네인증</a></li>
-									<li onclick="getState()"><a href="#sales"
-										data-toggle="tab"><span class="icon-browser"></span>거래내역</a></li>
-									<li><a href="#serviceCenter" data-toggle="tab"><span
-											class="icon-tools-2"></span>고객센터</a></li>
-									<li><a href="#share" data-toggle="tab"><span
+								<ul class="nav nav-tabs font-alt" role="tablist" id="tablist">
+									<li class="active" id="tablist-profile"><a href="#profile"
+										data-toggle="tab"><span class="icon-profile-male"></span>유저정보</a></li>
+									<li id="tablist-profile"><a href="#myTown"
+										data-toggle="tab"><span class="icon-globe"></span>동네설정</a></li>
+									<li id="tablist-townAuth"><a href="#townAuth"
+										data-toggle="tab"><span class="icon-compass"></span>동네인증</a></li>
+									<li id="tablist-sales" onactivate="getState()"><a
+										href="#sales" data-toggle="tab"><span class="icon-browser"></span>거래내역</a></li>
+									<li id="tablist-serviceCenter"><a href="#serviceCenter"
+										data-toggle="tab"><span class="icon-tools-2"></span>고객센터</a></li>
+									<li id="tablist-share"><a href="#share" data-toggle="tab"><span
 											class="icon-tools-2"></span>공유하기</a></li>
 								</ul>
 
@@ -196,9 +196,47 @@
 														type="button" onClick="goPopup();" placeholder="Search"
 														value="동네설정" /> <input
 														class="btn btn-block btn-round btn-d" id="cfsubmit"
-														type="submit" placeholder="Search" value="저장" />
+														type="button" onclick="addUpdate()" value="저장" />
 												</div>
 											</form>
+
+											<script>
+												function addUpdate() {
+													var form = new FormData(
+															document
+																	.getElementById('form'));
+													var url = '/user/addupdate'
+
+													fetch(
+															url,
+															{
+																method : "post",
+																body : form,
+																contentType : "application/json; charset=utf-8"
+															})
+															.then(
+																	function(
+																			res) {
+																		res
+																				.json()
+																	})
+															.then(
+																	function(
+																			res) {
+
+																		localStorage
+																				.setItem(
+																						"from",
+																						"mytown");
+																		localStorage
+																				.setItem(
+																						"state",
+																						"auth");
+
+																		location.href = '/user/userProfile';
+																	});
+												}
+											</script>
 
 											<div class="ajax-response font-alt" id="contactFormResponse"></div>
 										</div>
@@ -237,15 +275,15 @@
 													<p class="help-block text-danger"></p>
 												</div>
 												<c:choose>
-														<c:when test="${user.addressAuth==0}">
-																<div class="text-center col-md-4">
-													<input class="btn btn-block btn-round btn-d" id="cfsubmit"
-														type="button" onClick="getLocation();"
-														placeholder="Search" value="인증하기" />
-												</div>
-														</c:when>
-													</c:choose>
-											
+													<c:when test="${user.addressAuth==0}">
+														<div class="text-center col-md-4">
+															<input class="btn btn-block btn-round btn-d"
+																id="cfsubmit" type="button" onClick="getLocation();"
+																placeholder="Search" value="인증하기" />
+														</div>
+													</c:when>
+												</c:choose>
+
 
 
 											</form>
@@ -399,14 +437,43 @@
 			<a href="#totop"><i class="fa fa-angle-double-up"></i></a>
 		</div>
 	</main>
-	
-	<script>
-	$(document).ready(function(){
-		alert(localsSorage.getItem('stroageTest'));});
-	</script>
-	
+
+
 	<script src='/map/address.js'></script>
 	<%@include file="../include/script.jsp"%>
+	<script>
+		$(document)
+				.ready(
+						function() {
+
+							var from = localStorage.getItem('from');
+							var state = localStorage.getItem('state');
+
+							if (from === 'detail') {
+								if (state === 'complete') {
+									document.querySelector('.tab-pane.active').className = 'tab-pane';
+									document.querySelector('li.active').className = '';
+									document.querySelector('#sales').className = 'tab-pane active';
+									document.querySelector('#tablist-sales').className = 'active';
+									getState();
+								}
+
+							}
+
+
+							if (from === 'mytown') {
+								if (state === 'auth') {
+									document.querySelector('.tab-pane.active').className = 'tab-pane';
+									document.querySelector('li.active').className = '';
+									document.querySelector('#townAuth').className = 'tab-pane active';
+									document.querySelector('#tablist-townAuth').className = 'active';
+								}
+							}
+
+							localStorage.setItem("from", "");
+							localStorage.setItem("state", "");
+						});
+	</script>
 </body>
 
 </html>

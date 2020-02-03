@@ -2,16 +2,21 @@ function createChat() {
     var form = new FormData(document.getElementById('createChat'));
     let url = "/chat/chat";
 
+    console.log(form.get('board'));
+    var boardId = form.get('board');
+    
     fetch(url, {
         method: "POST",
         body: form
     }).then(function (res) {
-        return res.text();
+        return res.json();
     }).then(function (res) {
-        if (res === "ok") {
-            // 화면에 적용
-            location.href = "/chat/";
-        }
+
+    	localStorage.setItem('from','detail');
+    	localStorage.setItem('chatId',res.id);
+    	localStorage.setItem('buyerId',res.buyerId);
+    	 location.href = "/chat/";
+        
     });
 
 }
