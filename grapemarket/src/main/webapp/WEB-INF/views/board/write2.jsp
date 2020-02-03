@@ -34,7 +34,7 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-6 col-sm-offset-3">
-							<form id="writeFormSubmit" action="/board/writeProc"
+							<form id="writeFormSubmit" action="/board/writeProcTest"
 								method="post" enctype="multipart/form-data">
 								<%-- <input type="hidden" name="userId" value="${user.id}"> --%>
 								<input type="hidden" name="state" value="0">
@@ -84,20 +84,20 @@
 								</div>
 
 								<div id="photo">
-									<div class="form-group" id="productImage1">
+									<div class="form-group" id="productImageDiv1">
 										<label class="sr-only" for="price">사진</label> <input
 											style="display: inline;" class="inputfile" type="file"
 											accept="image/*" id="productImage1" required="required"
-											name="productImage1"
+											name="productImage"
 											data-validation-required-message="Please enter your email address." />
 										<p class="help-block text-danger">${board.image1}</p>
 									</div>
 
 									<c:if test="${!empty board.image2}">
-										<div class="form-group" id="productImage2">
+										<div class="form-group" id="productImageDiv2">
 											<label class="sr-only" for="price">사진</label> <input
 												style="display: inline;" class="inputfile" type="file"
-												accept="image/*" id="productImage2" name="productImage2"
+												accept="image/*" id="productImage2" name="productImage"
 												data-validation-required-message="Please enter your email address." />
 											<div style="display: inline;" type='button'
 												onclick='deletePhoto(2)'>
@@ -108,10 +108,10 @@
 										</div>
 									</c:if>
 									<c:if test="${!empty board.image3}">
-										<div class="form-group" id="productImage3">
+										<div class="form-group" id="productImageDiv3">
 											<label class="sr-only" for="price">사진</label> <input
 												style="display: inline;" class="inputfile" type="file"
-												accept="image/*" id="productImage3" name="productImage3"
+												accept="image/*" id="productImage3" name="productImage"
 												data-validation-required-message="Please enter your email address." />
 											<div style="display: inline;" type='button'
 												onclick='deletePhoto(3)'>
@@ -122,10 +122,10 @@
 										</div>
 									</c:if>
 									<c:if test="${!empty board.image4}">
-										<div class="form-group" id="productImage4">
+										<div class="form-group" id="productImageDiv4">
 											<label class="sr-only" for="price">사진</label> <input
 												style="display: inline;" class="inputfile" type="file"
-												accept="image/*" id="productImage4" name="productImage4"
+												accept="image/*" id="productImage4" name="productImage"
 												data-validation-required-message="Please enter your email address." />
 											<div style="display: inline;" type='button'
 												onclick='deletePhoto(4)'>
@@ -136,10 +136,10 @@
 										</div>
 									</c:if>
 									<c:if test="${!empty board.image5}">
-										<div class="form-group" id="productImage5">
+										<div class="form-group" id="productImageDiv5">
 											<label class="sr-only" for="price">사진</label> <input
 												style="display: inline;" class="inputfile" type="file"
-												accept="image/*" id="productImage5" name="productImage5"
+												accept="image/*" id="productImage5" name="productImage"
 												data-validation-required-message="Please enter your email address." />
 											<div style="display: inline;" type='button'
 												onclick='deletePhoto(5)'>
@@ -194,23 +194,23 @@
 			if (!document.getElementById("productImage1")) {
 				$("#photo")
 						.append(
-								"<div class='form-group' id='productImage1'><label class='sr-only' for='price'>사진</label> <input style='display: inline;' class='inputfile' type='file' accept='image/*' id='productImage1' name='productImage1' data-validation-required-message='Please enter your email address.'  /><div style='display: inline;' type='button' onclick='deletePhoto(1)'><i class='fa fa-minus-circle'>사진삭제</i></div><p class='help-block text-danger'></p></div>");
+								"<div class='form-group' id='productImage1'><label class='sr-only' for='price'>사진</label> <input style='display: inline;' class='inputfile' type='file' accept='image/*' id='productImage1' name='productImage' data-validation-required-message='Please enter your email address.'  /><div style='display: inline;' type='button' onclick='deletePhoto(1)'><i class='fa fa-minus-circle'>사진삭제</i></div><p class='help-block text-danger'></p></div>");
 			} else if (!document.getElementById("productImage2")) {
 				$("#photo")
 						.append(
-								"<div class='form-group' id='productImage2'><label class='sr-only' for='price'>사진</label> <input style='display: inline;' class='inputfile' type='file' accept='image/*' id='productImage2' name='productImage2' data-validation-required-message='Please enter your email address.'  /><div style='display: inline;' type='button' onclick='deletePhoto(2)'><i class='fa fa-minus-circle'>사진삭제</i></div><p class='help-block text-danger'></p></div>");
+								"<div class='form-group' id='productImage2'><label class='sr-only' for='price'>사진</label> <input style='display: inline;' class='inputfile' type='file' accept='image/*' id='productImage2' name='productImage' data-validation-required-message='Please enter your email address.'  /><div style='display: inline;' type='button' onclick='deletePhoto(2)'><i class='fa fa-minus-circle'>사진삭제</i></div><p class='help-block text-danger'></p></div>");
 			} else if (!document.getElementById("productImage3")) {
 				$("#photo")
 						.append(
-								"<div class='form-group' id='productImage3'><label class='sr-only' for='price'>사진</label> <input style='display: inline;' class='inputfile' type='file' accept='image/*' id='productImage3' name='productImage3' data-validation-required-message='Please enter your email address.'  /><div style='display: inline;' type='button' onclick='deletePhoto(3)'><i class='fa fa-minus-circle'>사진삭제</i></div><p class='help-block text-danger'></p></div>");
+								"<div class='form-group' id='productImage3'><label class='sr-only' for='price'>사진</label> <input style='display: inline;' class='inputfile' type='file' accept='image/*' id='productImage3' name='productImage' data-validation-required-message='Please enter your email address.'  /><div style='display: inline;' type='button' onclick='deletePhoto(3)'><i class='fa fa-minus-circle'>사진삭제</i></div><p class='help-block text-danger'></p></div>");
 			} else if (!document.getElementById("productImage4")) {
 				$("#photo")
 						.append(
-								"<div class='form-group' id='productImage4'><label class='sr-only' for='price'>사진</label> <input style='display: inline;' class='inputfile' type='file' accept='image/*' id='productImage4' name='productImage4' data-validation-required-message='Please enter your email address.'  /><div style='display: inline;' type='button' onclick='deletePhoto(4)'><i class='fa fa-minus-circle'>사진삭제</i></div><p class='help-block text-danger'></p></div>");
+								"<div class='form-group' id='productImage4'><label class='sr-only' for='price'>사진</label> <input style='display: inline;' class='inputfile' type='file' accept='image/*' id='productImage4' name='productImage' data-validation-required-message='Please enter your email address.'  /><div style='display: inline;' type='button' onclick='deletePhoto(4)'><i class='fa fa-minus-circle'>사진삭제</i></div><p class='help-block text-danger'></p></div>");
 			} else if (!document.getElementById("productImage5")) {
 				$("#photo")
 						.append(
-								"<div class='form-group' id='productImage5'><label class='sr-only' for='price'>사진</label> <input style='display: inline;' class='inputfile' type='file' accept='image/*' id='productImage5' name='productImage5' data-validation-required-message='Please enter your email address.'  /><div style='display: inline;' type='button' onclick='deletePhoto(5)'><i class='fa fa-minus-circle'>사진삭제</i></div><p class='help-block text-danger'></p></div>");
+								"<div class='form-group' id='productImage5'><label class='sr-only' for='price'>사진</label> <input style='display: inline;' class='inputfile' type='file' accept='image/*' id='productImage5' name='productImage' data-validation-required-message='Please enter your email address.'  /><div style='display: inline;' type='button' onclick='deletePhoto(5)'><i class='fa fa-minus-circle'>사진삭제</i></div><p class='help-block text-danger'></p></div>");
 			}
 		};
 
@@ -226,27 +226,27 @@
 							if (!document.getElementById("productImage1")) {
 								$("#photo")
 										.append(
-												"<div class='form-group' id='productImage1'><label class='sr-only' for='price'>사진</label> <input class='form-control' type='file' accept='image/*' id='productImage1' name='productImage1' data-validation-required-message='Please enter your email address.' /><p class='help-block text-danger'></p><input type='button' onclick='deletePhoto(1)' value='-'></input></div>");
+												"<div class='form-group' id='productImage1'><label class='sr-only' for='price'>사진</label> <input class='form-control' type='file' accept='image/*' id='productImage1' name='productImage' data-validation-required-message='Please enter your email address.' /><p class='help-block text-danger'></p><input type='button' onclick='deletePhoto(1)' value='-'></input></div>");
 							}
 							if (!document.getElementById("productImage2")) {
 								$("#photo")
 										.append(
-												"<div class='form-group' id='productImage2'><label class='sr-only' for='price'>사진</label> <input class='form-control' type='file' accept='image/*' id='productImage2' name='productImage2' data-validation-required-message='Please enter your email address.' /><p class='help-block text-danger'></p><input type='button' onclick='deletePhoto(2)' value='-'></input></div>");
+												"<div class='form-group' id='productImage2'><label class='sr-only' for='price'>사진</label> <input class='form-control' type='file' accept='image/*' id='productImage2' name='productImage' data-validation-required-message='Please enter your email address.' /><p class='help-block text-danger'></p><input type='button' onclick='deletePhoto(2)' value='-'></input></div>");
 							}
 							if (!document.getElementById("productImage3")) {
 								$("#photo")
 										.append(
-												"<div class='form-group' id='productImage3'><label class='sr-only' for='price'>사진</label> <input class='form-control' type='file' accept='image/*' id='productImage3' name='productImage3' data-validation-required-message='Please enter your email address.' /><p class='help-block text-danger'></p><input type='button' onclick='deletePhoto(3)' value='-'></input></div>");
+												"<div class='form-group' id='productImage3'><label class='sr-only' for='price'>사진</label> <input class='form-control' type='file' accept='image/*' id='productImage3' name='productImage' data-validation-required-message='Please enter your email address.' /><p class='help-block text-danger'></p><input type='button' onclick='deletePhoto(3)' value='-'></input></div>");
 							}
 							if (!document.getElementById("productImage4")) {
 								$("#photo")
 										.append(
-												"<div class='form-group' id='productImage4'><label class='sr-only' for='price'>사진</label> <input class='form-control' type='file' accept='image/*' id='productImage4' name='productImage4' data-validation-required-message='Please enter your email address.' /><p class='help-block text-danger'></p><input type='button' onclick='deletePhoto(4)' value='-'></input></div>");
+												"<div class='form-group' id='productImage4'><label class='sr-only' for='price'>사진</label> <input class='form-control' type='file' accept='image/*' id='productImage4' name='productImage' data-validation-required-message='Please enter your email address.' /><p class='help-block text-danger'></p><input type='button' onclick='deletePhoto(4)' value='-'></input></div>");
 							}
 							if (!document.getElementById("productImage5")) {
 								$("#photo")
 										.append(
-												"<div class='form-group' id='productImage5'><label class='sr-only' for='price'>사진</label> <input class='form-control' type='file' accept='image/*' id='productImage5' name='productImage5' data-validation-required-message='Please enter your email address.' /><p class='help-block text-danger'></p><input type='button' onclick='deletePhoto(5)' value='-'></input></div>");
+												"<div class='form-group' id='productImage5'><label class='sr-only' for='price'>사진</label> <input class='form-control' type='file' accept='image/*' id='productImage5' name='productImage' data-validation-required-message='Please enter your email address.' /><p class='help-block text-danger'></p><input type='button' onclick='deletePhoto(5)' value='-'></input></div>");
 							}
 							return true;
 						});
