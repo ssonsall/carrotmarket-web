@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,9 @@ import com.bitc502.grapemarket.common.Role;
 import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Chat;
 import com.bitc502.grapemarket.model.Comment;
+import com.bitc502.grapemarket.model.Message;
 import com.bitc502.grapemarket.model.Search;
+import com.bitc502.grapemarket.model.TradeState;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.payload.ChatList;
 import com.bitc502.grapemarket.payload.UserLocationSetting;
@@ -36,10 +39,10 @@ import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.ChatRepository;
 import com.bitc502.grapemarket.repository.CommentRepository;
 import com.bitc502.grapemarket.repository.SearchRepository;
+import com.bitc502.grapemarket.repository.TradeStateRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
-import com.bitc502.grapemarket.service.BoardService;
-import com.bitc502.grapemarket.service.TradeStateService;
+import com.bitc502.grapemarket.service.ChatService;
 import com.google.gson.Gson;
 
 @RequestMapping("/android")
@@ -68,10 +71,10 @@ public class AndroidController {
 	private BCryptPasswordEncoder passwordEncoder;
 	
 	@Autowired
-	private BoardService boardServ;
-
+	private TradeStateRepository tradeStateRepo;
+	
 	@Autowired
-	private TradeStateService tradeStateServ;
+	private ChatService chatServ;
 
 	@PostMapping("/join")
 	public String join(@RequestParam("username") String username, @RequestParam("name") String name,
@@ -323,30 +326,48 @@ public class AndroidController {
 		}
 		
 	}
+
+
 	
 	@PostMapping("/requestChat")
-	public String requestChat(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("boardId") String boardId) {
+	public Chat requestChat(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("boardId") String boardId) {
 		try {
 			Chat chat = new Chat();
-			chat.setBuyerId(uRepo.findById(userPrincipal.getUser().getId()).get());
-			chat.setBoard(bRepo.findById(Integer.parseInt(boardId)).get());
-			chat.setSellerId(bRepo.findById(Integer.parseInt(boardId)).get().getUser());
-			tradeStateServ.insertBuyState(chat.getBuyerId(), chat.getBoard());
-			Chat check = chatRepo.findByBoardIdAndBuyerIdAndSellerId(chat.getBoard().getId(), chat.getBuyerId().getId(),
-					chat.getSellerId().getId());
+			Optional<User> oUser = uRepo.findById(userPrincipal.getUser().getId());
+			Optional<Board> oBoard = bRepo.findById(Integer.parseInt(boardId));
+			chat.setBuyerId(oUser.get());
+			chat.setSellerId(oBoard.get().getUser());
+			chat.setBoard(oBoard.get());
+			
+			//이미 생성된 구매목록이 있는지 확인
+			int checkTradeState = tradeStateRepo.countByUserAndBoard(chat.getBuyerId(), chat.getBoard());
+			if (checkTradeState == 0) {
 
-			// 채팅방에 메시지 전송시 상대방의 채팅방이 활성화 되어있지 않은 상태라면 활성화
-			if (check == null) {
+				TradeState tradeState = new TradeState();
+				tradeState.setUser(chat.getBuyerId());
+				tradeState.setBoard(chat.getBoard());
+				tradeState.setState("구매중");
+
+				tradeStateRepo.save(tradeState);
+			}
+			System.out.println("null check111");
+			//생성된 채팅방이 있는지 확인
+			Chat checkChateState = chatRepo.findByBoardIdAndBuyerIdAndSellerId(chat.getBoard().getId(),
+					chat.getBuyerId().getId(), chat.getSellerId().getId());
+			System.out.println("null check222");
+			//채팅방이 있으면 활성화를 시키고 없으면 새로 생성
+			if (checkChateState == null) {
 				chat.setBuyerState(1);
 				chatRepo.save(chat);
+				return chat;
 			} else {
-				check.setBuyerState(1);
-				chatRepo.save(check);
+				checkChateState.setBuyerState(1);
+				chatRepo.save(checkChateState);
+				return checkChateState;
 			}
-			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "fail";
+			return null;
 		}
 	}
 	

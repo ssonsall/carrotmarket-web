@@ -50,7 +50,7 @@
                                 <img src="/upload/${principal.user.userProfile}" style="width: 50px; height: 50px;">
                             </c:when>
                             <c:otherwise>
-                                <img src="${principal.user.userProfile}" style="width: 50px; height: 50px;">
+                                <img src="/upload/${principal.user.userProfile}" style="width: 50px; height: 50px;">
                             </c:otherwise>
                         </c:choose> ${principal.user.name}
                     </a>
