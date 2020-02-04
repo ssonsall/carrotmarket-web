@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
@@ -35,30 +36,32 @@ public class Board {
 	private String category; // 상품 카테고리
 
 	// 댓글
-	@OneToMany(mappedBy = "board")
+	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties({ "board" })
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Comment> comment;
 
-	@OneToMany(mappedBy = "board")
-	@JsonIgnoreProperties({ "user","board" })
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties({ "user", "board" })
 	private List<Likes> like; // 좋아요
-	
-//	@OneToMany(mappedBy = "board")
-//	@JsonIgnoreProperties({ "user","board" })
-//	@OnDelete(action = OnDeleteAction.CASCADE)
-//	private List<Chat> chat;
+
+	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties({ "buyerId", "sellerId", "board" })
+	private List<Chat> chat;
+
+	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+	@JsonIgnoreProperties({ "user", "board" })
+	private List<TradeState> tradeState;
 
 	// id, username, address
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "userId")
-	@JsonIgnoreProperties({ "comment","board","like" })
+	@JsonIgnoreProperties({ "comment", "board", "like" })
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
-	
-	@ManyToOne(cascade = CascadeType.MERGE)
+
+	@OneToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "buyerId")
-	@JsonIgnoreProperties({ "comment","board","like" })
+	@JsonIgnoreProperties({ "comment", "board", "like" })
 	private User Buyer;
 
 	// 상품 사진 시작
