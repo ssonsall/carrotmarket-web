@@ -460,7 +460,6 @@
 
 							}
 
-
 							if (from === 'mytown') {
 								if (state === 'auth') {
 									document.querySelector('.tab-pane.active').className = 'tab-pane';
