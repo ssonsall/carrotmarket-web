@@ -59,20 +59,7 @@ public class TradeStateService {
 		tradeStateRepo.save(tradeState);
 	}
 
-	// 채팅으로 거래하기 입력시 구매상태 생성
-	public void insertBuyState(User user, Board board) {
-
-		int check = tradeStateRepo.countByUserAndBoard(user, board);
-		if (check == 0) {
-
-			TradeState tradeState = new TradeState();
-			tradeState.setUser(user);
-			tradeState.setBoard(board);
-			tradeState.setState("구매중");
-
-			tradeStateRepo.save(tradeState);
-		}
-	}
+	
 
 	// 구매,판매 완료 처리
 	public void setStateComplete(String json) {
