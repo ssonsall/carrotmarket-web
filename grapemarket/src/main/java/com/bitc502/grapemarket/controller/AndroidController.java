@@ -39,6 +39,7 @@ import com.bitc502.grapemarket.repository.SearchRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 import com.bitc502.grapemarket.service.BoardService;
+import com.bitc502.grapemarket.service.TradeStateService;
 import com.google.gson.Gson;
 
 @RequestMapping("/android")
@@ -69,6 +70,8 @@ public class AndroidController {
 	@Autowired
 	private BoardService boardServ;
 
+	@Autowired
+	private TradeStateService tradeStateServ;
 
 	@PostMapping("/join")
 	public String join(@RequestParam("username") String username, @RequestParam("name") String name,
@@ -319,6 +322,32 @@ public class AndroidController {
 			return "fail";
 		}
 		
+	}
+	
+	@PostMapping("/requestChat")
+	public String requestChat(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("boardId") String boardId) {
+		try {
+			Chat chat = new Chat();
+			chat.setBuyerId(uRepo.findById(userPrincipal.getUser().getId()).get());
+			chat.setBoard(bRepo.findById(Integer.parseInt(boardId)).get());
+			chat.setSellerId(bRepo.findById(Integer.parseInt(boardId)).get().getUser());
+			tradeStateServ.insertBuyState(chat.getBuyerId(), chat.getBoard());
+			Chat check = chatRepo.findByBoardIdAndBuyerIdAndSellerId(chat.getBoard().getId(), chat.getBuyerId().getId(),
+					chat.getSellerId().getId());
+
+			// 채팅방에 메시지 전송시 상대방의 채팅방이 활성화 되어있지 않은 상태라면 활성화
+			if (check == null) {
+				chat.setBuyerState(1);
+				chatRepo.save(chat);
+			} else {
+				check.setBuyerState(1);
+				chatRepo.save(check);
+			}
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "fail";
+		}
 	}
 	
 	@GetMapping("/chatList")

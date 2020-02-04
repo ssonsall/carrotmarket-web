@@ -286,7 +286,7 @@
 
 								<c:if test="${navPage ne 0}">
 									<a
-										href="/board/page?page=${navPage*4}&category=${currentCategory}&userInput=${currentUserInput}&range=${currentRange}"><i
+										href="/board/page?page=${navPage*4-1}&category=${currentCategory}&userInput=${currentUserInput}&range=${currentRange}"><i
 										class="fa fa-angle-left"></i></a>
 								</c:if>
 								<c:forEach var="i" begin="${navPage*4+1}" end="${navPage*4+4}">
