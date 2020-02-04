@@ -4,9 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -92,25 +90,26 @@ public class BoardController {
 		String currentCategory = category;
 		int currentRange = range;
 		String originUserInput = userInput.trim();
-
+		
 		Coordinate lat = Coordinate.fromDegrees(userPrincipal.getUser().getAddressX());
 		Coordinate lng = Coordinate.fromDegrees(userPrincipal.getUser().getAddressY());
 		Point Mine = Point.at(lat, lng);
-
-		BoundingArea area = EarthCalc.around(Mine, range * 1000);
+		
+		BoundingArea area = EarthCalc.around(Mine, range*1000);
 		Point nw = area.northWest;
 		Point se = area.southEast;
+		
+		
 
 		// 검색어 저장
 		boardServ.saveKeyword(userInput);
 
 		// 검색어 있는지 확인하고 board 데이터 불러오기
-		Page<Board> boards = boardServ.getBoard(userInput, category, nw.latitude, se.latitude, nw.longitude,
-				se.longitude, pageable);
+		Page<Board> boards = boardServ.getBoard(userInput, category,nw.latitude, se.latitude, nw.longitude, se.longitude, pageable);
 
 		if (pageable.getPageNumber() >= boards.getTotalPages() && boards.getTotalPages() > 0) {
 			return "redirect:/board/page?page=" + (boards.getTotalPages() - 1) + "&category=" + category + "&userInput="
-					+ userInput + "&range=5";
+					+ userInput+"&range=5";
 		}
 
 		// 카운트값 받아오기
@@ -147,58 +146,31 @@ public class BoardController {
 			return "/user/userProfile";
 		}
 
-		return "/board/write2";
+		return "/board/write";
 
 	}
 
-
-	// 글쓰기 동작
-	@PostMapping("/writeProcTest")
-	public String write2(@AuthenticationPrincipal UserPrincipal userPrincipal, Board board,
-			@RequestParam(value = "productImage", required = true) List<MultipartFile> productImages) {
-
-		try {
-			// 파일 이름 세팅 및 쓰기
-
-			List<String> imageFileNames = new ArrayList<String>();
-			int index = 0;
-			for (MultipartFile multipartFile : productImages) {
-				imageFileNames.add(UUID.randomUUID() + "_" + multipartFile.getOriginalFilename());
-
-				if (multipartFile.getSize() != 0) {
-					Path filePath = Paths.get(fileRealPath + imageFileNames.get(index));
-					Files.write(filePath, multipartFile.getBytes());
-
-					if (index == 0) {
-						board.setImage1(imageFileNames.get(index));
-					} else if (index == 1) {
-						board.setImage2(imageFileNames.get(index));
-					} else if (index == 2) {
-						board.setImage3(imageFileNames.get(index));
-					} else if (index == 3) {
-						board.setImage4(imageFileNames.get(index));
-					} else if (index == 4) {
-						board.setImage5(imageFileNames.get(index));
-					}
-				}
-				index++;
-			}
-
-			board.setUser(userPrincipal.getUser());
-
-			bRepo.save(board);
-
-			// 거래 상태 추가
-			tradeStateServ.insertSellState(userPrincipal.getUser(), board);
-
-			// 리스트 완성되면 바꿔야함
-			return "redirect:/board/page?page=0&category=1&userInput=&range=5";
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "redirect:/board/writeForm";
-	}
+	/*
+	 * @PostMapping("/writeProcTest") public String write(@AuthenticationPrincipal
+	 * UserPrincipal userPrincipal, Board board,
+	 * 
+	 * @RequestParam(value="productImage", required=true) List<MultipartFile>
+	 * productImage) {
+	 * 
+	 * System.out.println("productImage : "+productImage.size());
+	 * 
+	 * 
+	 * for (MultipartFile multipartFile : productImage) {
+	 * System.out.println(multipartFile.getOriginalFilename()); }
+	 * 
+	 * 
+	 * for (int i = 0; i < productImage.size(); i++) {
+	 * 
+	 * if(!productImage.get(i).getOriginalFilename().equals(""))
+	 * System.out.println(i + ": "+ productImage.get(i)); }
+	 * 
+	 * return "redirect:/board/page?page=0&category=1&userInput=&range=5"; }
+	 */
 
 	// 글쓰기 동작
 	@PostMapping("/writeProc")
@@ -415,9 +387,9 @@ public class BoardController {
 
 	// complete
 	@PostMapping("/complete")
-	public @ResponseBody void boardComplete(@AuthenticationPrincipal UserPrincipal userPrincipal, Board board) {
+	public @ResponseBody void boardComplete(@AuthenticationPrincipal UserPrincipal userPrincipal,Board board) {
 
-		boardServ.setBuyerId(userPrincipal.getUser(), board);
+		boardServ.setBuyerId(userPrincipal.getUser(),board);
 	}
 
 }
