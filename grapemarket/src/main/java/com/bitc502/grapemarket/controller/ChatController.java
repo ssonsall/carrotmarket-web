@@ -26,9 +26,6 @@ public class ChatController {
 
 
 	@Autowired
-	private MessageRepository mRepo;
-
-	@Autowired
 	private ChatService chatServ;
 
 	@PostMapping("/chat")
@@ -94,10 +91,11 @@ public class ChatController {
 
 	}
 
+	//어드민
 	@GetMapping("/chatLog/{id}")
 	public @ResponseBody List<Message> chatLog(@PathVariable int id) {
-		List<Message> chatLog = mRepo.findByChatIdOrderByCreateDateDesc(id);
-		return chatLog;
+		
+		return chatServ.chatLog(id);
 
 	}
 

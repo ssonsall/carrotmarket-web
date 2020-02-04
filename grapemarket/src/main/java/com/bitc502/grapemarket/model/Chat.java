@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -45,6 +47,7 @@ public class Chat {
 	@ManyToOne
 	@JoinColumn(name = "boardId")
 	@JsonIgnoreProperties({"like","comment","user"})
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Board board;
 	
 	@CreationTimestamp

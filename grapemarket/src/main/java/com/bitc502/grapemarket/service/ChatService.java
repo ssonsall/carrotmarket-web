@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitc502.grapemarket.model.Chat;
 import com.bitc502.grapemarket.model.Message;
@@ -143,5 +144,13 @@ public class ChatService {
 		}
 
 	}
+	
+	//어드민
+		public  List<Message> chatLog( int id) {
+			
+			List<Message> chatLog = messageRepo.findByChatIdOrderByCreateDateDesc(id);
+			return chatLog;
+
+		}
 
 }

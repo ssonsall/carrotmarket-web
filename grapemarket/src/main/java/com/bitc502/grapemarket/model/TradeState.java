@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -28,6 +30,7 @@ public class TradeState {
 	@ManyToOne
 	@JoinColumn(name = "userId")
 	@JsonIgnoreProperties({ "like", "comment", "board" })
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
 
 	//	|0:판매취소|1:판매중|2:판매 완료|10:구매취소|11:구매중|12:구매 완료|
@@ -37,6 +40,7 @@ public class TradeState {
 	@ManyToOne
 	@JoinColumn(name = "boardId")
 	@JsonIgnoreProperties({ "like", "comment", "user" })
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Board board;
 
 	@CreationTimestamp
