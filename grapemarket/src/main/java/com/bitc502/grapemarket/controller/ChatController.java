@@ -67,8 +67,20 @@ public class ChatController {
 
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("messages", messages);
-
+		
 		return "chat/roomdetail";
+	}
+	
+	@GetMapping("/android/room/enter/{roomId}")
+	public String roomDetailAndroid(Model model, @PathVariable int roomId) {
+
+		// 채팅방 지난 대화내역 가져오기
+		List<Message> messages = chatServ.roomDetail(model, roomId);
+
+		model.addAttribute("roomId", roomId);
+		model.addAttribute("messages", messages);
+
+		return "chat/androidRoomDetail";
 	}
 
 	// 채팅방 찾기
