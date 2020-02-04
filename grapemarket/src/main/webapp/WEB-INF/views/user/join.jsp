@@ -95,11 +95,11 @@
 								<div class="form-group">
 									<label class="sr-only" for="userProfile">photo</label> <input
 										class="form-control" type="file" id="userProfile"
-										name="userProfile" placeholder="photo*" accept="image/*"
+										name="profile" placeholder="photo*" accept="image/*"
 										data-validation-required-message="Please enter your email address." />
 									<p class="help-block text-danger"></p>
 								</div>
-
+								<input type="hidden" name="userProfile" value="">
 								<div class="text-center">
 									<button class="btn btn-block btn-round btn-d" type="submit">Submit</button>
 								</div>

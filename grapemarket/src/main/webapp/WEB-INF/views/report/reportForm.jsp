@@ -30,11 +30,12 @@
 			<div class="loader">Loading...</div>
 		</div>
 		<div class="main">
-			<section class="module" id="contact" style="padding-top: 30px; padding-bottom: 0px;">
+			<section class="module" id="contact"
+				style="padding-top: 30px; padding-bottom: 0px;">
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-6 col-sm-offset-3">
-							<h2 class="module-title font-alt">신고</h2>
+							<h2 class="module-title font-alt">${ReportFormData.type}신고</h2>
 							<div class="module-subtitle font-serif"></div>
 						</div>
 					</div>
@@ -43,47 +44,31 @@
 							<form id="writeFormSubmit" action="/report/reportProc"
 								method="post" enctype="multipart/form-data">
 								<input type="hidden" name="state" value="0"> <input
-									type="hidden" name="reportType" value="${type}">
-								<c:choose>
-									<c:when test="${type eq 'board'}">
-										<input type="hidden" name="reportId" value="${board.id}">
-										<div class="form-group">
-											<label class="sr-only" for="title">제목</label> <input
-												class="form-control" type="text" id="title" name="title"
-												placeholder="제목*" required="required"
+									type="hidden" name="reportType" value="${ReportFormData.type}">
+								<input type="hidden" name="reportId"
+									value="${ReportFormData.object.id}">
+								<div class="form-group">
+									<c:choose>
+										<c:when test="${ReportFormData.type eq 'board'}">
+											<input class="form-control" type="text" id="title"
+												name="title" placeholder="제목*" required="required"
 												data-validation-required-message="Please enter your name."
-												value="${board.title}" readonly="readonly" />
-											<p class="help-block text-danger"></p>
-										</div>
-									</c:when>
-									<c:when test="${type eq 'comment'}">
-										<input type="hidden" name="reportId" value="${comment.id}">
-										<div class="form-group">
-											<label class="sr-only" for="title">제목</label> <input
-												class="form-control" type="text" id="title" name="title"
-												placeholder="제목*" required="required"
+												value="${ReportFormData.object.title}" readonly="readonly" />
+										</c:when>
+										<c:when test="${ReportFormData.type eq 'comment'}">
+											<input class="form-control" type="text" id="title"
+												name="title" placeholder="제목*" required="required"
 												data-validation-required-message="Please enter your name."
-												value="${comment.content}" readonly="readonly" />
-											<p class="help-block text-danger"></p>
-										</div>
-									</c:when>
-									<c:otherwise>
-										<input type="hidden" name="reportId" value="${message.id}">
-										<div class="form-group">
-											<label class="sr-only" for="title">제목</label> <input
-												class="form-control" type="text" id="title" name="title"
-												placeholder="제목*" required="required"
+												value="${ReportFormData.object.content}" readonly="readonly" />
+										</c:when>
+										<c:otherwise>
+											<input class="form-control" type="text" id="title"
+												name="title" placeholder="제목*" required="required"
 												data-validation-required-message="Please enter your name."
-												value="${message.message}" readonly="readonly" />
-											<p class="help-block text-danger"></p>
-										</div>
-									</c:otherwise>
-
-								</c:choose>
-
-
-
-
+												value="${ReportFormData.object.message}" readonly="readonly" />
+										</c:otherwise>
+									</c:choose>
+								</div>
 								<div class="form-group">
 									<textarea class="form-control" rows="7" id="content"
 										name="content" placeholder="신고사유" required="required"
@@ -96,6 +81,11 @@
                               name="product_images" />
                            <p class="help-block text-danger"></p>
                         </div> -->
+								<div class="text-center">
+									<br>
+									<h4>해당 게시물을 신고하시겠습니까?</h4>
+								</div>
+
 								<div class="text-center">
 									<button class="btn btn-block btn-round btn-d" id="cfsubmit"
 										type="submit">Submit</button>

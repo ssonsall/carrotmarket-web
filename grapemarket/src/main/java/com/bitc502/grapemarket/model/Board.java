@@ -16,7 +16,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
@@ -61,7 +60,6 @@ public class Board {
 	@JoinColumn(name = "buyerId")
 	@JsonIgnoreProperties({ "comment","board","like" })
 	private User Buyer;
-	
 
 	// 상품 사진 시작
 	private String image1;

@@ -33,7 +33,7 @@
 
 							<div id="product_image">
 								<!-- 이미지 세로 크기 고정 필요 -->
-								
+
 							</div>
 							<!-- 상품 정보 노출되는곳 -->
 							<div id="product_info"></div>
@@ -106,5 +106,15 @@
 		</div>
 	</main>
 	<%@include file="../include/script.jsp"%>
+	<script>
+	$(document).ready(function(){
+		if(localStorage.getItem("from") === 'detail'){
+			enterRoom(localStorage.getItem('chatId'),localStorage.getItem('buyerId'))
+			};
+		
+		localStorage.setItem("from","");
+		
+		});
+	</script>
 </body>
 </html>

@@ -65,3 +65,4 @@ spring:
 #파일 저장할 경로(각자 파일 경로로)
 file:
   path: C:/Users/ssons/Documents/myWorkspace/Springboot4/grapemarket/src/main/resources/static/upload/
+

@@ -34,7 +34,7 @@ public class BoardService {
 
 	@Autowired
 	private SearchRepository sRepo;
-	
+
 	@Autowired
 	private TradeStateRepository tRepo;
 
@@ -46,18 +46,17 @@ public class BoardService {
 		board2.setBuyer(board.getBuyer());
 		board2.setState("1");
 		bRepo.save(board2);
-		
-		TradeState state = tRepo.findByUserIdAndBoardId(user.getId(),board.getId());
-		if(state.getState().equals("판매중")) {
+
+		TradeState state = tRepo.findByUserIdAndBoardId(user.getId(), board.getId());
+		if (state.getState().equals("판매중")) {
 			state.setState("판매완료");
 		}
-		
+
 		tRepo.save(state);
-		
 
 	}
-	
-	//검색어 저장
+
+	// 검색어 저장
 	public void saveKeyword(String userInput) {
 		if (!userInput.equals("")) {
 			String[] searchContent = userInput.split(" ");
@@ -73,10 +72,9 @@ public class BoardService {
 		}
 	}
 
-	
-	//검색어 있는지 확인하고 board 데이터 불러오기
-	public Page<Board> getBoard(String userInput, String category, double latitude, double latitude2,
-			double longitude, double longitude2,Pageable pageable) {
+	// 검색어 있는지 확인하고 board 데이터 불러오기
+	public Page<Board> getBoard(String userInput, String category, double latitude, double latitude2, double longitude,
+			double longitude2, Pageable pageable) {
 		Page<Board> boards;
 		if (userInput.equals("")) {
 			if (category.equals("1")) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
@@ -92,14 +90,25 @@ public class BoardService {
 			userInput = "(?=.*" + userInput + ")";
 			if (category.equals("1")) // 입력값 + 카테고리 전체 (입력값만 걸고 카테고리 조건 무시)
 				category = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
-			boards = bRepo.searchAndGps(latitude, latitude2, longitude, longitude2,category, userInput, pageable);
+			boards = bRepo.searchAndGps(latitude, latitude2, longitude, longitude2, category, userInput, pageable);
 		}
 		return boards;
 	}
 
-	//카운트값 받아오기
+	public List<Board> getPopularBoard() {
+		List<Board> boards = new ArrayList<Board>();
+		try {
+			boards = bRepo.popularBoard();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return boards;
+	}
+
+	// 카운트값 받아오기
 	public long getCount(long totalElements) {
-		long count = 0 ;
+		long count = 0;
 		if (totalElements % 8 == 0) {
 			count = totalElements / 8;
 		} else {
@@ -108,30 +117,30 @@ public class BoardService {
 		return count;
 	}
 
-	//거리값 계산후 출력될 보드데이터 불러오기
-		public List<Board> getGps(UserPrincipal userPrincipal, List<Board> boardsContent, int range) {
-			Coordinate lat = Coordinate.fromDegrees(userPrincipal.getUser().getAddressX());
-			Coordinate lng = Coordinate.fromDegrees(userPrincipal.getUser().getAddressY());
-			Point Mine = Point.at(lat, lng);
+	// 거리값 계산후 출력될 보드데이터 불러오기
+	public List<Board> getGps(UserPrincipal userPrincipal, List<Board> boardsContent, int range) {
+		Coordinate lat = Coordinate.fromDegrees(userPrincipal.getUser().getAddressX());
+		Coordinate lng = Coordinate.fromDegrees(userPrincipal.getUser().getAddressY());
+		Point Mine = Point.at(lat, lng);
 
-			BoundingArea area = EarthCalc.around(Mine, range * 1000);
+		BoundingArea area = EarthCalc.around(Mine, range * 1000);
 
-			Point nw = area.northWest;
-			Point se = area.southEast;
+		Point nw = area.northWest;
+		Point se = area.southEast;
 
-			List<Board> board2 = new ArrayList<Board>();
-			for (int i = 0; i < boardsContent.size(); i++) {
+		List<Board> board2 = new ArrayList<Board>();
+		for (int i = 0; i < boardsContent.size(); i++) {
 
-				if (boardsContent.get(i).getUser().getAddressX() < nw.latitude
-						&& boardsContent.get(i).getUser().getAddressX() > se.latitude
-						&& boardsContent.get(i).getUser().getAddressY() > nw.longitude
-						&& boardsContent.get(i).getUser().getAddressY() < se.longitude) {
+			if (boardsContent.get(i).getUser().getAddressX() < nw.latitude
+					&& boardsContent.get(i).getUser().getAddressX() > se.latitude
+					&& boardsContent.get(i).getUser().getAddressY() > nw.longitude
+					&& boardsContent.get(i).getUser().getAddressY() < se.longitude) {
 
-					board2.add(boardsContent.get(i));
+				board2.add(boardsContent.get(i));
 
-				}
 			}
-
-			return board2;
 		}
+
+		return board2;
+	}
 }
