@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -76,6 +77,8 @@ public class Board {
 
 	@CreationTimestamp
 	private Timestamp createDate;
+	
+	
 	@CreationTimestamp
 	private Timestamp updateDate;
 }

@@ -321,6 +321,26 @@ public class AndroidController {
 		
 	}
 	
+
+	/*
+	 * @PostMapping("/requestChat") public String
+	 * requestChat(@AuthenticationPrincipal UserPrincipal
+	 * userPrincipal, @RequestParam("boardId") String boardId) { try { Chat chat =
+	 * new Chat();
+	 * chat.setBuyerId(uRepo.findById(userPrincipal.getUser().getId()).get());
+	 * chat.setBoard(bRepo.findById(Integer.parseInt(boardId)).get());
+	 * chat.setSellerId(bRepo.findById(Integer.parseInt(boardId)).get().getUser());
+	 * tradeStateServ.insertBuyState(chat.getBuyerId(), chat.getBoard()); Chat check
+	 * = chatRepo.findByBoardIdAndBuyerIdAndSellerId(chat.getBoard().getId(),
+	 * chat.getBuyerId().getId(), chat.getSellerId().getId());
+	 * 
+	 * // 채팅방에 메시지 전송시 상대방의 채팅방이 활성화 되어있지 않은 상태라면 활성화 if (check == null) {
+	 * chat.setBuyerState(1); chatRepo.save(chat); } else { check.setBuyerState(1);
+	 * chatRepo.save(check); } return "success"; } catch (Exception e) {
+	 * e.printStackTrace(); return "fail"; } }
+	 */
+	
+
 	@GetMapping("/chatList")
 	public ChatList chatList(@AuthenticationPrincipal UserPrincipal userPrincipal) {
 		List<Chat> chatForBuy = chatRepo.findByBuyerId(userPrincipal.getUser());
