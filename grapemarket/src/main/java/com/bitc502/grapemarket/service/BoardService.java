@@ -3,20 +3,24 @@ package com.bitc502.grapemarket.service;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.persistence.EntityManagerFactory;
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bitc502.grapemarket.model.Board;
@@ -60,6 +64,9 @@ public class BoardService {
 
 	@Autowired
 	private TradeStateService tradeStateServ;
+	
+//	private final EntityManagerFactory entityManagerFactory;
+	
 
 	// 글쓰기 페이지
 	public String writeForm(UserPrincipal userPrincipal, Model model) {
@@ -82,13 +89,12 @@ public class BoardService {
 	public Map<String, Object> detail(int id, Model model, UserPrincipal userPrincipal) {
 
 		try {
-			
+
 			Map<String, Object> map = new HashMap<String, Object>();
-			
+
 			Optional<Board> oBoard = bRepo.findById(id);
 			Board board = oBoard.get();
 			map.put("board", board);
-			
 
 			// 댓글 불러오기
 			List<Comment> comments = commentRepo.findByBoardId(board.getId());
@@ -269,7 +275,9 @@ public class BoardService {
 		return "redirect:/board/writeForm";
 	}
 
+
 	// 업데이트
+	@Transactional
 	public String update(UserPrincipal userPrincipal, Board boardFromController, List<MultipartFile> productImages,
 			List<String> currentImages, String fileRealPath) {
 
@@ -278,7 +286,11 @@ public class BoardService {
 
 			Optional<Board> oBoard = bRepo.findById(boardFromController.getId());
 			Board board = oBoard.get();
-
+			
+			board.setTitle(boardFromController.getTitle());
+			board.setContent(boardFromController.getContent());
+			board.setPrice(boardFromController.getPrice());
+			
 			List<String> imageFileNames = new ArrayList<String>();
 			int index = 0;
 			for (MultipartFile multipartFile : productImages) {
@@ -316,7 +328,9 @@ public class BoardService {
 			}
 
 			bRepo.save(board);
-
+			Timestamp ts = sqlTimeStamp();
+			updateTime(board.getId(),ts);
+			
 			// 리스트 완성되면 바꿔야함
 			return "redirect:/board/page?page=0&category=1&userInput=&range=5";
 		} catch (Exception e) {
@@ -324,6 +338,36 @@ public class BoardService {
 		}
 		return "redirect:/board/writeForm";
 	}
+	
+    public void updateTime(Integer id, Timestamp ts) {
+        Board board = bRepo.getOne(id);
+        System.out.println("updateTime 접근");
+        
+        
+        System.out.println("---------------------------------------");
+        System.out.println("updateDate1 : " + board.getUpdateDate());
+        board.setUpdateDate(ts);
+        
+        System.out.println("updateDate2 : " + board.getUpdateDate());
+        System.out.println("---------------------------------------");
+    }
+	
+	public Timestamp sqlTimeStamp() {
+		
+		//java.sql.TimeStamp
+		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		String today = null;
+		today = formatter.format(cal.getTime());
+		Timestamp ts = Timestamp.valueOf(today);
+
+		System.out.println("타임스템프 접근");
+		System.out.println(ts);
+		
+		return ts;
+	}
+
+
 
 	// 거리값 계산후 출력될 보드데이터 불러오기
 	public List<Board> getGps(UserPrincipal userPrincipal, List<Board> boardsContent, int range) {

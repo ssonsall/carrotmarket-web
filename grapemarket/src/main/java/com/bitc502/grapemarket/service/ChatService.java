@@ -29,32 +29,32 @@ public class ChatService {
 
 	@Autowired
 	private ChatRepository cRepo;
-	
+
 	@Autowired
 	private MessageRepository messageRepo;
 
 	// 채팅 페이지 접근시 채팅 목록 불러오기
-		public Map<String, Object> Chat(UserPrincipal userPrincipal, Model model) {
-			
-			Map<String, Object> map = new HashMap<String,Object>();
-			
-			List<Chat> chatForBuy = cRepo.findByBuyerId(userPrincipal.getUser());
-			List<Chat> chatForSell = cRepo.findBySellerId(userPrincipal.getUser());
-			
-			User user = userPrincipal.getUser();
-			
-			map.put("chatForBuy",chatForBuy);
-			map.put("chatForSell",chatForSell);
-			map.put("user",user);
+	public Map<String, Object> Chat(UserPrincipal userPrincipal, Model model) {
 
-			return map;
-		}
-	
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		List<Chat> chatForBuy = cRepo.findByBuyerId(userPrincipal.getUser());
+		List<Chat> chatForSell = cRepo.findBySellerId(userPrincipal.getUser());
+
+		User user = userPrincipal.getUser();
+
+		map.put("chatForBuy", chatForBuy);
+		map.put("chatForSell", chatForSell);
+		map.put("user", user);
+
+		return map;
+	}
+
 	// 채팅방 생성
 	public Chat CreateChat(Chat chat) {
 		try {
 
-			//이미 생성된 구매목록이 있는지 확인
+			// 이미 생성된 구매목록이 있는지 확인
 			int checkTradeState = tradeStateRepo.countByUserAndBoard(chat.getBuyerId(), chat.getBoard());
 			if (checkTradeState == 0) {
 
@@ -66,11 +66,11 @@ public class ChatService {
 				tradeStateRepo.save(tradeState);
 			}
 
-			//생성된 채팅방이 있는지 확인
+			// 생성된 채팅방이 있는지 확인
 			Chat checkChateState = cRepo.findByBoardIdAndBuyerIdAndSellerId(chat.getBoard().getId(),
 					chat.getBuyerId().getId(), chat.getSellerId().getId());
 
-			//채팅방이 있으면 활성화를 시키고 없으면 새로 생성
+			// 채팅방이 있으면 활성화를 시키고 없으면 새로 생성
 			if (checkChateState == null) {
 				chat.setBuyerState(1);
 				cRepo.save(chat);
@@ -89,19 +89,19 @@ public class ChatService {
 	}
 
 	// 채팅 방 접속
-		public List<Message> roomDetail(Model model, @PathVariable int roomId) {
+	public List<Message> roomDetail(Model model, @PathVariable int roomId) {
 
-			try {
-				// 채팅방 지난 대화내역 가져오기
-				List<Message> messages = messageRepo.findByChatIdOrderById(roomId);
-				return messages;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			return null;
+		try {
+			// 채팅방 지난 대화내역 가져오기
+			List<Message> messages = messageRepo.findByChatIdOrderById(roomId);
+			return messages;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-	
+
+		return null;
+	}
+
 	// 채팅방 찾기
 	public Chat roomInfo(int roomId) {
 		try {
@@ -144,13 +144,13 @@ public class ChatService {
 		}
 
 	}
-	
-	//어드민
-		public  List<Message> chatLog( int id) {
-			
-			List<Message> chatLog = messageRepo.findByChatIdOrderByCreateDateDesc(id);
-			return chatLog;
 
-		}
+	// 어드민
+	public List<Message> chatLog(int id) {
+
+		List<Message> chatLog = messageRepo.findByChatIdOrderByCreateDateDesc(id);
+		return chatLog;
+
+	}
 
 }
