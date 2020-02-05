@@ -65,7 +65,5 @@ public interface BoardRepository extends JpaRepository<Board, Integer>, JpaSpeci
 	Page<Board> searchAndGps(double latitude, double latitude2, double longitude, double longitude2, String cate,
 			@Param("search") String search, Pageable pageable);
 
-
 	List<Board> findTop3ByOrderByIdDesc();
-
 }
