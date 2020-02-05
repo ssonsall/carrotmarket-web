@@ -331,7 +331,7 @@ public class AndroidController {
 			chat.setBuyerId(uRepo.findById(userPrincipal.getUser().getId()).get());
 			chat.setBoard(bRepo.findById(Integer.parseInt(boardId)).get());
 			chat.setSellerId(bRepo.findById(Integer.parseInt(boardId)).get().getUser());
-			tradeStateServ.insertBuyState(chat.getBuyerId(), chat.getBoard());
+//			tradeStateServ.insertBuyState(chat.getBuyerId(), chat.getBoard());
 			Chat check = chatRepo.findByBoardIdAndBuyerIdAndSellerId(chat.getBoard().getId(), chat.getBuyerId().getId(),
 					chat.getSellerId().getId());
 

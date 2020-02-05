@@ -93,7 +93,6 @@ div.container2 {
 
 
 		<div class="container2" id="container2">
-
 			<ul class="list-group">
 
 				<c:forEach var="message" items="${messages}">
