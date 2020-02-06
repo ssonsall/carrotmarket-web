@@ -16,6 +16,8 @@ import com.bitc502.grapemarket.repository.CommentRepository;
 import com.bitc502.grapemarket.repository.MessageRepository;
 import com.bitc502.grapemarket.repository.ReportRepository;
 
+import io.sentry.Sentry;
+
 @Service
 public class ReportService {
 
@@ -50,6 +52,7 @@ public class ReportService {
 			rf.setType(type);
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return rf;
 	}
@@ -61,6 +64,7 @@ public class ReportService {
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return -1;
 	}

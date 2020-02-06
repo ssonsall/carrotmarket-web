@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import com.bitc502.grapemarket.model.Search;
 import com.bitc502.grapemarket.repository.SearchRepository;
 
+import io.sentry.Sentry;
+
 @Service
 public class SearchService {
-	
+
 	@Autowired
 	private SearchRepository sRepo;
 
@@ -21,6 +23,7 @@ public class SearchService {
 			searchs = sRepo.popularKeyword();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return searchs;
 	}

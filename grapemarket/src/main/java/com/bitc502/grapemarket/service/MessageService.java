@@ -12,15 +12,17 @@ import com.bitc502.grapemarket.repository.ChatRepository;
 import com.bitc502.grapemarket.repository.MessageRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 
+import io.sentry.Sentry;
+
 @Service
 public class MessageService {
 
 	@Autowired
 	private UserRepository uRepo;
-	
+
 	@Autowired
 	private MessageRepository mRepo;
-	
+
 	@Autowired
 	private ChatRepository cRepo;
 
@@ -42,6 +44,7 @@ public class MessageService {
 			cRepo.save(chat);
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 	}
 

@@ -21,6 +21,8 @@ import com.bitc502.grapemarket.repository.MessageRepository;
 import com.bitc502.grapemarket.repository.TradeStateRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 
+import io.sentry.Sentry;
+
 @Service
 public class ChatService {
 
@@ -83,6 +85,7 @@ public class ChatService {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 
 		return null;
@@ -97,6 +100,7 @@ public class ChatService {
 			return messages;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 
 		return null;
@@ -109,6 +113,7 @@ public class ChatService {
 			return chat;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return null;
 	}
@@ -121,6 +126,7 @@ public class ChatService {
 			return chat;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 
 		return null;
@@ -141,6 +147,7 @@ public class ChatService {
 			cRepo.save(chat);
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 
 	}

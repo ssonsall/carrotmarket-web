@@ -17,6 +17,8 @@ import com.bitc502.grapemarket.common.Role;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.UserRepository;
 
+import io.sentry.Sentry;
+
 @Service
 public class UserService {
 
@@ -36,22 +38,24 @@ public class UserService {
 			user = oUser.get();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return user;
 	}
-	
+
 	public int usernameCheck(String username) {
 		try {
 			if (uRepo.existsByUsername(username)) {
 				return 1;
-			} 
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return -1;
 	}
-	
-	public int join(User user,MultipartFile userProfile) {
+
+	public int join(User user, MultipartFile userProfile) {
 
 		try {
 			String rawPassword = user.getPassword();
@@ -69,13 +73,14 @@ public class UserService {
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return -1;
 		}
-		
+
 	}
-	
-	public int update(User user,String currentUserProfile, MultipartFile userProfile) {
-		try { 
+
+	public int update(User user, String currentUserProfile, MultipartFile userProfile) {
+		try {
 			String rawPassword = user.getPassword();
 			String encPassword = passwordEncoder.encode(rawPassword);
 			Optional<User> oUser = uRepo.findById(user.getId());
@@ -93,42 +98,43 @@ public class UserService {
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return -1;
 		}
-		
+
 	}
-	
+
 	public int addUpdate(User user) {
 		try {
 			uRepo.addUpdate(user.getAddress(), user.getAddressX(), user.getAddressY(), user.getId());
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return -1;
 		}
 	}
-	
+
 	public int authUpdate(User user) {
 		try {
 			uRepo.authUpdate(user.getId());
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return -1;
 		}
 	}
-	
+
 	public int delete(int id) {
 		try {
 			uRepo.deleteById(id);
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return -1;
 		}
 	}
-
-
-
 
 }

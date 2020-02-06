@@ -11,6 +11,8 @@ import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.payload.SignUpRequest;
 import com.bitc502.grapemarket.repository.UserRepository;
 
+import io.sentry.Sentry;
+
 @Service
 public class OAuthService {
 
@@ -34,10 +36,11 @@ public class OAuthService {
 			user.setProvider(AuthProvider.local);
 			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			user.setRole(Role.valueOf("USER"));
-			
+
 			result = userRepository.save(user);
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return result;
 	}

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.bitc502.grapemarket.model.Comment;
 import com.bitc502.grapemarket.repository.CommentRepository;
 
+import io.sentry.Sentry;
+
 @Service
 public class CommentService {
 
@@ -21,6 +23,7 @@ public class CommentService {
 			newComment = commentRepo.findTop1ByOrderByIdDesc();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return newComment;
 	}
@@ -32,6 +35,7 @@ public class CommentService {
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return -1;
 	}

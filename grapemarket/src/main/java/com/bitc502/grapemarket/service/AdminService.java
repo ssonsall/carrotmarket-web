@@ -31,6 +31,8 @@ import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.repository.VisitorRepository;
 import com.bitc502.grapemarket.util.VisitorCounter;
 
+import io.sentry.Sentry;
+
 @Service
 public class AdminService {
 
@@ -57,6 +59,7 @@ public class AdminService {
 			users = uRepo.findAll();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return users;
 	}
@@ -66,7 +69,8 @@ public class AdminService {
 		try {
 			boards = bRepo.findByUserIdOrderByCreateDateDesc(id);
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return boards;
 	}
@@ -81,6 +85,7 @@ public class AdminService {
 			ad.setSearchs(sRepo.wholeTimePopularThreeKeyword());
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return ad;
 	}
@@ -96,6 +101,7 @@ public class AdminService {
 			stats.setReportVolume(MaptoStatistic(rRepo.reportVolume()));
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return stats;
 	}
@@ -112,6 +118,7 @@ public class AdminService {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return statList;
 	}
@@ -123,6 +130,7 @@ public class AdminService {
 			user = oUser.get();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return user;
 	}
@@ -133,6 +141,7 @@ public class AdminService {
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return -1;
 	}
@@ -149,7 +158,8 @@ public class AdminService {
 			uRepo.save(user);
 			return 1;
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return -1;
 	}
@@ -162,7 +172,8 @@ public class AdminService {
 			sv.setChatVolume(mRepo.count());
 			sv.setReportVolume(rRepo.countByState("0"));
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return sv;
 	}
@@ -173,7 +184,8 @@ public class AdminService {
 			Optional<Report> oReport = rRepo.findById(id);
 			report = oReport.get();
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return report;
 	}
@@ -183,7 +195,8 @@ public class AdminService {
 		try {
 			reports = rRepo.findByState("0");
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return reports;
 	}
@@ -191,26 +204,27 @@ public class AdminService {
 	public AdminReportDetail getAdminReportDetailData(int id) {
 		AdminReportDetail ad = new AdminReportDetail();
 		try {
-		Optional<Report> oReport = rRepo.findById(id);
-		Report report = oReport.get();
-		ad.setReport(report);
-		if (report.getReportType().equals(ReportType.board)) {
-			Optional<Board> oBoard = bRepo.findById(report.getReportId());
-			Board board = oBoard.get();
-			ad.setReportType(board);
-		} else if (report.getReportType().equals(ReportType.comment)) {
-			Optional<Comment> oComment = commentRepo.findById(report.getReportId());
-			Comment comment = oComment.get();
-			ad.setReportType(comment);
-		} else if (report.getReportType().equals(ReportType.message)) {
-			Optional<Message> oMessage = mRepo.findById(report.getReportId());
-			Message message = oMessage.get();
-			Chat chat = cRepo.findById(message.getChat().getId());
-			ad.setReportType(message);
-			ad.setChat(chat);
-		}
+			Optional<Report> oReport = rRepo.findById(id);
+			Report report = oReport.get();
+			ad.setReport(report);
+			if (report.getReportType().equals(ReportType.board)) {
+				Optional<Board> oBoard = bRepo.findById(report.getReportId());
+				Board board = oBoard.get();
+				ad.setReportType(board);
+			} else if (report.getReportType().equals(ReportType.comment)) {
+				Optional<Comment> oComment = commentRepo.findById(report.getReportId());
+				Comment comment = oComment.get();
+				ad.setReportType(comment);
+			} else if (report.getReportType().equals(ReportType.message)) {
+				Optional<Message> oMessage = mRepo.findById(report.getReportId());
+				Message message = oMessage.get();
+				Chat chat = cRepo.findById(message.getChat().getId());
+				ad.setReportType(message);
+				ad.setChat(chat);
+			}
 		} catch (Exception e) {
-		e.printStackTrace();
+			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return ad;
 	}
@@ -220,7 +234,8 @@ public class AdminService {
 		try {
 			messages = mRepo.findByChatIdOrderByCreateDateDesc(id);
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return messages;
 	}
@@ -246,6 +261,7 @@ public class AdminService {
 			return 1;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return -1;
 	}
