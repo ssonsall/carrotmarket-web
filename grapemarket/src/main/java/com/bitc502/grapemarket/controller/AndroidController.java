@@ -13,9 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +32,7 @@ import com.bitc502.grapemarket.common.Role;
 import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Chat;
 import com.bitc502.grapemarket.model.Comment;
-import com.bitc502.grapemarket.model.Message;
+import com.bitc502.grapemarket.model.Likes;
 import com.bitc502.grapemarket.model.Search;
 import com.bitc502.grapemarket.model.TradeState;
 import com.bitc502.grapemarket.model.User;
@@ -38,12 +41,17 @@ import com.bitc502.grapemarket.payload.UserLocationSetting;
 import com.bitc502.grapemarket.repository.BoardRepository;
 import com.bitc502.grapemarket.repository.ChatRepository;
 import com.bitc502.grapemarket.repository.CommentRepository;
+import com.bitc502.grapemarket.repository.LikeRepository;
 import com.bitc502.grapemarket.repository.SearchRepository;
 import com.bitc502.grapemarket.repository.TradeStateRepository;
 import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
-import com.bitc502.grapemarket.service.ChatService;
+import com.bitc502.grapemarket.service.BoardService;
 import com.google.gson.Gson;
+import com.grum.geocalc.BoundingArea;
+import com.grum.geocalc.Coordinate;
+import com.grum.geocalc.EarthCalc;
+import com.grum.geocalc.Point;
 
 @RequestMapping("/android")
 @RestController
@@ -54,27 +62,30 @@ public class AndroidController {
 
 	@Autowired
 	private UserRepository uRepo;
-	
+
 	@Autowired
 	private BoardRepository bRepo;
-	
+
 	@Autowired
 	private CommentRepository cRepo;
-	
+
 	@Autowired
 	private ChatRepository chatRepo;
-	
+
 	@Autowired
 	private SearchRepository sRepo;
 
 	@Autowired
+	private LikeRepository lRepo;
+
+	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private TradeStateRepository tradeStateRepo;
-	
+
 	@Autowired
-	private ChatService chatServ;
+	private BoardService boardServ;
 
 	@PostMapping("/join")
 	public String join(@RequestParam("username") String username, @RequestParam("name") String name,
@@ -91,8 +102,8 @@ public class AndroidController {
 			user.setEmail(email);
 			user.setPhone(phone);
 			user.setProvider(AuthProvider.local);
-	        user.setRole(Role.valueOf("USER"));
-	        
+			user.setRole(Role.valueOf("USER"));
+
 			if (userProfile.getSize() != 0) {
 				String UUIDFileName = UUID.randomUUID() + "_" + userProfile.getOriginalFilename();
 				user.setUserProfile(UUIDFileName);
@@ -113,6 +124,72 @@ public class AndroidController {
 		return bRepo.findAll();
 	}
 
+	@GetMapping("/allListPageable")
+	public List<Board> allListPageable(
+			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable) {
+		try {
+			Page<Board> pBoard = bRepo.findAll(pageable);
+			return pBoard.getContent();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@GetMapping("/allListPageableWithRange")
+	public List<Board> allListPageableWithRange(
+			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable,
+			@RequestParam("range") String range, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+		try {
+			System.out.println("들어온 Range >> " + range);
+			Integer rangeInt = Integer.parseInt(range);
+			Coordinate lat = Coordinate.fromDegrees(userPrincipal.getUser().getAddressX());
+			Coordinate lng = Coordinate.fromDegrees(userPrincipal.getUser().getAddressY());
+			Point Mine = Point.at(lat, lng);
+
+			BoundingArea area = EarthCalc.around(Mine, rangeInt * 1000);
+			Point nw = area.northWest;
+			Point se = area.southEast;
+
+			Page<Board> pBoard = bRepo.findAllAndGps(nw.latitude, se.latitude, nw.longitude, se.longitude, pageable);
+
+			return pBoard.getContent();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@PostMapping("/saveLike")
+	public Likes saveLike(@AuthenticationPrincipal UserPrincipal userPrincipal,
+			@RequestParam("boardId") String boardId) {
+		try {
+			Likes likes = new Likes();
+			if (lRepo.findByUserIdAndBoardId(userPrincipal.getUser().getId(), Integer.parseInt(boardId)) == null) {
+				Optional<Board> oBoard = bRepo.findById(Integer.parseInt(boardId));
+				likes.setBoard(oBoard.get());
+				likes.setUser(userPrincipal.getUser());
+				lRepo.save(likes);
+			}
+			return likes;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@PostMapping("/deleteLike")
+	public String deleteLike(@AuthenticationPrincipal UserPrincipal userPrincipal,
+			@RequestParam("likeId") String likeId) {
+		try {
+			lRepo.deleteById(Integer.parseInt(likeId));
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "fail";
+		}
+	}
+
 	@GetMapping("/detail/{id}")
 	public Board detail(@PathVariable int id) {
 		System.out.println("디테일보드");
@@ -122,11 +199,11 @@ public class AndroidController {
 
 	@PostMapping("/loginSuccess")
 	public String loginSuccess(HttpServletRequest request, HttpServletResponse response) {
-		String test = (String)request.getAttribute("testSession");
+		String test = (String) request.getAttribute("testSession");
 		System.out.println(">> test >> " + test);
 		return "ok";
 	}
-	
+
 	@PostMapping("/getUserInfo")
 	public User loginUserInfo(@RequestParam("username") String username) {
 		User user = uRepo.findByUsername(username);
@@ -137,7 +214,7 @@ public class AndroidController {
 	public String loginFailure() {
 		return "fail";
 	}
-	
+
 	@PostMapping("/modifyBoard")
 	public String modifyBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("state") String state,
 			@RequestParam("category") String category, @RequestParam("title") String title,
@@ -219,9 +296,9 @@ public class AndroidController {
 			return "fail";
 		}
 	}
-	
+
 	@PostMapping("/write")
-	public String write(@RequestParam("state") String state,@AuthenticationPrincipal UserPrincipal userPrincipal,
+	public String write(@RequestParam("state") String state, @AuthenticationPrincipal UserPrincipal userPrincipal,
 			@RequestParam("category") String category, @RequestParam("title") String title,
 			@RequestParam("price") String price, @RequestParam("content") String content,
 			@RequestParam("productImage1") MultipartFile productImage1,
@@ -229,7 +306,7 @@ public class AndroidController {
 			@RequestParam("productImage3") MultipartFile productImage3,
 			@RequestParam("productImage4") MultipartFile productImage4,
 			@RequestParam("productImage5") MultipartFile productImage5) {
-		
+
 		try {
 			Board board = new Board();
 			// 파일 이름 세팅 및 쓰기
@@ -265,8 +342,7 @@ public class AndroidController {
 				Files.write(filePath, productImage5.getBytes());
 				board.setImage5(imageFileName5);
 			}
-			
-			
+
 			board.setUser(new User());
 			board.getUser().setId(userPrincipal.getUser().getId());
 			board.setCategory(category);
@@ -283,39 +359,40 @@ public class AndroidController {
 			return "fail";
 		}
 	}
-	
-	//@RequestParam("content") String content, @RequestParam("user") String userId, @RequestParam("board") String boardId
+
+	// @RequestParam("content") String content, @RequestParam("user") String userId,
+	// @RequestParam("board") String boardId
 	@PostMapping("/commentWrite")
-	public String commentWrite(Comment comment, @AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("board") String board) {
-		try {	
-		comment.setUser(new User());
-		comment.getUser().setId(userPrincipal.getUser().getId());
-		comment.setBoard(new Board());
-		comment.getBoard().setId(Integer.parseInt(board));
-		cRepo.save(comment);
-		return "success";		
-		}catch(Exception e) {
+	public String commentWrite(Comment comment, @AuthenticationPrincipal UserPrincipal userPrincipal,
+			@RequestParam("board") String board) {
+		try {
+			comment.setUser(new User());
+			comment.getUser().setId(userPrincipal.getUser().getId());
+			comment.setBoard(new Board());
+			comment.getBoard().setId(Integer.parseInt(board));
+			cRepo.save(comment);
+			return "success";
+		} catch (Exception e) {
 			System.out.println(e.toString());
 			return "fail";
 		}
 	}
-	
+
 	@GetMapping("/juso")
-	public UserLocationSetting addressSetting(@RequestParam("address") String address, 
-			@RequestParam("addressX") String addressX, 
-			@RequestParam("addressY") String addressY,
+	public UserLocationSetting addressSetting(@RequestParam("address") String address,
+			@RequestParam("addressX") String addressX, @RequestParam("addressY") String addressY,
 			@AuthenticationPrincipal UserPrincipal userPrincipal) {
 		return new UserLocationSetting(address, addressX, addressY, userPrincipal.getUser().getAddressAuth());
 	}
-	
+
 	@PostMapping("/saveUserAddress")
-	public String saveUserAddress(@RequestParam("address") String address,
-			@RequestParam("addressX") String addressX,
-			@RequestParam("addressY") String addressY,
-			@AuthenticationPrincipal UserPrincipal userPrincipal) {
-		//uRepo.addUpdate(user.getAddress(), user.getAddressX(), user.getAddressY(), user.getId());
+	public String saveUserAddress(@RequestParam("address") String address, @RequestParam("addressX") String addressX,
+			@RequestParam("addressY") String addressY, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+		// uRepo.addUpdate(user.getAddress(), user.getAddressX(), user.getAddressY(),
+		// user.getId());
 		try {
-			uRepo.addUpdate(address, Double.parseDouble(addressX), Double.parseDouble(addressY), userPrincipal.getUser().getId());
+			uRepo.addUpdate(address, Double.parseDouble(addressX), Double.parseDouble(addressY),
+					userPrincipal.getUser().getId());
 			userPrincipal.getUser().setAddress(address);
 			userPrincipal.getUser().setAddressX(Double.parseDouble(addressX));
 			userPrincipal.getUser().setAddressY(Double.parseDouble(addressY));
@@ -324,13 +401,12 @@ public class AndroidController {
 			e.printStackTrace();
 			return "fail";
 		}
-		
+
 	}
 
-
-	
 	@PostMapping("/requestChat")
-	public Chat requestChat(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("boardId") String boardId) {
+	public Chat requestChat(@AuthenticationPrincipal UserPrincipal userPrincipal,
+			@RequestParam("boardId") String boardId) {
 		try {
 			Chat chat = new Chat();
 			Optional<User> oUser = uRepo.findById(userPrincipal.getUser().getId());
@@ -338,8 +414,8 @@ public class AndroidController {
 			chat.setBuyerId(oUser.get());
 			chat.setSellerId(oBoard.get().getUser());
 			chat.setBoard(oBoard.get());
-			
-			//이미 생성된 구매목록이 있는지 확인
+
+			// 이미 생성된 구매목록이 있는지 확인
 			int checkTradeState = tradeStateRepo.countByUserAndBoard(chat.getBuyerId(), chat.getBoard());
 			if (checkTradeState == 0) {
 
@@ -351,11 +427,11 @@ public class AndroidController {
 				tradeStateRepo.save(tradeState);
 			}
 			System.out.println("null check111");
-			//생성된 채팅방이 있는지 확인
+			// 생성된 채팅방이 있는지 확인
 			Chat checkChateState = chatRepo.findByBoardIdAndBuyerIdAndSellerId(chat.getBoard().getId(),
 					chat.getBuyerId().getId(), chat.getSellerId().getId());
 			System.out.println("null check222");
-			//채팅방이 있으면 활성화를 시키고 없으면 새로 생성
+			// 채팅방이 있으면 활성화를 시키고 없으면 새로 생성
 			if (checkChateState == null) {
 				chat.setBuyerState(1);
 				chatRepo.save(chat);
@@ -370,26 +446,6 @@ public class AndroidController {
 			return null;
 		}
 	}
-	
-
-	/*
-	 * @PostMapping("/requestChat") public String
-	 * requestChat(@AuthenticationPrincipal UserPrincipal
-	 * userPrincipal, @RequestParam("boardId") String boardId) { try { Chat chat =
-	 * new Chat();
-	 * chat.setBuyerId(uRepo.findById(userPrincipal.getUser().getId()).get());
-	 * chat.setBoard(bRepo.findById(Integer.parseInt(boardId)).get());
-	 * chat.setSellerId(bRepo.findById(Integer.parseInt(boardId)).get().getUser());
-	 * tradeStateServ.insertBuyState(chat.getBuyerId(), chat.getBoard()); Chat check
-	 * = chatRepo.findByBoardIdAndBuyerIdAndSellerId(chat.getBoard().getId(),
-	 * chat.getBuyerId().getId(), chat.getSellerId().getId());
-	 * 
-	 * // 채팅방에 메시지 전송시 상대방의 채팅방이 활성화 되어있지 않은 상태라면 활성화 if (check == null) {
-	 * chat.setBuyerState(1); chatRepo.save(chat); } else { check.setBuyerState(1);
-	 * chatRepo.save(check); } return "success"; } catch (Exception e) {
-	 * e.printStackTrace(); return "fail"; } }
-	 */
-	
 
 	@GetMapping("/chatList")
 	public ChatList chatList(@AuthenticationPrincipal UserPrincipal userPrincipal) {
@@ -399,13 +455,43 @@ public class AndroidController {
 		chatList.setChatForBuy(chatForBuy);
 		chatList.setChatForSell(chatForSell);
 		System.out.println("Android ChatList 접근");
-		return chatList;	
+		return chatList;
 	}
-	
+
+	@GetMapping("/searchWithRange")
+	public List<Board> searchWithRange(
+			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable,
+			@RequestParam("category") String category, @RequestParam("userInput") String userInput,
+			@RequestParam("range") String range, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+		try {
+			Integer rangeInt = Integer.parseInt(range);
+
+			Coordinate lat = Coordinate.fromDegrees(userPrincipal.getUser().getAddressX());
+			Coordinate lng = Coordinate.fromDegrees(userPrincipal.getUser().getAddressY());
+			Point Mine = Point.at(lat, lng);
+
+			BoundingArea area = EarthCalc.around(Mine, rangeInt * 1000);
+			Point nw = area.northWest;
+			Point se = area.southEast;
+
+			// 검색어 저장
+			boardServ.saveKeyword(userInput);
+
+			// 검색어 있는지 확인하고 board 데이터 불러오기
+			Page<Board> boards = boardServ.getBoard(userInput, category, nw.latitude, se.latitude, nw.longitude,
+					se.longitude, pageable);
+			return boards.getContent();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	// 안씀
 	@PostMapping("/search")
 	public List<Board> search(@RequestParam("category") String category, @RequestParam("userInput") String userInput,
-			@AuthenticationPrincipal UserPrincipal userPrincipal){
-		
+			@AuthenticationPrincipal UserPrincipal userPrincipal) {
+
 		List<User> users = uRepo.findByAddressContaining(userInput);
 		List<Integer> userIds = new ArrayList<>();
 		for (User u : users) {
@@ -441,19 +527,20 @@ public class AndroidController {
 
 		return boards;
 	}
-	
+
 	@GetMapping("/getSavedAddress")
 	public UserLocationSetting getSavedAddress(@AuthenticationPrincipal UserPrincipal userPrincipal) {
 		try {
-			UserLocationSetting userLocationSetting = new UserLocationSetting(userPrincipal.getUser().getAddress(), 
-					userPrincipal.getUser().getAddressX().toString(), userPrincipal.getUser().getAddressY().toString(),userPrincipal.getUser().getAddressAuth());
+			UserLocationSetting userLocationSetting = new UserLocationSetting(userPrincipal.getUser().getAddress(),
+					userPrincipal.getUser().getAddressX().toString(), userPrincipal.getUser().getAddressY().toString(),
+					userPrincipal.getUser().getAddressAuth());
 			return userLocationSetting;
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
+
 	@GetMapping("/saveAddressAuth")
 	public String saveAddressAuth(@AuthenticationPrincipal UserPrincipal userPrincipal) {
 		try {
@@ -465,19 +552,20 @@ public class AndroidController {
 			return "fail";
 		}
 	}
-	
+
 	@GetMapping("/currentmyinfo")
 	public User getCunnretMyInfo(@AuthenticationPrincipal UserPrincipal userPrincipal) {
 		try {
 			return uRepo.findById(userPrincipal.getUser().getId()).get();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
+
 	@PostMapping("/changepassword")
-	public String changePassword(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("newPassword") String newPassword) {
+	public String changePassword(@AuthenticationPrincipal UserPrincipal userPrincipal,
+			@RequestParam("newPassword") String newPassword) {
 		try {
 			uRepo.androidPasswordUpdate(passwordEncoder.encode(newPassword), userPrincipal.getUser().getId());
 			return "success";
@@ -486,14 +574,14 @@ public class AndroidController {
 			return "fail";
 		}
 	}
-	
+
 	@PostMapping("/changeprofile")
 	public String chageProfile(@RequestParam("user") String userJson) {
 		User user = new Gson().fromJson(userJson, User.class);
-		
+
 		return null;
 	}
-	
+
 	@GetMapping("/deleteBoard/{boardId}")
 	public String deleteBoard(@PathVariable int boardId) {
 		try {
@@ -504,18 +592,18 @@ public class AndroidController {
 			return "fail";
 		}
 	}
-	
+
 	@PostMapping("/completeTrade")
 	public String completeTrade(@RequestParam("boardId") int boardId) {
 		try {
-			
+
 //			Optional<Board> oBoard = bRepo.findById(board.getId());
 //			Board board2 = oBoard.get();
 //			
 //			board2.setBuyer(board.getBuyer());
 //			board2.setState("1");
 //			bRepo.save(board2);
-			
+
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
