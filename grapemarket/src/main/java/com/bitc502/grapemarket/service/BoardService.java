@@ -40,6 +40,8 @@ import com.grum.geocalc.Coordinate;
 import com.grum.geocalc.EarthCalc;
 import com.grum.geocalc.Point;
 
+import io.sentry.Sentry;
+
 @Service
 public class BoardService {
 
@@ -63,9 +65,8 @@ public class BoardService {
 
 	@Autowired
 	private TradeStateService tradeStateServ;
-	
+
 //	private final EntityManagerFactory entityManagerFactory;
-	
 
 	// 글쓰기 페이지
 	public String writeForm(UserPrincipal userPrincipal, Model model) {
@@ -76,7 +77,6 @@ public class BoardService {
 		if (userPrincipal.getUser().getAddressAuth() == 0) {
 			int authNeeded = 1;
 			model.addAttribute("authNeeded", authNeeded);
-
 			return "/user/userProfile";
 		}
 
@@ -114,6 +114,7 @@ public class BoardService {
 			return map;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return null;
 	}
@@ -126,6 +127,7 @@ public class BoardService {
 			return "redirect:/board/page?page=0&category=1&userInput=&range=5";
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return "redirect:/board/detail/" + id;
 	}
@@ -204,6 +206,18 @@ public class BoardService {
 		return boards;
 	}
 
+	public List<Board> getPopularBoard() {
+		List<Board> boards = new ArrayList<Board>();
+		try {
+			boards = bRepo.popularBoard();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Sentry.capture(e);
+		}
+
+		return boards;
+	}
+
 	// 카운트값 받아오기
 	public long getCount(long totalElements) {
 		long count = 0;
@@ -247,7 +261,6 @@ public class BoardService {
 			}
 
 			board.setUser(userPrincipal.getUser());
-
 			bRepo.save(board);
 
 			// 거래 상태 추가
@@ -258,10 +271,10 @@ public class BoardService {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return "redirect:/board/writeForm";
 	}
-
 
 	// 업데이트
 	@Transactional
@@ -273,11 +286,11 @@ public class BoardService {
 
 			Optional<Board> oBoard = bRepo.findById(boardFromController.getId());
 			Board board = oBoard.get();
-			
+
 			board.setTitle(boardFromController.getTitle());
 			board.setContent(boardFromController.getContent());
 			board.setPrice(boardFromController.getPrice());
-			
+
 			List<String> imageFileNames = new ArrayList<String>();
 			int index = 0;
 			for (MultipartFile multipartFile : productImages) {
@@ -316,33 +329,33 @@ public class BoardService {
 
 			bRepo.save(board);
 			Timestamp ts = sqlTimeStamp();
-			updateTime(board.getId(),ts);
-			
+			updateTime(board.getId(), ts);
+
 			// 리스트 완성되면 바꿔야함
 			return "redirect:/board/page?page=0&category=1&userInput=&range=5";
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 		return "redirect:/board/writeForm";
 	}
-	
-    public void updateTime(Integer id, Timestamp ts) {
-        Board board = bRepo.getOne(id);
-        System.out.println("updateTime 접근");
-        
-        
-        System.out.println("---------------------------------------");
-        System.out.println("updateDate1 : " + board.getUpdateDate());
-        board.setUpdateDate(ts);
-        
-        System.out.println("updateDate2 : " + board.getUpdateDate());
-        System.out.println("---------------------------------------");
-    }
-	
+
+	public void updateTime(Integer id, Timestamp ts) {
+		Board board = bRepo.getOne(id);
+		System.out.println("updateTime 접근");
+
+		System.out.println("---------------------------------------");
+		System.out.println("updateDate1 : " + board.getUpdateDate());
+		board.setUpdateDate(ts);
+
+		System.out.println("updateDate2 : " + board.getUpdateDate());
+		System.out.println("---------------------------------------");
+	}
+
 	public Timestamp sqlTimeStamp() {
-		
-		//java.sql.TimeStamp
-		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd hh:mm:ss");
+
+		// java.sql.TimeStamp
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		Calendar cal = Calendar.getInstance();
 		String today = null;
 		today = formatter.format(cal.getTime());
@@ -350,11 +363,9 @@ public class BoardService {
 
 		System.out.println("타임스템프 접근");
 		System.out.println(ts);
-		
+
 		return ts;
 	}
-
-
 
 	// 거리값 계산후 출력될 보드데이터 불러오기
 	public List<Board> getGps(UserPrincipal userPrincipal, List<Board> boardsContent, int range) {

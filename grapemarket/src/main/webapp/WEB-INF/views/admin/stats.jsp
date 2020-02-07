@@ -5,7 +5,7 @@
 <html>
 
 <head>
-<title>Statistics</title>
+<title>Ελ°θ</title>
 <!-- Bootstrap -->
 <link href="/AdminBoot/bootstrap/css/bootstrap.min.css" rel="stylesheet"
 	media="screen">
@@ -195,5 +195,4 @@
 		});
 	</script>
 </body>
-
 </html>

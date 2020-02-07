@@ -5,7 +5,7 @@
 <html>
 
 <head>
-<title>Tables</title>
+<title>신고 상세내용</title>
 <!-- Bootstrap -->
 <link href="/AdminBoot/bootstrap/css/bootstrap.min.css" rel="stylesheet"
 	media="screen">
@@ -67,7 +67,7 @@
 					<div>
 						<p>
 							현재 유저의 권한은 [ <span style="font-style: italic; font-weight: bold;">
-								${reportType.user.role} </span> ] 입니다.
+								${AdminReportDetail.reportType.user.role} </span> ] 입니다.
 						</p>
 						<p>계정을 제재하시겠습니까?</p>
 					</div>
@@ -75,13 +75,22 @@
 			</div>
 			<hr>
 			<div style="width: auto;">
-				<button class="btn btn-warning"
-					onclick="changeRoleToCaution1(${reportType.user.id})">경고1</button>
-				<button class="btn btn-danger"
-					" onclick="changeRoleToCaution2(${reportType.user.id})">경고2</button>
+				<c:if test="${AdminReportDetail.reportType.user.role eq 'USER' }">
+					<button class="btn btn-warning"
+						onclick="changeRoleToCaution1(${AdminReportDetail.reportType.user.id},${AdminReportDetail.report.id })">경고1</button>
+
+				</c:if>
+				<c:if
+					test="${AdminReportDetail.reportType.user.role eq 'USER' or AdminReportDetail.reportType.user.role eq'CAUTION1' }">
+					<button class="btn btn-danger"
+						onclick="changeRoleToCaution2(${AdminReportDetail.reportType.user.id},${AdminReportDetail.report.id })">경고2</button>
+
+				</c:if>
 				<button class="btn btn-inverse"
-					onclick="changeRoleToBan(${reportType.user.id})">정지</button>
-				<button class="btn" style="float: right" onclick="closeModal()">CANCLE</button>
+						onclick="changeRoleToBan(${AdminReportDetail.reportType.user.id},${AdminReportDetail.report.id })">정지</button>
+				<button class="btn btn-inverse"
+						onclick="deleteReport(${AdminReportDetail.reportType.user.id},${AdminReportDetail.report.id })">취소</button>
+				<button class="btn" style="float: right" onclick="closeModal()">X</button>
 			</div>
 		</div>
 	</div>
@@ -108,7 +117,7 @@
 					<!-- block -->
 					<div class="block">
 						<div class="navbar navbar-inner block-header">
-							<div class="muted pull-left">REPORT DETAIL</div>
+							<div class="muted pull-left">신고 상세보기</div>
 						</div>
 						<div class="block-content collapse in">
 							<div class="span12">
@@ -118,38 +127,50 @@
 									style="vertical-align: none;">
 									<thead>
 										<tr>
-											<th class="span3" style="text-align: center; margin: auto;">TITLE</th>
-											<th style="text-align: center; margin: auto;">CONTENT</th>
+											<th class="span3" style="text-align: center; margin: auto;">-</th>
+											<th style="text-align: center; margin: auto;">-</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
-											<th>신고자</th>
-											<td>${report.user.username}</td>
-										</tr>
-										<tr>
-											<th>신고내용</th>
-											<td>${report.content}</td>
+											<th>신고 번호</th>
+											<td>${AdminReportDetail.report.id}</td>
 										</tr>
 										<tr>
 											<th></th>
 											<td></td>
 										</tr>
 										<tr>
-											<th>ID</th>
-											<td>${report.id}</td>
+											<th>신고자 ID</th>
+											<td>${AdminReportDetail.report.user.id}</td>
 										</tr>
-												<tr>
-													<th>유저</th>
-													<td>${reportType.user.username}</td>
-												</tr>
-												<tr>
-													<th>유저권한</th>
-													<td>${reportType.user.role}</td>
-												</tr>
+										<tr>
+											<th>신고자</th>
+											<td>${AdminReportDetail.report.user.username}</td>
+										</tr>
+										<tr>
+											<th>신고내용</th>
+											<td>${AdminReportDetail.report.content}</td>
+										</tr>
+										<tr>
+											<th></th>
+											<td></td>
+										</tr>
+										<tr>
+											<th>피신고자 ID</th>
+											<td>${AdminReportDetail.reportType.user.id}</td>
+										</tr>
+										<tr>
+											<th>피신고자</th>
+											<td>${AdminReportDetail.reportType.user.username}</td>
+										</tr>
+										<tr>
+											<th>피신고자 등급</th>
+											<td>${AdminReportDetail.reportType.user.role}</td>
+										</tr>
 										<tr>
 											<th>게시글 유형</th>
-											<td>${report.reportType}</td>
+											<td>${AdminReportDetail.report.reportType}</td>
 										</tr>
 										<tr>
 											<th></th>
@@ -157,50 +178,50 @@
 										</tr>
 										<!-- 보드의 경우 -->
 										<c:choose>
-											<c:when test="${report.reportType eq 'board'}">
+											<c:when test="${AdminReportDetail.report.reportType eq 'board'}">
 												<tr>
 													<th>제목</th>
-													<td>${reportType.title}<a
-														href="/board/detail/${reportType.id}">[해당 게시글로 이동하기]</a></td>
+													<td>${AdminReportDetail.reportType.title}<a
+														href="/board/detail/${AdminReportDetail.reportType.id}"> [해당 게시글로 이동하기]</a></td>
 												</tr>
 												<tr>
 													<th>내용</th>
-													<td>${reportType.content}</td>
+													<td>${AdminReportDetail.reportType.content}</td>
 												</tr>
 												<tr>
 													<th>사진</th>
 													<td><img style="width: 50px; height: 50px;"
-														src="/upload/${reportType.image1}" alt=" No Image" />
-														</li> <c:if test="${!empty reportType.image2}">
+														src="/upload/${AdminReportDetail.reportType.image1}" alt=" No Image" />
+														</li> <c:if test="${!empty AdminReportDetail.reportType.image2}">
 															<li><img style="width: 50px; height: 50px;"
-																src="/upload/${reportType.image2}" alt=" No Image" /></li>
-														</c:if> <c:if test="${!empty reportType.image3}">
+																src="/upload/${AdminReportDetail.reportType.image2}" alt=" No Image" /></li>
+														</c:if> <c:if test="${!empty AdminReportDetail.reportType.image3}">
 															<li><img style="width: 50px; height: 50px;"
-																src="/upload/${reportType.image3}" alt=" No Image" /></li>
-														</c:if> <c:if test="${!empty reportType.image4}">
+																src="/upload/${AdminReportDetail.reportType.image3}" alt=" No Image" /></li>
+														</c:if> <c:if test="${!empty AdminReportDetail.reportType.image4}">
 															<li><img style="width: 50px; height: 50px;"
-																src="/upload/${reportType.image4}" alt=" No Image" /></li>
-														</c:if> <c:if test="${!empty reportType.image5}">
+																src="/upload/${AdminReportDetail.reportType.image4}" alt=" No Image" /></li>
+														</c:if> <c:if test="${!empty AdminReportDetail.reportType.image5}">
 															<li><img style="width: 50px; height: 50px;"
-																src="/upload/${reportType.image5}" alt=" No Image" /></li>
+																src="/upload/${AdminReportDetail.reportType.image5}" alt=" No Image" /></li>
 														</c:if></td>
 												</tr>
 											</c:when>
-											<c:when test="${report.reportType eq 'comment'}">
+											<c:when test="${AdminReportDetail.report.reportType eq 'comment'}">
 												<tr>
 													<th>내용</th>
-													<td>${reportType.content}<a
-														href="/board/detail/${reportType.board.id}">[해당 게시글로
+													<td>${AdminReportDetail.reportType.content}<a
+														href="/board/detail/${AdminReportDetail.reportType.board.id}"> [해당 게시글로
 															이동하기]</a></td>
 												</tr>
 											</c:when>
 
-											<c:when test="${report.reportType eq 'message'}">
+											<c:when test="${AdminReportDetail.report.reportType eq 'message'}">
 												<tr>
 													<th>내용</th>
-													<td>${reportType.message}<a
-														href="/chat/chatLog/${reportType.chat.id}">[해당 게시글로
-															이동하기]</a></td>
+													<td>${AdminReportDetail.reportType.message}<a
+														href="/admin/chatLog?id=${AdminReportDetail.reportType.chat.id}&reportId=${AdminReportDetail.report.id}">
+															[해당 게시글로 이동하기]</a></td>
 												</tr>
 											</c:when>
 
@@ -253,30 +274,40 @@
             }
         }
 
-        function changeRoleToCaution1(id) {
+        function changeRoleToCaution1(id, reportId) {
             if (confirm("해당 계정을 '경고 1' 조치하시겠습니까? ") == true) { //확인
-                location.href = '/admin/restriction?id=' + id + '&sort=caution1';
+                location.href = '/admin/restriction?id=' + id + '&sort=caution1&reportId='+reportId;
             } else { //취소
                 alert("취소하였습니다.");
             }
         }
 
-        function changeRoleToCaution2(id) {
+        function changeRoleToCaution2(id, reportId) {
             if (confirm("해당 계정을 '경고 2' 조치하시겠습니까? ") == true) { //확인
-                location.href = '/admin/restriction?id=' + id + '&sort=caution2';
+                location.href = '/admin/restriction?id=' + id + '&sort=caution2&reportId='+reportId;
             } else { //취소
                 alert("취소하였습니다.");
             }
         }
 
-        function changeRoleToBan(id) {
+        function changeRoleToBan(id, reportId) {
             if (confirm("해당 계정을 '정지' 조치하시겠습니까? ") == true) { //확인
-                location.href = '/admin/restriction?id=' + id + '&sort=ban';
+                location.href = '/admin/restriction?id=' + id + '&sort=ban&reportId='+reportId;
             } else { //취소
                 alert("취소하였습니다.");
             }
 
         }
+        function deleteReport(id, reportId) {
+            if (confirm("해당 신고를 취소하시겠습니까? ") == true) { //확인
+                location.href = '/admin/restriction?id=' + id + '&sort=deleteReport&reportId='+reportId;
+            } else { //취소
+                alert("취소하였습니다.");
+            }
+
+        }
+
+        
     </script>
 
 	<script src="/AdminBoot/vendors/jquery-1.9.1.js"></script>

@@ -227,8 +227,8 @@ public class TestController {
 		Coordinate lng = Coordinate.fromDegrees(userPrincipal.getUser().getAddressY());
 		Point Mine = Point.at(lat, lng);
 
-		Optional<User> oUser = uRepo.findById(id);
-		User user = oUser.get();
+//		Optional<User> oUser = uRepo.findById(id);
+//		User user = oUser.get();
 
 //		lat = Coordinate.fromDegrees(user.getAddressX());
 //		lng = Coordinate.fromDegrees(user.getAddressY());

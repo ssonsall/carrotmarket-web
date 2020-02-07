@@ -1,17 +1,9 @@
 package com.bitc502.grapemarket.controller;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Optional;
-import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.bitc502.grapemarket.common.AuthProvider;
-import com.bitc502.grapemarket.common.Role;
 import com.bitc502.grapemarket.model.User;
-import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
+import com.bitc502.grapemarket.service.UserService;
 import com.bitc502.grapemarket.util.Script;
 import com.bitc502.grapemarket.util.VisitorCounter;
 
@@ -35,14 +25,8 @@ import com.bitc502.grapemarket.util.VisitorCounter;
 @RequestMapping("/user")
 public class UserController {
 
-	@Value("${file.path}")
-	private String fileRealPath;
-
 	@Autowired
-	private UserRepository uRepo;
-
-	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+	private UserService userServ;
 
 	@GetMapping("/login")
 	public String loginForm(HttpServletRequest request) {
@@ -51,7 +35,6 @@ public class UserController {
 			VisitorCounter.currentVisitorCount--;
 			return "redirect:/android/loginFailure";
 		} else {
-			System.out.println("Web 접속");
 			return "/user/login";
 		}
 
@@ -59,122 +42,78 @@ public class UserController {
 
 	@GetMapping("/join")
 	public String joinForm() {
-
 		return "/user/join";
 	}
 
 	@PostMapping("/usernameCheck")
 	public @ResponseBody String usernameCheck(@RequestBody String username) {
-		if (uRepo.existsByUsername(username)) {
-			return "no";
-		} else {
+		if (userServ.usernameCheck(username) == -1) {
 			return "ok";
 		}
+		return "no";
 	}
 
 	@PostMapping("/joinProc")
-	public String join(@RequestParam("username") String username, @RequestParam("name") String name,
-			@RequestParam("password") String password, @RequestParam("email") String email,
-			@RequestParam("phone") String phone, @RequestParam("userProfile") MultipartFile userProfile) {
-
-		try {
-			String rawPassword = password;
-			String encPassword = passwordEncoder.encode(rawPassword);
-			User user = new User();
-			user.setUsername(username);
-			user.setName(name);
-			user.setPassword(encPassword);
-			user.setEmail(email);
-			user.setPhone(phone);
-			user.setProvider(AuthProvider.local);
-			user.setRole(Role.valueOf("USER"));
-
-			if (userProfile.getSize() != 0) {
-				String UUIDFileName = UUID.randomUUID() + "_" + userProfile.getOriginalFilename();
-				user.setUserProfile(UUIDFileName);
-				Path filePath = Paths.get(fileRealPath + UUIDFileName);
-				Files.write(filePath, userProfile.getBytes());
-			}
-			uRepo.save(user);
-			return "/user/login";
-		} catch (Exception e) {
-			e.printStackTrace();
+	public String join(User user, @RequestParam("profile") MultipartFile userProfile) {
+		int result = userServ.join(user, userProfile);
+		if (result == -1) {
 			return "/user/join";
 		}
+		return "/user/login";
 	}
 
 	@GetMapping("/userProfile")
 	public String userProfile(@AuthenticationPrincipal UserPrincipal userPrincipal, Model model) {
-		Optional<User> oUser = uRepo.findById(userPrincipal.getUser().getId());
-		User user = oUser.get();
+		User user = userServ.getUserById(userPrincipal.getUser().getId());
 		model.addAttribute("user", user);
 		return "/user/userProfile";
 	}
 
 	@PostMapping("/update")
-	public String update(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("id") int id,
-			@RequestParam("password") String password, @RequestParam("email") String email,
-			@RequestParam("phone") String phone, @RequestParam("currentUserProfile") String currentUserProfile,
-			@RequestParam("userProfile") MultipartFile userProfile) {
-		try {
-			String rawPassword = password;
-			String encPassword = passwordEncoder.encode(rawPassword);
-			User user = new User();
-			user.setId(id);
-			user.setPassword(encPassword);
-			user.setEmail(email);
-			user.setPhone(phone);
-
-			if (userProfile.getSize() != 0) {
-				String UUIDFileName = UUID.randomUUID() + "_" + userProfile.getOriginalFilename();
-				user.setUserProfile(UUIDFileName);
-				Path filePath = Paths.get(fileRealPath + UUIDFileName);
-				Files.write(filePath, userProfile.getBytes());
-			} else {
-				user.setUserProfile(currentUserProfile);
-			}
-
-			uRepo.update(user.getPassword(), user.getEmail(), user.getPhone(), user.getUserProfile(), user.getId());
-			userPrincipal.getUser().setUserProfile(user.getUserProfile());
-			return "redirect:/user/userProfile";
-		} catch (Exception e) {
-			e.printStackTrace();
-			return "redirect:/user/userProfile";
+	public @ResponseBody String update(@AuthenticationPrincipal UserPrincipal userPrincipal, User user,
+			@RequestParam("currentUserProfile") String currentUserProfile,
+			@RequestParam("profile") MultipartFile userProfile) {
+		int result = userServ.update(user, currentUserProfile, userProfile);
+		if (result == -1) {
+			return Script.hrefAndAlert("/user/userProfile", "오류 발생");
 		}
+		user = userServ.getUserById(user.getId());
+		userPrincipal.setUser(user);
+		return Script.href("/user/userProfile");
+
 	}
 
 	@PostMapping("/addupdate")
-	public User addUpdate(User user, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-		try {
-			uRepo.addUpdate(user.getAddress(), user.getAddressX(), user.getAddressY(), user.getId());
-			userPrincipal.getUser().setAddressAuth(0);
-			return user;
-		} catch (Exception e) {
+	public @ResponseBody String addUpdate(User user, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+
+		int result = userServ.addUpdate(user);
+		if (result == -1) {
+			return Script.hrefAndAlert("/user/userProfile", "오류 발생");
 		}
-		return null;
+		userPrincipal.getUser().setAddressAuth(0);
+		return Script.href("/user/userProfile");
 	}
 
 	@PostMapping("/authupdate")
-	public String authUpdate(User user, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-		try {
-			uRepo.authUpdate(user.getId());
-			userPrincipal.getUser().setAddressAuth(1);
-			return "redirect:/user/userProfile";
-		} catch (Exception e) {
-			e.printStackTrace();
+	public @ResponseBody String authUpdate(User user, @AuthenticationPrincipal UserPrincipal userPrincipal) {
+
+		int result = userServ.addUpdate(user);
+		if (result == -1) {
+			return Script.hrefAndAlert("/user/userProfile", "오류 발생");
 		}
-		return "redirect:/user/userProfile";
+		userPrincipal.getUser().setAddressAuth(1);
+		return Script.href("/user/userProfile");
+		
+		
 	}
 
 	@GetMapping("/delete/{id}")
 	public @ResponseBody String delete(@PathVariable int id) {
-		try {
-			uRepo.deleteById(id);
-			return Script.href("/test/userAll");
-		} catch (Exception e) {
-			e.printStackTrace();
+		int result = userServ.delete(id);
+		if (result == -1) {
+			return Script.back("Fail Delete");
 		}
-		return Script.back("Fail Delete");
+		return Script.href("/test/userAll");
 	}
 
 }

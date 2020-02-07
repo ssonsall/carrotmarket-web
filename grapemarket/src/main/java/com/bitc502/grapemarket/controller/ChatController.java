@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bitc502.grapemarket.model.Chat;
 import com.bitc502.grapemarket.model.Message;
 import com.bitc502.grapemarket.model.User;
+
 import com.bitc502.grapemarket.repository.MessageRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 import com.bitc502.grapemarket.service.ChatService;
@@ -63,8 +64,20 @@ public class ChatController {
 
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("messages", messages);
-
+		
 		return "chat/roomdetail";
+	}
+	
+	@GetMapping("/android/room/enter/{roomId}")
+	public String roomDetailAndroid(Model model, @PathVariable int roomId) {
+
+		// 채팅방 지난 대화내역 가져오기
+		List<Message> messages = chatServ.roomDetail(model, roomId);
+
+		model.addAttribute("roomId", roomId);
+		model.addAttribute("messages", messages);
+
+		return "chat/androidRoomDetail";
 	}
 
 	// 채팅방 찾기

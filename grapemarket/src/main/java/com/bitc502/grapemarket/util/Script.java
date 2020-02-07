@@ -34,5 +34,13 @@ public class Script {
 		sb.append("</script>");
 		return sb.toString();
 	}
+	
+	public static String AndroidClosePopup() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<script>");
+		sb.append("window.close();");
+		sb.append("</script>");
+		return sb.toString();
+	}
 
 }

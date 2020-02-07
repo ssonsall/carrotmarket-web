@@ -44,14 +44,18 @@
 						<div class="col-sm-4 col-md-3 sidebar">
 							<div class="widget">
 								<div class="col-sm-12 col-md-9" style="margin-bottom: 10%;">
-									<img src="assets/images/market/default.jpg" alt="">
+									<span style="position: absolute;"> <c:choose>
+												<c:when test="${user.provider eq 'local'}">
+													<img src="/upload/${user.userProfile}"
+														style="width: 150px; height: 150px;">
+												</c:when>
+												<c:otherwise>
+													<img src="${user.userProfile}"
+														style="width: 150px; height: 150px;">
+												</c:otherwise>
+											</c:choose> <h1>${user.name}</h1>
+									</span>
 								</div>
-							</div>
-							<div class="widget">
-								<h1>${user.username}</h1>
-							</div>
-							<div class="widget">
-								<h1>유저 address</h1>
 							</div>
 						</div>
 						<!-- 프로필 끝 -->
@@ -87,6 +91,9 @@
 												<input type="hidden" name="id" value="${user.id}"> <input
 													type="hidden" name="currentUserProfile"
 													value="${user.userProfile}">
+													<input
+													type="hidden" name="userProfile"
+													value="">
 												<div class="form-group">
 													<label class="sr-only" for="name">username</label> <input
 														class="form-control" type="text" id="username"
@@ -140,7 +147,7 @@
 												<div class="form-group">
 													<label class="sr-only" for="userProfile">photo</label> <input
 														class="form-control" type="file" id="userProfile"
-														name="userProfile" placeholder="photo*" accept="image/*"
+														name="profile" placeholder="photo*" accept="image/*"
 														data-validation-required-message="Please enter your email address." />
 													<p class="help-block text-danger"></p>
 												</div>

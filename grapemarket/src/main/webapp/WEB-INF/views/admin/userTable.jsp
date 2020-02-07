@@ -5,7 +5,7 @@
 <html>
 
 <head>
-<title>Tables</title>
+<title>유저 목록</title>
 <!-- Bootstrap -->
 <link href="/AdminBoot/bootstrap/css/bootstrap.min.css" rel="stylesheet"
 	media="screen">

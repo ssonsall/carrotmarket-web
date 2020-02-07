@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @SpringBootApplication
 public class GrapemarketApplication {
@@ -37,6 +37,10 @@ public class GrapemarketApplication {
 		tomcat.addAdditionalTomcatConnectors(httpToHttpsRedirectConnector());
 
 		return tomcat;
+	}
+	@Bean
+	public HandlerExceptionResolver sentryExceptionResolver() {
+	    return new io.sentry.spring.SentryExceptionResolver();
 	}
 
 	private Connector httpToHttpsRedirectConnector() {

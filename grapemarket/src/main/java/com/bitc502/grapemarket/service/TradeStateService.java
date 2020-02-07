@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.TradeState;
@@ -14,6 +12,8 @@ import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.repository.TradeStateRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.sentry.Sentry;
 
 @Service
 public class TradeStateService {
@@ -40,9 +40,9 @@ public class TradeStateService {
 			return ts.getState();
 
 		} catch (IOException e) {
-			//e.printStackTrace();
-			System.out.println("ERROR : TradeStateRepository/checkState");
-
+			// e.printStackTrace();
+			e.printStackTrace();
+			Sentry.capture(e);
 			return null;
 		}
 
@@ -58,8 +58,6 @@ public class TradeStateService {
 
 		tradeStateRepo.save(tradeState);
 	}
-
-	
 
 	// 구매,판매 완료 처리
 	public void setStateComplete(String json) {
@@ -78,12 +76,13 @@ public class TradeStateService {
 
 			if (ts.getState().equals("구매중")) {
 				ts.setState("구매완료");
-			} 
+			}
 
 			tradeStateRepo.save(ts);
 
 		} catch (IOException e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 		}
 
 	}

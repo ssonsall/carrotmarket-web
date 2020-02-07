@@ -18,7 +18,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.LastModifiedDate;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
@@ -43,7 +42,7 @@ public class Board {
 	private List<Comment> comment;
 
 	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-	@JsonIgnoreProperties({ "user", "board" })
+	@JsonIgnoreProperties({ "board" })
 	private List<Likes> like; // 좋아요
 
 	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
