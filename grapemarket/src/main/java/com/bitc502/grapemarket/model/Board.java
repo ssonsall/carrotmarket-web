@@ -43,6 +43,7 @@ public class Board {
 
 	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties({ "board" })
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Likes> like; // 좋아요
 
 	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)

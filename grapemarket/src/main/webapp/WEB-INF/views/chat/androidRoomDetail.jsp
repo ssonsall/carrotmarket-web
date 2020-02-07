@@ -41,7 +41,7 @@ div.container2 {
 	overflow-y: scroll;
 	display: inline-block;
 	border: solid 1px rgba(0, 0, 0, .125);
-	height: 561px;
+	height: 600px;
 	width: 380px;
 }
 
