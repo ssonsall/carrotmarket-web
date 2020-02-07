@@ -32,7 +32,6 @@ public class Board {
 	private String title; // 제목
 	private String content; // 내용
 	private String price; // 가격
-	private String addressRange; // 범위
 	private String state; // 상품 상태 (판매중, 판매완료)
 	private String category; // 상품 카테고리
 

@@ -184,6 +184,8 @@ public class BoardService {
 		BoundingArea area = EarthCalc.around(Mine, range * 1000);
 		Point nw = area.northWest;
 		Point se = area.southEast;
+		
+		
 		Page<Board> boards;
 		if (userInput.equals("")) {
 			if (category.equals("1")) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
@@ -200,7 +202,13 @@ public class BoardService {
 			userInput = "(?=.*" + userInput + ")";
 			if (category.equals("1")) // 입력값 + 카테고리 전체 (입력값만 걸고 카테고리 조건 무시)
 				category = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
-			boards = bRepo.searchAndGps(nw.latitude, se.latitude, nw.longitude, se.longitude, category, userInput,
+			System.out.println(category);
+			System.out.println(nw.latitude);
+			System.out.println(se.latitude);
+			System.out.println(nw.longitude);
+			System.out.println(se.longitude);
+			System.out.println(userInput);
+			boards = bRepo.searchAndGps(se.latitude, nw.latitude, nw.longitude, se.longitude, category, userInput,
 					pageable);
 		}
 		return boards;

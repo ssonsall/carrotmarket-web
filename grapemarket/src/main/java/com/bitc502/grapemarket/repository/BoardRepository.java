@@ -61,7 +61,7 @@ public interface BoardRepository extends JpaRepository<Board, Integer>, JpaSpeci
 			String category, Pageable pageable);
 
 
-	@Query(value = "select * from (SELECT b.id as id,b.addressRange,b.category,b.content,b.createDate,b.image1,b.image2,b.image3,b.image4,b.image5,b.price,b.state,b.title,b.updateDate,b.buyerId,b.userId,u.addressX,u.addressY FROM board b Join user u on b.userid = u.id WHERE category regexp ?5 AND concat(b.title, b.content, u.address) regexp ?6) sub where (addressX < ?1 and addressX > ?2 and addressY > ?3 and addressY < ?4)", nativeQuery = true)
+	@Query(value = "SELECT * FROM board b Join user u on b.userId = u.id  WHERE category regexp ?5  AND concat(title, content, address) regexp ?6 AND addressX between ?1 and ?2 AND addressY between ?3 and ?4", nativeQuery = true)
 	Page<Board> searchAndGps(double latitude, double latitude2, double longitude, double longitude2, String cate,
 			@Param("search") String search, Pageable pageable);
 

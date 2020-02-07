@@ -478,8 +478,7 @@ public class AndroidController {
 			boardServ.saveKeyword(userInput);
 
 			// 검색어 있는지 확인하고 board 데이터 불러오기
-			Page<Board> boards = boardServ.getBoard(userInput, category, nw.latitude, se.latitude, nw.longitude,
-					se.longitude, pageable);
+			Page<Board> boards = boardServ.getList(userInput, category, userPrincipal, rangeInt, pageable);
 			return boards.getContent();
 		} catch (Exception e) {
 			e.printStackTrace();
