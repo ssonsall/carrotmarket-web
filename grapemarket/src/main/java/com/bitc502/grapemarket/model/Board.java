@@ -41,7 +41,7 @@ public class Board {
 	private List<Comment> comment;
 
 	@OneToMany(mappedBy = "board")
-	@JsonIgnoreProperties({ "user","board" })
+	@JsonIgnoreProperties({ "board" })
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Likes> like; // 좋아요
 	
