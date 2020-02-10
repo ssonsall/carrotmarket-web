@@ -65,5 +65,5 @@ spring:
       
 #파일 저장할 경로(각자 파일 경로로)
 file:
-  path: C:/dev/STS4/workspace/grapemarket-web/grapemarket/target/classes/static/upload/
+  path: /home/ubuntu/grapemarket-web/grapemarket/target/classes/static/upload/
 
