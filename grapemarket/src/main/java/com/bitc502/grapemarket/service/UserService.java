@@ -117,6 +117,7 @@ public class UserService {
 
 	public int authUpdate(User user) {
 		try {
+			System.out.println("인증 업데이트");
 			uRepo.authUpdate(user.getId());
 			return 1;
 		} catch (Exception e) {

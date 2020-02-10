@@ -139,6 +139,8 @@ public class BoardService {
 		return board;
 	}
 
+	
+	@Transactional
 	public void setBuyerId(User user, Board board) {
 
 		Optional<Board> oBoard = bRepo.findById(board.getId());
@@ -149,7 +151,6 @@ public class BoardService {
 			board2.setBuyer(board.getBuyer());
 			if (state.getState().equals("판매중")) {
 				state.setState("판매완료");
-
 			}
 
 		} else {
@@ -158,9 +159,23 @@ public class BoardService {
 				state.setState("판매취소");
 			}
 		}
+		
 
 		tradeStateRepo.save(state);
 		bRepo.save(board2);
+		
+		List<TradeState> tradeStates = tradeStateRepo.findByBoardIdAndState(board.getId());
+		
+		for (TradeState tradeState : tradeStates) {
+			if(tradeState.getUser().getId() != board.getBuyer().getId()) {
+				tradeState.setState("구매취소");
+			}else {
+				if(tradeState.getState().equals("구매중")) {
+					tradeState.setState("구매완료");
+				}
+			}
+			
+		}
 
 	}
 
