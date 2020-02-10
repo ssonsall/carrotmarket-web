@@ -45,15 +45,16 @@
 							<div class="widget">
 								<div class="col-sm-12 col-md-9" style="margin-bottom: 10%;">
 									<span style="position: absolute;"> <c:choose>
-												<c:when test="${user.provider eq 'local'}">
-													<img src="/upload/${user.userProfile}"
-														style="width: 150px; height: 150px;">
-												</c:when>
-												<c:otherwise>
-													<img src="${user.userProfile}"
-														style="width: 150px; height: 150px;">
-												</c:otherwise>
-											</c:choose> <h1>${user.name}</h1>
+											<c:when test="${user.provider eq 'local'}">
+												<img src="/upload/${user.userProfile}"
+													style="width: 150px; height: 150px;">
+											</c:when>
+											<c:otherwise>
+												<img src="${user.userProfile}"
+													style="width: 150px; height: 150px;">
+											</c:otherwise>
+										</c:choose>
+										<h1>${user.name}</h1>
 									</span>
 								</div>
 							</div>
@@ -70,7 +71,7 @@
 										data-toggle="tab"><span class="icon-globe"></span>동네설정</a></li>
 									<li id="tablist-townAuth"><a href="#townAuth"
 										data-toggle="tab"><span class="icon-compass"></span>동네인증</a></li>
-									<li id="tablist-sales" onactivate="getState()"><a
+									<li id="tablist-sales" onclick="getState()"><a
 										href="#sales" data-toggle="tab"><span class="icon-browser"></span>거래내역</a></li>
 									<li id="tablist-serviceCenter"><a href="#serviceCenter"
 										data-toggle="tab"><span class="icon-tools-2"></span>고객센터</a></li>
@@ -90,10 +91,8 @@
 												enctype="multipart/form-data">
 												<input type="hidden" name="id" value="${user.id}"> <input
 													type="hidden" name="currentUserProfile"
-													value="${user.userProfile}">
-													<input
-													type="hidden" name="userProfile"
-													value="">
+													value="${user.userProfile}"> <input type="hidden"
+													name="userProfile" value="">
 												<div class="form-group">
 													<label class="sr-only" for="name">username</label> <input
 														class="form-control" type="text" id="username"
