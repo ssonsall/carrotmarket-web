@@ -143,17 +143,24 @@ public class BoardService {
 
 		Optional<Board> oBoard = bRepo.findById(board.getId());
 		Board board2 = oBoard.get();
-
-		board2.setBuyer(board.getBuyer());
-		board2.setState("1");
-		bRepo.save(board2);
-
 		TradeState state = tradeStateRepo.findByUserIdAndBoardId(user.getId(), board.getId());
-		if (state.getState().equals("판매중")) {
-			state.setState("판매완료");
+		if (board.getBuyer() != null) {
+			board2.setState("1");
+			board2.setBuyer(board.getBuyer());
+			if (state.getState().equals("판매중")) {
+				state.setState("판매완료");
+
+			}
+
+		} else {
+			board2.setState("-1");
+			if (state.getState().equals("판매중")) {
+				state.setState("판매취소");
+			}
 		}
 
 		tradeStateRepo.save(state);
+		bRepo.save(board2);
 
 	}
 
@@ -184,8 +191,7 @@ public class BoardService {
 		BoundingArea area = EarthCalc.around(Mine, range * 1000);
 		Point nw = area.northWest;
 		Point se = area.southEast;
-		
-		
+
 		Page<Board> boards;
 		if (userInput.equals("")) {
 			if (category.equals("1")) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
