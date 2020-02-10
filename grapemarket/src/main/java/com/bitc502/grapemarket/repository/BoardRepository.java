@@ -66,4 +66,9 @@ public interface BoardRepository extends JpaRepository<Board, Integer>, JpaSpeci
 			@Param("search") String search, Pageable pageable);
 
 	List<Board> findTop3ByOrderByIdDesc();
+	
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE Board b set b.state = ?1, b.buyerId = ?2 WHERE b.id = ?3", nativeQuery = true)
+	void updateState(String state, int buyerId, int id);
 }
