@@ -118,12 +118,52 @@ public class AndroidController {
 		}
 	}
 
+	@PostMapping("/tradeComplete")
+	public String updateTradeComplete(@AuthenticationPrincipal UserPrincipal userPrincipal,@RequestParam("boardId") String boardId,
+			@RequestParam("buyerId") String buyerId) {
+		try {
+			bRepo.updateState("1", Integer.parseInt(buyerId) ,Integer.parseInt(boardId));
+			tradeStateRepo.updateTradeState("판매완료", Integer.parseInt(boardId), userPrincipal.getUser().getId());
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "fail";
+		}
+	}
+	
+	@GetMapping("/tradeList")
+	public List<TradeState> getTradeList(@AuthenticationPrincipal UserPrincipal userPrincipal){
+		try {
+			List<TradeState> tradeStates = tradeStateRepo.findByUserId(userPrincipal.getUser().getId());
+			return tradeStates;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@PostMapping("/getBuyerList")
+	public List<TradeState> getBuyerList(@RequestParam("boardId") String boardId) {
+		try {
+			// 구매중, 구매완료 가져옴
+			List<TradeState> tradeStateList = new ArrayList<>();
+			tradeStateList = tradeStateRepo.findByBoardIdAndState(Integer.parseInt(boardId));
+			System.out.println("State >> " + tradeStateList.get(0).getState());
+			return tradeStateList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	// 안씀
 	@GetMapping("/allList")
 	public List<Board> allList() {
 		System.out.println("올보드리스트");
 		return bRepo.findAll();
 	}
 
+	// 주소 설정 안된 놈 접속하면 이 컨트롤러
 	@GetMapping("/allListPageable")
 	public List<Board> allListPageable(
 			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable) {

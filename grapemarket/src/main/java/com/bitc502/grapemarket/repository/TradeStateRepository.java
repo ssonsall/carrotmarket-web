@@ -2,7 +2,10 @@ package com.bitc502.grapemarket.repository;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import com.bitc502.grapemarket.model.Board;
@@ -19,6 +22,11 @@ public interface TradeStateRepository extends JpaRepository<TradeState, Integer>
 	List<TradeState> findByBoardIdAndState(int id);
 	
 	List<TradeState> findByUserId(int id);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE TradeState ts set ts.State = ?1 WHERE ts.boardId = ?2 AND ts.userId = ?3", nativeQuery = true)
+	void updateTradeState(String state, int boardId, int userId);
 
 
 }
