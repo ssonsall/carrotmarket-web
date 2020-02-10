@@ -41,9 +41,9 @@
 											<form id="search" role="form" method="get" action="/board/page?page=0">
 												<div class="input-group col-sm-12 col-md-8 col-lg-10" style="float: none; margin: 0 auto">
 													<input class="form-control" type="text" id="userInput" name="userInput" placeholder="검색어를 입력하세요"
-														data-validation-required-message="Please enter your email address." required="required" /> <input type="hidden" name="category"
-														value="1"> <span class="input-group-btn"> <input type="hidden" value="5" id="myRange"
-														style="position: relative; left: 20px;" name="range">
+														data-validation-required-message="Please enter your email address." required="required" /> 
+														<input type="hidden" name="category" value="1"> <span class="input-group-btn"> 
+														<input type="hidden" value="5" id="myRange"	style="position: relative; left: 20px;" name="range">
 														<button class="btn btn-block btn-round btn-g" type="submit">검색</button>
 													</span>
 												</div>

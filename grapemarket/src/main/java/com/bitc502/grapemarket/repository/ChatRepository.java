@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Chat;
 import com.bitc502.grapemarket.model.User;
 

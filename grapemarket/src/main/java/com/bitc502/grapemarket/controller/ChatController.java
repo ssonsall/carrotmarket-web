@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bitc502.grapemarket.model.Chat;
 import com.bitc502.grapemarket.model.Message;
 import com.bitc502.grapemarket.model.User;
-
-import com.bitc502.grapemarket.repository.MessageRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 import com.bitc502.grapemarket.service.ChatService;
 

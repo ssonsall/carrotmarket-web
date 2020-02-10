@@ -27,7 +27,6 @@ public class TradeStateController {
 	@PostMapping("/checkState")
 	public @ResponseBody String checkState(@RequestBody String json) {
 		String state = tradeStateServ.checkState(json);
-		System.out.println("state : "+state);
 		return state;
 	}
 	
@@ -35,20 +34,15 @@ public class TradeStateController {
 	//구매완료버튼 입력
 	@PostMapping("/setStateComplete")
 	public @ResponseBody String setTradeStateComplete(@RequestBody String json) {
-
 		tradeStateServ.setStateComplete(json);
-
 		return "ok";
 	}
 
 	//trade리스트 가져오기
 	@GetMapping("/tradeList")
 	public @ResponseBody List<TradeState> getState(@AuthenticationPrincipal UserPrincipal userPrincipal){
-		
 		int userId = userPrincipal.getUser().getId();
-		
 		List<TradeState> tradeStates = tradeStateServ.getListByUserId(userId);
-		
 		return tradeStates;
 	}
 	

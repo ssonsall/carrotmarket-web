@@ -6,22 +6,16 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.bitc502.grapemarket.common.AuthProvider;
-import com.bitc502.grapemarket.common.Role;
-import com.bitc502.grapemarket.exception.BadRequestException;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.payload.ApiResponse;
 import com.bitc502.grapemarket.payload.SignUpRequest;
-import com.bitc502.grapemarket.repository.UserRepository;
 import com.bitc502.grapemarket.service.OAuthService;
 
 @Controller

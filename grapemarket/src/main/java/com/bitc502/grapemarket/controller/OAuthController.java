@@ -50,11 +50,8 @@ public class OAuthController {
 				url = new URL("https://nid.naver.com/oauth2.0/token?client_id=" + clientId + "&client_secret="
 						+ clientSecret + "&grant_type=authorization_code&state=" + state + "&code=" + code);
 				HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-				
 				conn.setRequestMethod("POST");
-				
 				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-				
 				StringBuilder sb = new StringBuilder();
 				String line;
 				

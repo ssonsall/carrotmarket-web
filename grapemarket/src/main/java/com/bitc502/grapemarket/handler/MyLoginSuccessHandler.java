@@ -17,7 +17,6 @@ public class MyLoginSuccessHandler implements AuthenticationSuccessHandler{
 			Authentication authentication) throws IOException, ServletException {
 			if(request.getHeader("DeviceType") != null && request.getHeader("DeviceType").equals("android")) {
 				System.out.println("안드로이드 접속_myhandler");
-				System.out.println("session >> " + request.getSession().getId());
 				request.setAttribute("testSession", request.getSession().getId());
 				RequestDispatcher dis = request.getRequestDispatcher("/android/loginSuccess");
 				dis.forward(request, response);

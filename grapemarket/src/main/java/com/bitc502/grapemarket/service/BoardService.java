@@ -163,7 +163,6 @@ public class BoardService {
 			String[] searchContent = userInput.split(" ");
 			for (String entity : searchContent) {
 				Search search = new Search();
-				System.out.println("저장중");
 				entity.trim();
 				if (!entity.equals("")) {
 					search.setContent(entity);
@@ -202,12 +201,6 @@ public class BoardService {
 			userInput = "(?=.*" + userInput + ")";
 			if (category.equals("1")) // 입력값 + 카테고리 전체 (입력값만 걸고 카테고리 조건 무시)
 				category = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
-			System.out.println(category);
-			System.out.println(nw.latitude);
-			System.out.println(se.latitude);
-			System.out.println(nw.longitude);
-			System.out.println(se.longitude);
-			System.out.println(userInput);
 			boards = bRepo.searchAndGps(se.latitude, nw.latitude, nw.longitude, se.longitude, category, userInput,
 					pageable);
 		}
@@ -222,7 +215,6 @@ public class BoardService {
 			e.printStackTrace();
 			Sentry.capture(e);
 		}
-
 		return boards;
 	}
 
@@ -350,14 +342,7 @@ public class BoardService {
 
 	public void updateTime(Integer id, Timestamp ts) {
 		Board board = bRepo.getOne(id);
-		System.out.println("updateTime 접근");
-
-		System.out.println("---------------------------------------");
-		System.out.println("updateDate1 : " + board.getUpdateDate());
 		board.setUpdateDate(ts);
-
-		System.out.println("updateDate2 : " + board.getUpdateDate());
-		System.out.println("---------------------------------------");
 	}
 
 	public Timestamp sqlTimeStamp() {
@@ -368,9 +353,6 @@ public class BoardService {
 		String today = null;
 		today = formatter.format(cal.getTime());
 		Timestamp ts = Timestamp.valueOf(today);
-
-		System.out.println("타임스템프 접근");
-		System.out.println(ts);
 
 		return ts;
 	}
@@ -388,14 +370,11 @@ public class BoardService {
 
 		List<Board> board2 = new ArrayList<Board>();
 		for (int i = 0; i < boardsContent.size(); i++) {
-
 			if (boardsContent.get(i).getUser().getAddressX() < nw.latitude
 					&& boardsContent.get(i).getUser().getAddressX() > se.latitude
 					&& boardsContent.get(i).getUser().getAddressY() > nw.longitude
 					&& boardsContent.get(i).getUser().getAddressY() < se.longitude) {
-
 				board2.add(boardsContent.get(i));
-
 			}
 		}
 

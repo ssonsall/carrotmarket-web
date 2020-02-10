@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
@@ -8,16 +7,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--  
-    Document Title
-    =============================================
-    -->
 <title>list</title>
 <%@include file="../include/favicons.jsp"%>
 <%@include file="../include/stylesheets.jsp"%>
 </head>
-<body data-spy="scroll" data-target=".onpage-navigation"
-	data-offset="60">
+<body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
 	<main>
 		<div class="page-loader">
 			<div class="loader">Loading...</div>
@@ -25,15 +19,13 @@
 		<%@include file="../include/nav.jsp"%>
 
 		<div class="main">
-			<section class="module bg-dark-60 shop-page-header"
-				data-background="/assets/images/shop/product-page-bg.jpg">
+			<section class="module bg-dark-60 shop-page-header" data-background="/assets/images/shop/product-page-bg.jpg">
 				<div class="container">
 					<div class="row">
 						<div class="col-sm-6 col-sm-offset-3">
 							<h2 class="module-title font-alt">Shop Products</h2>
-							<div class="module-subtitle font-serif">A wonderful
-								serenity has taken possession of my entire soul, like these
-								sweet mornings of spring which I enjoy with my whole heart.</div>
+							<div class="module-subtitle font-serif">A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring
+								which I enjoy with my whole heart.</div>
 						</div>
 					</div>
 				</div>
@@ -44,11 +36,18 @@
 
 						<!-- 슬라이더  -->
 						<div class="slidecontainer">
-							<input type="range" min="5" max="15" value="5" class="slider"
-								id="myRange" style="position: relative; left: 20px;" name="range">
+							<c:choose>
+								<c:when test="${empty currentRange}">
+									<input type="range" min="5" max="15" value="5" class="slider" id="myRange" style="position: relative; left: 20px;" name="range">
+								</c:when>
+								<c:otherwise>
+									<input type="range" min="5" max="15" value="${currentRange}" class="slider" id="myRange" style="position: relative; left: 20px;" name="range">
+								</c:otherwise>
+							</c:choose>
 							<p style="position: relative; left: 20px; top: 10px;">
 								거리: <span id="demo"></span> km
 							</p>
+
 						</div>
 
 						<script>
@@ -234,16 +233,13 @@
 								<div class="col-sm-6 col-md-3 col-lg-3">
 									<div class="shop-item">
 										<div class="shop-item-image">
-											<img src="/upload/${board.image1}" alt="Accessories Pack"
-												style="width: 262.5px; height: 296.05px" />
+											<img src="/upload/${board.image1}" alt="Accessories Pack" style="width: 262.5px; height: 296.05px" />
 											<div class="shop-item-detail">
-												<a href="/board/detail/${board.id}"
-													class="btn btn-round btn-b"><span class="icon-basket">See
-														Detail</span></a>
+												<a href="/board/detail/${board.id}" class="btn btn-round btn-b"><span class="icon-basket">See Detail</span></a>
 											</div>
 										</div>
 										<h2 class="shop-item-title font-alt">
-											<a href="#">${board.title}</a>
+											<a href="/board/detail/${board.id}">${board.title}</a>
 										</h2>
 										<h5>${board.user.address}/${board.user.name}</h5>
 										<h5>${board.price}원</h5>
@@ -264,29 +260,24 @@
 							<div class="pagination font-alt">
 								<c:choose>
 									<c:when test="${(currentPage+1)%4 ne 0}">
-										<fmt:parseNumber var="navPage" value="${currentPage/4}"
-											integerOnly="true"></fmt:parseNumber>
+										<fmt:parseNumber var="navPage" value="${currentPage/4}" integerOnly="true"></fmt:parseNumber>
 									</c:when>
 									<c:otherwise>
-										<fmt:parseNumber var="navPage" value="${(currentPage-1)/4}"
-											integerOnly="true"></fmt:parseNumber>
+										<fmt:parseNumber var="navPage" value="${(currentPage-1)/4}" integerOnly="true"></fmt:parseNumber>
 									</c:otherwise>
 								</c:choose>
 
 								<c:choose>
 									<c:when test="${count%4 ne 0}">
-										<fmt:parseNumber var="totalPage" value="${count/4}"
-											integerOnly="true"></fmt:parseNumber>
+										<fmt:parseNumber var="totalPage" value="${count/4}" integerOnly="true"></fmt:parseNumber>
 									</c:when>
 									<c:otherwise>
-										<fmt:parseNumber var="totalPage" value="${(count-1)/4}"
-											integerOnly="true"></fmt:parseNumber>
+										<fmt:parseNumber var="totalPage" value="${(count-1)/4}" integerOnly="true"></fmt:parseNumber>
 									</c:otherwise>
 								</c:choose>
 
 								<c:if test="${navPage ne 0}">
-									<a
-										href="/board/page?page=${navPage*4-1}&category=${currentCategory}&userInput=${currentUserInput}&range=${currentRange}"><i
+									<a href="/board/page?page=${navPage*4-1}&category=${currentCategory}&userInput=${currentUserInput}&range=${currentRange}"><i
 										class="fa fa-angle-left"></i></a>
 								</c:if>
 								<c:forEach var="i" begin="${navPage*4+1}" end="${navPage*4+4}">
@@ -297,15 +288,13 @@
 													href="/board/page?page=${i-1}&category=${currentCategory}&userInput=${currentUserInput}&range=${currentRange}">${i}</a>
 											</c:when>
 											<c:otherwise>
-												<a
-													href="/board/page?page=${i-1}&category=${currentCategory}&userInput=${currentUserInput}&range=${currentRange}">${i}</a>
+												<a href="/board/page?page=${i-1}&category=${currentCategory}&userInput=${currentUserInput}&range=${currentRange}">${i}</a>
 											</c:otherwise>
 										</c:choose>
 									</c:if>
 								</c:forEach>
 								<c:if test="${navPage lt totalPage}">
-									<a
-										href="/board/page?page=${navPage*4+4}&category=${currentCategory}&userInput=${currentUserInput}&range=${currentRange}"><i
+									<a href="/board/page?page=${navPage*4+4}&category=${currentCategory}&userInput=${currentUserInput}&range=${currentRange}"><i
 										class="fa fa-angle-right"></i></a>
 								</c:if>
 							</div>

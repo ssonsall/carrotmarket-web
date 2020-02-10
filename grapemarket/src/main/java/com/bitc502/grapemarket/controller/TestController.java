@@ -126,7 +126,6 @@ public class TestController {
 		} else {
 			count = (countRow / 8) + 1;
 		}
-		System.out.println("count >>" + count);
 		model.addAttribute("count", count);
 		model.addAttribute("boards", boards.getContent());
 		return "/board/list";
@@ -148,7 +147,6 @@ public class TestController {
 			count = (countRow / 8) + 1;
 		}
 
-		System.out.println("count >>" + count);
 		model.addAttribute("count", count);
 		model.addAttribute("boards", boards.getContent());
 		return boards;
@@ -193,7 +191,6 @@ public class TestController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("statList" + statList);
 		return statList;
 	}
 
@@ -214,7 +211,6 @@ public class TestController {
 
 		double distance = EarthCalc.gcdDistance(SeoulGPS, Mine); // in meters
 
-		System.out.println("distance : " + distance);
 		String distanceKm = (distance / 1000) + "km";
 		return distanceKm;
 	}
@@ -242,11 +238,6 @@ public class TestController {
 		Point se = area.southEast;
 
 		List<User> users = uRepo.findByGPS(nw.latitude, se.latitude, nw.longitude, se.longitude);
-		
-		System.out.println("nw.latitude : "+nw.latitude);
-		System.out.println("se.latitude : "+se.latitude);
-		System.out.println("nw.longitude : "+nw.longitude);
-		System.out.println("se.longitude : "+se.longitude);
 
 		return users;
 	}

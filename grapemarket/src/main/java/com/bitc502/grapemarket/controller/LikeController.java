@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bitc502.grapemarket.model.Likes;
-import com.bitc502.grapemarket.repository.LikeRepository;
 import com.bitc502.grapemarket.security.UserPrincipal;
 import com.bitc502.grapemarket.service.LikeService;
 
