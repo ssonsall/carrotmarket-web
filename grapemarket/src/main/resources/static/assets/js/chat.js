@@ -2,6 +2,7 @@ function createChat() {
     var form = new FormData(document.getElementById('createChat'));
     let url = "/chat/chat";
 
+    console.log(form);
     console.log(form.get('board'));
     var boardId = form.get('board');
     

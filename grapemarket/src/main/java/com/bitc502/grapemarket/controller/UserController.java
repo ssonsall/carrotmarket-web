@@ -64,6 +64,7 @@ public class UserController {
 
 	@GetMapping("/userProfile")
 	public String userProfile(@AuthenticationPrincipal UserPrincipal userPrincipal, Model model) {
+		System.out.println(userPrincipal.getUser().getId());
 		User user = userServ.getUserById(userPrincipal.getUser().getId());
 		model.addAttribute("user", user);
 		return "/user/userProfile";
@@ -97,7 +98,7 @@ public class UserController {
 	@PostMapping("/authupdate")
 	public @ResponseBody String authUpdate(User user, @AuthenticationPrincipal UserPrincipal userPrincipal) {
 
-		int result = userServ.addUpdate(user);
+		int result = userServ.authUpdate(user);
 		if (result == -1) {
 			return Script.hrefAndAlert("/user/userProfile", "오류 발생");
 		}

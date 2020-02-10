@@ -20,5 +20,6 @@ public interface TradeStateRepository extends JpaRepository<TradeState, Integer>
 	
 	List<TradeState> findByUserId(int id);
 
+	
 
 }
