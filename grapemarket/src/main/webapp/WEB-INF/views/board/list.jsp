@@ -233,7 +233,21 @@
 								<div class="col-sm-6 col-md-3 col-lg-3">
 									<div class="shop-item">
 										<div class="shop-item-image">
-											<img src="/upload/${board.image1}" alt="Accessories Pack" style="width: 262.5px; height: 296.05px" />
+										<c:choose>
+										<c:when test="${board.state eq 1 }">
+										
+										<div style="width: 262.5px; height: 296.05px">
+										<img src="/upload/sold.png" style="position: absolute; top: 100px; transform: rotate(-20deg); z-index: 1" >
+										<img src="/upload/${board.image1}" alt="Accessories Pack" style="width: 262.5px; height: 296.05px; filter: brightness(50%); z-index: 2" />
+										
+										</div>
+										
+										</c:when>
+										<c:otherwise>
+										<img src="/upload/${board.image1}" alt="Accessories Pack" style="width: 262.5px; height: 296.05px" />
+										</c:otherwise>
+										</c:choose>
+											
 											<div class="shop-item-detail">
 												<a href="/board/detail/${board.id}" class="btn btn-round btn-b"><span class="icon-basket">See Detail</span></a>
 											</div>
