@@ -134,13 +134,11 @@ public class ChatService {
 
 		try {
 			Chat chat = cRepo.findById(id);
-
 			if (info.equals("buyer")) {
 				chat.setBuyerState(0);
 			} else {
 				chat.setSellerState(0);
 			}
-
 			cRepo.save(chat);
 		} catch (Exception e) {
 			e.printStackTrace();

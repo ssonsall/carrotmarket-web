@@ -121,7 +121,6 @@ public class BoardService {
 
 	// 글 삭제
 	public String delete(int id) {
-
 		try {
 			bRepo.deleteById(id);
 			return "redirect:/board/page?page=0&category=1&userInput=&range=5";
@@ -142,7 +141,6 @@ public class BoardService {
 	
 	@Transactional
 	public void setBuyerId(User user, Board board) {
-
 		Optional<Board> oBoard = bRepo.findById(board.getId());
 		Board board2 = oBoard.get();
 		TradeState state = tradeStateRepo.findByUserIdAndBoardId(user.getId(), board.getId());
@@ -152,15 +150,12 @@ public class BoardService {
 			if (state.getState().equals("판매중")) {
 				state.setState("판매완료");
 			}
-
 		} else {
 			board2.setState("-1");
 			if (state.getState().equals("판매중")) {
 				state.setState("판매취소");
 			}
 		}
-		
-
 		tradeStateRepo.save(state);
 		bRepo.save(board2);
 		
@@ -253,10 +248,8 @@ public class BoardService {
 	// 글쓰기
 	public String write2(UserPrincipal userPrincipal, Board board, List<MultipartFile> productImages,
 			String fileRealPath) {
-
 		try {
 			// 파일 이름 세팅 및 쓰기
-
 			List<String> imageFileNames = new ArrayList<String>();
 			int index = 0;
 			for (MultipartFile multipartFile : productImages) {
@@ -301,10 +294,8 @@ public class BoardService {
 	@Transactional
 	public String update(UserPrincipal userPrincipal, Board boardFromController, List<MultipartFile> productImages,
 			List<String> currentImages, String fileRealPath) {
-
 		try {
 			// 파일 이름 세팅 및 쓰기
-
 			Optional<Board> oBoard = bRepo.findById(boardFromController.getId());
 			Board board = oBoard.get();
 
@@ -367,7 +358,6 @@ public class BoardService {
 	}
 
 	public Timestamp sqlTimeStamp() {
-
 		// java.sql.TimeStamp
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		Calendar cal = Calendar.getInstance();
@@ -383,7 +373,6 @@ public class BoardService {
 		Coordinate lat = Coordinate.fromDegrees(userPrincipal.getUser().getAddressX());
 		Coordinate lng = Coordinate.fromDegrees(userPrincipal.getUser().getAddressY());
 		Point Mine = Point.at(lat, lng);
-
 		BoundingArea area = EarthCalc.around(Mine, range * 1000);
 
 		Point nw = area.northWest;
@@ -398,7 +387,6 @@ public class BoardService {
 				board2.add(boardsContent.get(i));
 			}
 		}
-
 		return board2;
 	}
 }
