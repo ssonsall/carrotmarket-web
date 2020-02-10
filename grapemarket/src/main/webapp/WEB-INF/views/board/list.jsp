@@ -75,19 +75,19 @@
 
 								<c:choose>
 									<c:when test="${currentCategory eq '2'}">
-										<option value="2" selected="selected">인기매물</option>
+										<option value="2" selected="selected">생활가전</option>
 									</c:when>
 									<c:otherwise>
-										<option value="2">인기매물</option>
+										<option value="2">생활가전</option>
 									</c:otherwise>
 								</c:choose>
 
 								<c:choose>
 									<c:when test="${currentCategory eq '3'}">
-										<option value="3" selected="selected">디지털/가전</option>
+										<option value="3" selected="selected">디지털</option>
 									</c:when>
 									<c:otherwise>
-										<option value="3">디지털/가전</option>
+										<option value="3">디지털</option>
 									</c:otherwise>
 								</c:choose>
 

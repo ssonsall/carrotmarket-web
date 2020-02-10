@@ -52,7 +52,8 @@
 									<div class="col-sm-4 mb-sm-20">
 										<select name="category" class="form-control"
 											style="position: relative; bottom: 7px; right: 15px; width: 555px;">
-											<option value="3">디지털/가전</option>
+											<option value="2">생활가전</option>
+											<option value="3">디지털</option>
 											<option value="4">가구/인테리어</option>
 											<option value="5">유아동/유아도서</option>
 											<option value="6">생활/가공식품</option>
