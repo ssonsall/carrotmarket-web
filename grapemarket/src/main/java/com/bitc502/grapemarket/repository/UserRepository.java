@@ -22,7 +22,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	Boolean existsByUsername(String username);
 	
-
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE User u set u.email = ?1, u.phone = ?2, u.userProfile = ?3 WHERE u.id = ?4",nativeQuery = true)
+	void updateA(String email, String phone, String userProfile, int id);
+	
 	@Modifying
 	@Transactional
 	@Query(value = "UPDATE User u set u.password=?1, u.email = ?2, u.phone = ?3, u.userProfile = ?4 WHERE u.id = ?5")

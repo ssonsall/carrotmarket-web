@@ -33,7 +33,6 @@ import com.bitc502.grapemarket.model.Board;
 import com.bitc502.grapemarket.model.Chat;
 import com.bitc502.grapemarket.model.Comment;
 import com.bitc502.grapemarket.model.Likes;
-import com.bitc502.grapemarket.model.Search;
 import com.bitc502.grapemarket.model.TradeState;
 import com.bitc502.grapemarket.model.User;
 import com.bitc502.grapemarket.payload.ChatList;
@@ -52,6 +51,8 @@ import com.grum.geocalc.BoundingArea;
 import com.grum.geocalc.Coordinate;
 import com.grum.geocalc.EarthCalc;
 import com.grum.geocalc.Point;
+
+import io.sentry.Sentry;
 
 @RequestMapping("/android")
 @RestController
@@ -87,6 +88,29 @@ public class AndroidController {
 	@Autowired
 	private BoardService boardServ;
 
+	@PostMapping("/changeprofile")
+	public String chageProfile(@AuthenticationPrincipal UserPrincipal userPrincipal,
+			@RequestParam("user") String userJson, @RequestParam("userProfile") MultipartFile userProfile) {
+		// 이메일 전화번호 프로필사진변경 (비밀번호 변경은 따로임)
+		try {
+			User user = new Gson().fromJson(userJson, User.class);
+			
+			if (userProfile.getSize() != 0) {
+				String UUIDFileName = UUID.randomUUID() + "_" + userProfile.getOriginalFilename();
+				user.setUserProfile(UUIDFileName);
+				Path filePath = Paths.get(fileRealPath + UUIDFileName);
+				Files.write(filePath, userProfile.getBytes());
+			}
+
+			uRepo.updateA(user.getEmail(), user.getPhone(), user.getUserProfile(), userPrincipal.getUser().getId());
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			Sentry.capture(e);
+			return "fail";
+		}
+	}
+
 	@PostMapping("/join")
 	public String join(@RequestParam("username") String username, @RequestParam("name") String name,
 			@RequestParam("password") String password, @RequestParam("email") String email,
@@ -114,31 +138,34 @@ public class AndroidController {
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return "fail";
 		}
 	}
 
 	@PostMapping("/tradeComplete")
-	public String updateTradeComplete(@AuthenticationPrincipal UserPrincipal userPrincipal,@RequestParam("boardId") String boardId,
-			@RequestParam("buyerId") String buyerId) {
+	public String updateTradeComplete(@AuthenticationPrincipal UserPrincipal userPrincipal,
+			@RequestParam("boardId") String boardId, @RequestParam("buyerId") String buyerId) {
 		try {
-			bRepo.updateState("1", Integer.parseInt(buyerId) ,Integer.parseInt(boardId));
+			bRepo.updateState("1", Integer.parseInt(buyerId), Integer.parseInt(boardId));
 			tradeStateRepo.updateTradeState("판매완료", Integer.parseInt(boardId), userPrincipal.getUser().getId());
 			tradeStateRepo.updateTradeState("구매완료", Integer.parseInt(boardId), Integer.parseInt(buyerId));
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return "fail";
 		}
 	}
-	
+
 	@GetMapping("/tradeList")
-	public List<TradeState> getTradeList(@AuthenticationPrincipal UserPrincipal userPrincipal){
+	public List<TradeState> getTradeList(@AuthenticationPrincipal UserPrincipal userPrincipal) {
 		try {
 			List<TradeState> tradeStates = tradeStateRepo.findByUserId(userPrincipal.getUser().getId());
 			return tradeStates;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return null;
 		}
 	}
@@ -153,6 +180,7 @@ public class AndroidController {
 			return tradeStateList;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return null;
 		}
 	}
@@ -160,7 +188,6 @@ public class AndroidController {
 	// 안씀
 	@GetMapping("/allList")
 	public List<Board> allList() {
-		System.out.println("올보드리스트");
 		return bRepo.findAll();
 	}
 
@@ -173,10 +200,11 @@ public class AndroidController {
 			return pBoard.getContent();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return null;
 		}
 	}
-	
+
 	@PostMapping("/outChat")
 	public String outChat(@RequestParam("roomId") String roomId, @RequestParam("info") String info) {
 		try {
@@ -190,6 +218,7 @@ public class AndroidController {
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return "fail";
 		}
 	}
@@ -199,7 +228,6 @@ public class AndroidController {
 			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable,
 			@RequestParam("range") String range, @AuthenticationPrincipal UserPrincipal userPrincipal) {
 		try {
-			System.out.println("들어온 Range >> " + range);
 			Integer rangeInt = Integer.parseInt(range);
 			Coordinate lat = Coordinate.fromDegrees(userPrincipal.getUser().getAddressX());
 			Coordinate lng = Coordinate.fromDegrees(userPrincipal.getUser().getAddressY());
@@ -214,6 +242,7 @@ public class AndroidController {
 			return pBoard.getContent();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return null;
 		}
 	}
@@ -232,6 +261,7 @@ public class AndroidController {
 			return likes;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return null;
 		}
 	}
@@ -244,13 +274,13 @@ public class AndroidController {
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return "fail";
 		}
 	}
 
 	@GetMapping("/detail/{id}")
 	public Board detail(@PathVariable int id) {
-		System.out.println("디테일보드");
 		Optional<Board> oBoard = bRepo.findById(id);
 		return oBoard.get();
 	}
@@ -258,7 +288,6 @@ public class AndroidController {
 	@PostMapping("/loginSuccess")
 	public String loginSuccess(HttpServletRequest request, HttpServletResponse response) {
 		String test = (String) request.getAttribute("testSession");
-		System.out.println(">> test >> " + test);
 		return "ok";
 	}
 
@@ -272,15 +301,17 @@ public class AndroidController {
 	public String loginFailure() {
 		return "fail";
 	}
-	
+
 	@PostMapping("/tradeCancel")
-	public String tradeCancel(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("boardId") String boardId) {
+	public String tradeCancel(@AuthenticationPrincipal UserPrincipal userPrincipal,
+			@RequestParam("boardId") String boardId) {
 		try {
 			bRepo.updateTradeCancelState("-1", Integer.parseInt(boardId));
 			tradeStateRepo.updateTradeState("판매취소", Integer.parseInt(boardId), userPrincipal.getUser().getId());
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return "fail";
 		}
 	}
@@ -363,6 +394,7 @@ public class AndroidController {
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return "fail";
 		}
 	}
@@ -421,7 +453,7 @@ public class AndroidController {
 			board.setPrice(price);
 			board.setContent(content);
 			bRepo.save(board);
-			
+
 			TradeState ts = new TradeState();
 			ts.setBoard(board);
 			ts.setState("판매중");
@@ -430,14 +462,12 @@ public class AndroidController {
 			return "success";
 			// 리스트 완성되면 바꿔야함
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
+			Sentry.capture(e);
 			return "fail";
 		}
 	}
 
-	// @RequestParam("content") String content, @RequestParam("user") String userId,
-	// @RequestParam("board") String boardId
 	@PostMapping("/commentWrite")
 	public String commentWrite(Comment comment, @AuthenticationPrincipal UserPrincipal userPrincipal,
 			@RequestParam("board") String board) {
@@ -449,7 +479,8 @@ public class AndroidController {
 			cRepo.save(comment);
 			return "success";
 		} catch (Exception e) {
-			System.out.println(e.toString());
+			e.printStackTrace();
+			Sentry.capture(e);
 			return "fail";
 		}
 	}
@@ -464,8 +495,6 @@ public class AndroidController {
 	@PostMapping("/saveUserAddress")
 	public String saveUserAddress(@RequestParam("address") String address, @RequestParam("addressX") String addressX,
 			@RequestParam("addressY") String addressY, @AuthenticationPrincipal UserPrincipal userPrincipal) {
-		// uRepo.addUpdate(user.getAddress(), user.getAddressX(), user.getAddressY(),
-		// user.getId());
 		try {
 			uRepo.addUpdate(address, Double.parseDouble(addressX), Double.parseDouble(addressY),
 					userPrincipal.getUser().getId());
@@ -475,6 +504,7 @@ public class AndroidController {
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return "fail";
 		}
 
@@ -519,18 +549,18 @@ public class AndroidController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return null;
 		}
 	}
 
 	@GetMapping("/chatList")
 	public ChatList chatList(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-		List<Chat> chatForBuy = chatRepo.findByBuyerIdAndBuyerState(userPrincipal.getUser(),1);
-		List<Chat> chatForSell = chatRepo.findBySellerIdAndSellerState(userPrincipal.getUser(),1);
+		List<Chat> chatForBuy = chatRepo.findByBuyerIdAndBuyerState(userPrincipal.getUser(), 1);
+		List<Chat> chatForSell = chatRepo.findBySellerIdAndSellerState(userPrincipal.getUser(), 1);
 		ChatList chatList = new ChatList();
 		chatList.setChatForBuy(chatForBuy);
 		chatList.setChatForSell(chatForSell);
-		System.out.println("Android ChatList 접근");
 		return chatList;
 	}
 
@@ -558,49 +588,9 @@ public class AndroidController {
 			return boards.getContent();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return null;
 		}
-	}
-
-	// 안씀
-	@PostMapping("/search")
-	public List<Board> search(@RequestParam("category") String category, @RequestParam("userInput") String userInput,
-			@AuthenticationPrincipal UserPrincipal userPrincipal) {
-
-		List<User> users = uRepo.findByAddressContaining(userInput);
-		List<Integer> userIds = new ArrayList<>();
-		for (User u : users) {
-			userIds.add(u.getId());
-		}
-		List<Board> boards;
-		if (!userInput.equals("")) {
-			String[] searchContent = userInput.split(" ");
-			for (String entity : searchContent) {
-				Search search = new Search();
-				search.setContent(entity);
-				sRepo.save(search);
-			}
-
-		}
-
-		if (userInput.equals("")) {
-			if (category.equals("1")) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
-				boards = bRepo.findAll();
-			} else {// 입력값 공백이면 + 카테고리 (입력값조건 무시 카테고리만 걸고)
-				boards = bRepo.findByCategory(category);
-			}
-		} else {
-			// 공백제거
-			userInput = userInput.trim();
-			// 정규식 형태 만들어주기
-			userInput = userInput.replace(" ", ")(?=.*");
-			userInput = "(?=.*" + userInput + ")";
-			if (category.equals("1")) // 입력값 + 카테고리 전체 (입력값만 걸고 카테고리 조건 무시)
-				category = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
-			boards = bRepo.search(category, userInput);
-		}
-
-		return boards;
 	}
 
 	@GetMapping("/getSavedAddress")
@@ -612,6 +602,7 @@ public class AndroidController {
 			return userLocationSetting;
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return null;
 		}
 	}
@@ -624,6 +615,7 @@ public class AndroidController {
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return "fail";
 		}
 	}
@@ -634,6 +626,7 @@ public class AndroidController {
 			return uRepo.findById(userPrincipal.getUser().getId()).get();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return null;
 		}
 	}
@@ -646,15 +639,9 @@ public class AndroidController {
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return "fail";
 		}
-	}
-
-	@PostMapping("/changeprofile")
-	public String chageProfile(@RequestParam("user") String userJson) {
-		User user = new Gson().fromJson(userJson, User.class);
-
-		return null;
 	}
 
 	@GetMapping("/deleteBoard/{boardId}")
@@ -664,17 +651,20 @@ public class AndroidController {
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return "fail";
 		}
 	}
-	
+
 	@PostMapping("/buyComplete")
-	public String buyComplete(@AuthenticationPrincipal UserPrincipal userPrincipal,@RequestParam("boardId") String boardId) {
+	public String buyComplete(@AuthenticationPrincipal UserPrincipal userPrincipal,
+			@RequestParam("boardId") String boardId) {
 		try {
 			tradeStateRepo.updateTradeState("구매완료", Integer.parseInt(boardId), userPrincipal.getUser().getId());
 			return "success";
 		} catch (Exception e) {
 			e.toString();
+			Sentry.capture(e);
 			return "fail";
 		}
 	}
@@ -685,6 +675,7 @@ public class AndroidController {
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
+			Sentry.capture(e);
 			return null;
 		}
 	}
