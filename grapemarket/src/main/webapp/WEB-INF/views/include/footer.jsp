@@ -13,53 +13,46 @@
                 <p>Email:<a href="#">somecompany@example.com</a></p>
               </div>
             </div>
-            <div class="col-sm-3">
-              <div class="widget">
-                <h5 class="widget-title font-alt">Recent Comments</h5>
-                <ul class="icon-list">
-                  <li>Maria on <a href="#">Designer Desk Essentials</a></li>
-                  <li>John on <a href="#">Realistic Business Card Mockup</a></li>
-                  <li>Andy on <a href="#">Eco bag Mockup</a></li>
-                  <li>Jack on <a href="#">Bottle Mockup</a></li>
-                  <li>Mark on <a href="#">Our trip to the Alps</a></li>
-                </ul>
-              </div>
-            </div>
+           
             <div class="col-sm-3">
               <div class="widget">
                 <h5 class="widget-title font-alt">Blog Categories</h5>
                 <ul class="icon-list">
-                  <li><a href="#">Photography - 7</a></li>
-                  <li><a href="#">Web Design - 3</a></li>
-                  <li><a href="#">Illustration - 12</a></li>
-                  <li><a href="#">Marketing - 1</a></li>
-                  <li><a href="#">Wordpress - 16</a></li>
+                  <li><a href="/board/page?page=0&category=2&userInput=&range=5">생활가전</a></li>
+                  <li><a href="/board/page?page=0&category=3&userInput=&range=5">디지털</a></li>
+                  <li><a href="/board/page?page=0&category=4&userInput=&range=5">가구/인테리어</a></li>
+                  <li><a href="/board/page?page=0&category=5&userInput=&range=5">유아동/유아도서</a></li>
+                  <li><a href="/board/page?page=0&category=6&userInput=&range=5">생활/가공식품</a></li>
                 </ul>
               </div>
             </div>
+            
             <div class="col-sm-3">
               <div class="widget">
-                <h5 class="widget-title font-alt">Popular Posts</h5>
-                <ul class="widget-posts">
-                  <li class="clearfix">
-                    <div class="widget-posts-image"><a href="#"><img src="/assets/images/rp-1.jpg"
-                          alt="Post Thumbnail" /></a></div>
-                    <div class="widget-posts-body">
-                      <div class="widget-posts-title"><a href="#">Designer Desk Essentials</a></div>
-                      <div class="widget-posts-meta">23 january</div>
-                    </div>
-                  </li>
-                  <li class="clearfix">
-                    <div class="widget-posts-image"><a href="#"><img src="/assets/images/rp-2.jpg"
-                          alt="Post Thumbnail" /></a></div>
-                    <div class="widget-posts-body">
-                      <div class="widget-posts-title"><a href="#">Realistic Business Card Mockup</a></div>
-                      <div class="widget-posts-meta">15 February</div>
-                    </div>
-                  </li>
+                <h5 class="widget-title font-alt">_</h5>
+                <ul class="icon-list">
+                  <li><a href="/board/page?page=0&category=7&userInput=&range=5">여성의류</a></li>
+                  <li><a href="/board/page?page=0&category=8&userInput=&range=5">여성잡화</a></li>
+                  <li><a href="/board/page?page=0&category=9&userInput=&range=5">뷰티/미용</a></li>
+                  <li><a href="/board/page?page=0&category=10&userInput=&range=5">남성패션/잡화</a></li>
+                  <li><a href="/board/page?page=0&category=11&userInput=&range=5">스포츠/레저</a></li>
                 </ul>
               </div>
             </div>
+            
+            <div class="col-sm-3">
+              <div class="widget">
+                <h5 class="widget-title font-alt">_</h5>
+                <ul class="icon-list">
+                  <li><a href="/board/page?page=0&category=12&userInput=&range=5">게임/취미</a></li>
+                  <li><a href="/board/page?page=0&category=13&userInput=&range=5">도서/티켓/음반</a></li>
+                  <li><a href="/board/page?page=0&category=14&userInput=&range=5">반려동물용품</a></li>
+                  <li><a href="/board/page?page=0&category=15&userInput=&range=5">기타 중고물품</a></li>
+                  <li><a href="/board/page?page=0&category=16&userInput=&range=5">삽니다</a></li>
+                </ul>
+              </div>
+            </div>
+            
           </div>
         </div>
       </div>

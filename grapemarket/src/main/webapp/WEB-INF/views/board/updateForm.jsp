@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
@@ -16,8 +15,7 @@
 <%@include file="../include/favicons.jsp"%>
 <%@include file="../include/stylesheets.jsp"%>
 </head>
-<body data-spy="scroll" data-target=".onpage-navigation"
-	data-offset="60">
+<body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
 	<main>
 		<div class="page-loader">
 			<div class="loader">Loading...</div>
@@ -36,34 +34,37 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-6 col-sm-offset-3">
-							<form id="updateForm" action="/board/update" method="post"
-								enctype="multipart/form-data">
-								<input type="hidden" name="state" value="0"> 
-								<input type="hidden" name="id" value="${board.id}"> 
-								<input type="hidden" id="currentImage1" name="currentImage" value="${board.image1}"> 
-								<input type="hidden" id="currentImage2" name="currentImage" value="${board.image2}">
-								<input type="hidden" id="currentImage3" name="currentImage" value="${board.image3}"> 
-								<input type="hidden" id="currentImage4" name="currentImage" value="${board.image4}">
-								<input type="hidden" id="currentImage5" name="currentImage" value="${board.image5}">
+							<form id="updateForm" action="/board/update" method="post" enctype="multipart/form-data">
+								<input type="hidden" name="state" value="0"> <input type="hidden" name="id" value="${board.id}"> <input type="hidden"
+									id="currentImage1" name="currentImage" value="${board.image1}"> <input type="hidden" id="currentImage2" name="currentImage"
+									value="${board.image2}"> <input type="hidden" id="currentImage3" name="currentImage" value="${board.image3}"> <input
+									type="hidden" id="currentImage4" name="currentImage" value="${board.image4}"> <input type="hidden" id="currentImage5"
+									name="currentImage" value="${board.image5}">
 								<div class="form-group">
-									<label class="sr-only" for="title">제목</label> <input
-										class="form-control" type="text" id="title" name="title"
-										placeholder="제목*" required="required" value="${board.title}"
-										data-validation-required-message="Please enter your name." />
+									<label class="sr-only" for="title">제목</label> <input class="form-control" type="text" id="title" name="title" placeholder="제목*"
+										required="required" value="${board.title}" data-validation-required-message="Please enter your name." />
 									<p class="help-block text-danger"></p>
 								</div>
 								<div class="form-group">
 									<label class="sr-only" for="category">카테고리</label>
 									<!-- <input class="form-control" type="text" id="category" name="category" placeholder="카테고리*" required="required" data-validation-required-message="Please enter your email address."/> -->
 									<div class="col-sm-4 mb-sm-20">
-										<select name="category" class="form-control"
-											style="position: relative; bottom: 7px; right: 15px; width: 555px;">
+										<select name="category" class="form-control" style="position: relative; bottom: 7px; right: 15px; width: 555px;">
 											<c:choose>
-												<c:when test="${board.category eq '3'}">
-													<option value="3" selected="selected">디지털/가전</option>
+												<c:when test="${board.category eq '2'}">
+													<option value="2" selected="selected">생활가전</option>
 												</c:when>
 												<c:otherwise>
-													<option value="3">디지털/가전</option>
+													<option value="2">생활가전</option>
+												</c:otherwise>
+											</c:choose>
+											
+											<c:choose>
+												<c:when test="${board.category eq '3'}">
+													<option value="3" selected="selected">디지털</option>
+												</c:when>
+												<c:otherwise>
+													<option value="3">디지털</option>
 												</c:otherwise>
 											</c:choose>
 
@@ -188,25 +189,20 @@
 									<p class="help-block text-danger"></p>
 								</div>
 								<div class="form-group">
-									<label class="sr-only" for="price">가격</label> <input
-										class="form-control" type="text" id="price" name="price"
-										placeholder="가격*" required="required" value="${board.price}"
-										data-validation-required-message="Please enter your email address." />
+									<label class="sr-only" for="price">가격</label> <input class="form-control" type="text" id="price" name="price" placeholder="가격*"
+										required="required" value="${board.price}" data-validation-required-message="Please enter your email address." />
 									<p class="help-block text-danger"></p>
 								</div>
 								<!-- 사진 시작 -->
-								<div style="margin-bottom: 10px;" type="button"
-									onclick="plusPhoto();savePhoto();">
+								<div style="margin-bottom: 10px;" type="button" onclick="plusPhoto();savePhoto();">
 									<i class="fa fa-plus-circle"> 사진추가</i>
 								</div>
 
 								<div id="photo">
 									<c:if test="${board.image1 ne ''}">
 										<div class="form-group" id="productImage1">
-											<label class="sr-only" for="price">사진</label> <input
-												style="display: inline;" class="inputfile" type="file"
-												accept="image/*" id="productImage1" name="productImage"
-												data-validation-required-message="Please enter your email address." />
+											<label class="sr-only" for="price">사진</label> <input style="display: inline;" class="inputfile" type="file" accept="image/*"
+												id="productImage1" name="productImage" data-validation-required-message="Please enter your email address." />
 											<!-- <div style="display: inline;" type='button' onclick='deletePhoto(1)'><i class="fa fa-minus-circle">사진삭제</i></div> -->
 											<p class="help-block text-danger">${board.image1}</p>
 											<!-- <input type='button' onclick='deletePhoto(1)' value='-'></input> -->
@@ -215,12 +211,9 @@
 									</c:if>
 									<c:if test="${board.image2 ne ''}">
 										<div class="form-group" id="productImage2">
-											<label class="sr-only" for="price">사진</label> <input
-												style="display: inline;" class="inputfile" type="file"
-												accept="image/*" id="productImage2" name="productImage"
-												data-validation-required-message="Please enter your email address." />
-											<div style="display: inline;" type='button'
-												onclick='deletePhoto(2)'>
+											<label class="sr-only" for="price">사진</label> <input style="display: inline;" class="inputfile" type="file" accept="image/*"
+												id="productImage2" name="productImage" data-validation-required-message="Please enter your email address." />
+											<div style="display: inline;" type='button' onclick='deletePhoto(2)'>
 												<i class="fa fa-minus-circle">사진삭제</i>
 											</div>
 											<p class="help-block text-danger">${board.image2}</p>
@@ -230,12 +223,9 @@
 									</c:if>
 									<c:if test="${board.image3 ne ''}">
 										<div class="form-group" id="productImage3">
-											<label class="sr-only" for="price">사진</label> <input
-												style="display: inline;" class="inputfile" type="file"
-												accept="image/*" id="productImage3" name="productImage"
-												data-validation-required-message="Please enter your email address." />
-											<div style="display: inline;" type='button'
-												onclick='deletePhoto(3)'>
+											<label class="sr-only" for="price">사진</label> <input style="display: inline;" class="inputfile" type="file" accept="image/*"
+												id="productImage3" name="productImage" data-validation-required-message="Please enter your email address." />
+											<div style="display: inline;" type='button' onclick='deletePhoto(3)'>
 												<i class="fa fa-minus-circle">사진삭제</i>
 											</div>
 											<p class="help-block text-danger">${board.image3}</p>
@@ -245,12 +235,9 @@
 									</c:if>
 									<c:if test="${board.image4 ne ''}">
 										<div class="form-group" id="productImage4">
-											<label class="sr-only" for="price">사진</label> <input
-												style="display: inline;" class="inputfile" type="file"
-												accept="image/*" id="productImage4" name="productImage"
-												data-validation-required-message="Please enter your email address." />
-											<div style="display: inline;" type='button'
-												onclick='deletePhoto(4)'>
+											<label class="sr-only" for="price">사진</label> <input style="display: inline;" class="inputfile" type="file" accept="image/*"
+												id="productImage4" name="productImage" data-validation-required-message="Please enter your email address." />
+											<div style="display: inline;" type='button' onclick='deletePhoto(4)'>
 												<i class="fa fa-minus-circle">사진삭제</i>
 											</div>
 											<p class="help-block text-danger">${board.image4}</p>
@@ -260,12 +247,9 @@
 									</c:if>
 									<c:if test="${board.image5 ne ''}">
 										<div class="form-group" id="productImage5">
-											<label class="sr-only" for="price">사진</label> <input
-												style="display: inline;" class="inputfile" type="file"
-												accept="image/*" id="productImage5" name="productImage"
-												data-validation-required-message="Please enter your email address." />
-											<div style="display: inline;" type='button'
-												onclick='deletePhoto(5)'>
+											<label class="sr-only" for="price">사진</label> <input style="display: inline;" class="inputfile" type="file" accept="image/*"
+												id="productImage5" name="productImage" data-validation-required-message="Please enter your email address." />
+											<div style="display: inline;" type='button' onclick='deletePhoto(5)'>
 												<i class="fa fa-minus-circle">사진삭제</i>
 											</div>
 											<p class="help-block text-danger">${board.image5}</p>
@@ -278,8 +262,7 @@
 
 								<!-- 사진 끝 -->
 								<div class="form-group">
-									<textarea class="form-control" rows="7" id="content"
-										name="content" placeholder="내용*" required="required"
+									<textarea class="form-control" rows="7" id="content" name="content" placeholder="내용*" required="required"
 										data-validation-required-message="Please enter your message.">${board.content}</textarea>
 									<p class="help-block text-danger"></p>
 								</div>
@@ -290,8 +273,7 @@
                            <p class="help-block text-danger"></p>
                         </div> -->
 								<div class="text-center">
-									<button class="btn btn-block btn-round btn-d" id="cfsubmit"
-										type="submit">Submit</button>
+									<button class="btn btn-block btn-round btn-d" id="cfsubmit" type="submit">Submit</button>
 								</div>
 							</form>
 							<div class="ajax-response font-alt" id="contactFormResponse"></div>
