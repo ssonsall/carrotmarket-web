@@ -23,4 +23,10 @@ public interface ChatRepository extends JpaRepository<Chat, Integer>{
 	List<Map<String, Object>> chatVolume();
 
 	Chat findByBoardIdAndBuyerId(int boardId, int buyerId);
+
+	List<Chat> findByBuyerIdAndBuyerState(User user, int i);
+
+	List<Chat> findBySellerIdAndSellerState(User user, int i);
+
+
 }

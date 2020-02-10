@@ -124,6 +124,7 @@ public class AndroidController {
 		try {
 			bRepo.updateState("1", Integer.parseInt(buyerId) ,Integer.parseInt(boardId));
 			tradeStateRepo.updateTradeState("판매완료", Integer.parseInt(boardId), userPrincipal.getUser().getId());
+			tradeStateRepo.updateTradeState("구매완료", Integer.parseInt(boardId), Integer.parseInt(buyerId));
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -253,6 +254,18 @@ public class AndroidController {
 	@GetMapping("/loginFailure")
 	public String loginFailure() {
 		return "fail";
+	}
+	
+	@PostMapping("/tradeCancel")
+	public String tradeCancel(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestParam("boardId") String boardId) {
+		try {
+			bRepo.updateTradeCancelState("-1", Integer.parseInt(boardId));
+			tradeStateRepo.updateTradeState("판매취소", Integer.parseInt(boardId), userPrincipal.getUser().getId());
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "fail";
+		}
 	}
 
 	@PostMapping("/modifyBoard")
@@ -391,6 +404,12 @@ public class AndroidController {
 			board.setPrice(price);
 			board.setContent(content);
 			bRepo.save(board);
+			
+			TradeState ts = new TradeState();
+			ts.setBoard(board);
+			ts.setState("판매중");
+			ts.setUser(userPrincipal.getUser());
+			tradeStateRepo.save(ts);
 			return "success";
 			// 리스트 완성되면 바꿔야함
 		} catch (Exception e) {
@@ -489,8 +508,8 @@ public class AndroidController {
 
 	@GetMapping("/chatList")
 	public ChatList chatList(@AuthenticationPrincipal UserPrincipal userPrincipal) {
-		List<Chat> chatForBuy = chatRepo.findByBuyerId(userPrincipal.getUser());
-		List<Chat> chatForSell = chatRepo.findBySellerId(userPrincipal.getUser());
+		List<Chat> chatForBuy = chatRepo.findByBuyerIdAndBuyerState(userPrincipal.getUser(),1);
+		List<Chat> chatForSell = chatRepo.findBySellerIdAndSellerState(userPrincipal.getUser(),1);
 		ChatList chatList = new ChatList();
 		chatList.setChatForBuy(chatForBuy);
 		chatList.setChatForSell(chatForSell);
@@ -631,18 +650,21 @@ public class AndroidController {
 			return "fail";
 		}
 	}
+	
+	@PostMapping("/buyComplete")
+	public String buyComplete(@AuthenticationPrincipal UserPrincipal userPrincipal,@RequestParam("boardId") String boardId) {
+		try {
+			tradeStateRepo.updateTradeState("구매완료", Integer.parseInt(boardId), userPrincipal.getUser().getId());
+			return "success";
+		} catch (Exception e) {
+			e.toString();
+			return "fail";
+		}
+	}
 
 	@PostMapping("/completeTrade")
 	public String completeTrade(@RequestParam("boardId") int boardId) {
 		try {
-
-//			Optional<Board> oBoard = bRepo.findById(board.getId());
-//			Board board2 = oBoard.get();
-//			
-//			board2.setBuyer(board.getBuyer());
-//			board2.setState("1");
-//			bRepo.save(board2);
-
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();

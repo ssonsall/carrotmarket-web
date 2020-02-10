@@ -71,4 +71,9 @@ public interface BoardRepository extends JpaRepository<Board, Integer>, JpaSpeci
 	@Transactional
 	@Query(value = "UPDATE Board b set b.state = ?1, b.buyerId = ?2 WHERE b.id = ?3", nativeQuery = true)
 	void updateState(String state, int buyerId, int id);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE Board b set b.state = ?1 WHERE b.id = ?2", nativeQuery = true)
+	void updateTradeCancelState(String state, int id);
 }
