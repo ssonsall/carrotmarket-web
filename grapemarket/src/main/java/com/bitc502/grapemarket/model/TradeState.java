@@ -33,7 +33,7 @@ public class TradeState {
 	private User user;
 
 	//	|0:판매취소|1:판매중|2:판매 완료|10:구매취소|11:구매중|12:구매 완료|
-	private String State;
+	private String state;
 
 	// id, title
 	@ManyToOne
