@@ -232,51 +232,94 @@
 												<input type="hidden" name="sellerId"
 													value="${board.user.id}">
 											</form>
-											<button onclick="createChat()" class="btn btn-round btn-d"
-												type="button">채팅으로 거래하기</button>
+
+											<c:choose>
+												<c:when test="${board.state eq 0}">
+													<button onclick="createChat()" class="btn btn-round btn-d"
+														type="button">채팅으로 거래하기</button>
+												</c:when>
+												<c:otherwise>
+													<button onclick="" class="btn btn-round btn-d"
+														type="button">거래 종료 아이템</button>
+												</c:otherwise>
+											</c:choose>
+
+
+
 
 											<button onclick="boardReportPopup(${board.id})"
 												class="btn btn-round btn-d" type="button">게시글 신고하기</button>
 										</div>
 									</c:when>
 									<c:otherwise>
-										<div class="col-sm-8">
-											<form id="boardUpdate" style="display: inline;"
-												action="/board/updateForm/${board.id}" method="post">
-												<%-- DB Select 안할거면 여기서 다 날려야 하지만 그렇게 안할거임 귀찮 --%>
-												<button class="btn btn-round btn-d" type="submit">글
-													수정</button>
-											</form>
-											<form id="boardDelete" style="display: inline;"
-												action="/board/delete/${board.id}" method="post">
-												<button class="btn btn-round btn-d" type="submit">글
-													삭제</button>
-											</form>
 
-											<form id="selectForm">
-												<input type="hidden" name="id" value="${board.id}">
-												<select style="position: relative; top: 10px;" name="buyer"
-													id='selectBox_Buyer' class="form-control">
-													<c:forEach var="tradeState" items="${tradeStates}">
+										<c:choose>
+											<c:when test="${board.state eq 0 }">
+												<div class="col-sm-8">
+													<form id="boardUpdate" style="display: inline;"
+														action="/board/updateForm/${board.id}" method="post">
+														<%-- DB Select 안할거면 여기서 다 날려야 하지만 그렇게 안할거임 귀찮 --%>
+														<button class="btn btn-round btn-d" type="submit">글
+															수정</button>
+													</form>
+													<form id="boardDelete" style="display: inline;"
+														action="/board/delete/${board.id}" method="post">
+														<button class="btn btn-round btn-d" type="submit">글
+															삭제</button>
+													</form>
 
-														<c:choose>
-															<c:when test="${tradeState.state eq '구매완료'}">
-																<option value="${tradeState.user.id}">${tradeState.user.name}
-																	★</option>
-															</c:when>
-															<c:otherwise>
-																<option value="${tradeState.user.id}">${tradeState.user.name}</option>
-															</c:otherwise>
-														</c:choose>
+													<form id="selectForm">
+														<input type="hidden" name="id" value="${board.id}">
+														<select style="position: relative; top: 10px;"
+															name="Buyer" id='selectBox_Buyer' class="form-control">
+															<c:forEach var="tradeState" items="${tradeStates}">
 
-													</c:forEach>
-													<option value="cancel">판매취소</option>
-												</select>
-											</form>
-											<button style="position: relative; top: 18px;"
-												onclick="boardComplete(${board.id})"
-												class="btn btn-round btn-d">거래 완료</button>
-										</div>
+																<c:choose>
+																	<c:when test="${tradeState.state eq '구매완료'}">
+																		<option value="${tradeState.user.id}">${tradeState.user.name}
+																			★</option>
+																	</c:when>
+																	<c:otherwise>
+																		<option value="${tradeState.user.id}">${tradeState.user.name}</option>
+																	</c:otherwise>
+																</c:choose>
+
+															</c:forEach>
+															<option value="-1">판매취소</option>
+														</select>
+													</form>
+													<button style="position: relative; top: 18px;"
+														onclick="boardComplete(${board.id})"
+														class="btn btn-round btn-d">거래 완료</button>
+												</div>
+											</c:when>
+											<c:otherwise>
+												<div class="col-sm-8">
+													<form id="boardUpdate" style="display: inline;"
+														action="/board/updateForm/${board.id}" method="post">
+														<%-- DB Select 안할거면 여기서 다 날려야 하지만 그렇게 안할거임 귀찮 --%>
+													</form>
+													<form id="boardDelete" style="display: inline;"
+														action="/board/delete/${board.id}" method="post"></form>
+
+													<form id="selectForm">
+														<input type="hidden" name="id" value="${board.id}">
+														<select style="position: relative; top: 10px;"
+															name="Buyer" id='selectBox_Buyer' class="form-control">
+															<c:forEach var="tradeState" items="${tradeStates}">
+
+																<option selected="selected" disabled="disabled" value="">${board.buyer.name}</option>
+
+															</c:forEach>
+														</select>
+													</form>
+												</div>
+											</c:otherwise>
+										</c:choose>
+
+
+
+
 									</c:otherwise>
 								</c:choose>
 							</div>
