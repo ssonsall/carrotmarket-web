@@ -38,10 +38,10 @@
 						<div class="slidecontainer">
 							<c:choose>
 								<c:when test="${empty currentRange}">
-									<input type="range" min="5" max="15" value="5" class="slider" id="myRange" style="position: relative; left: 20px;" name="range">
+									<input type="range" min="5" max="15" step="5" value="5" class="slider" id="myRange" style="position: relative; left: 20px;" name="range">
 								</c:when>
 								<c:otherwise>
-									<input type="range" min="5" max="15" value="${currentRange}" class="slider" id="myRange" style="position: relative; left: 20px;" name="range">
+									<input type="range" min="5" max="15" step="5" value="${currentRange}" class="slider" id="myRange" style="position: relative; left: 20px;" name="range">
 								</c:otherwise>
 							</c:choose>
 							<p style="position: relative; left: 20px; top: 10px;">
