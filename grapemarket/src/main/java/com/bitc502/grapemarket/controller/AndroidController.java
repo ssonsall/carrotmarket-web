@@ -176,6 +176,23 @@ public class AndroidController {
 			return null;
 		}
 	}
+	
+	@PostMapping("/outChat")
+	public String outChat(@RequestParam("roomId") String roomId, @RequestParam("info") String info) {
+		try {
+			Chat chat = chatRepo.findById(Integer.parseInt(roomId));
+			if (info.equals("buyer")) {
+				chat.setBuyerState(0);
+			} else {
+				chat.setSellerState(0);
+			}
+			chatRepo.save(chat);
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "fail";
+		}
+	}
 
 	@GetMapping("/allListPageableWithRange")
 	public List<Board> allListPageableWithRange(
