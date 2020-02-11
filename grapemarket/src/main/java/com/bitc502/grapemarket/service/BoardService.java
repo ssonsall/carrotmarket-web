@@ -216,16 +216,15 @@ public class BoardService {
 	// 리스트
 	public Page<Board> getList(String userInput, String category, UserPrincipal userPrincipal, int range,
 			Pageable pageable) {
+		Page<Board> boards = null;
 
 		Coordinate lat = Coordinate.fromDegrees(userPrincipal.getUser().getAddressX());
 		Coordinate lng = Coordinate.fromDegrees(userPrincipal.getUser().getAddressY());
 		Point Mine = Point.at(lat, lng);
-
 		BoundingArea area = EarthCalc.around(Mine, range * 1000);
 		Point nw = area.northWest;
 		Point se = area.southEast;
 
-		Page<Board> boards;
 		if (userInput.equals("")) {
 			if (category.equals("1")) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
 				boards = bRepo.findAllAndGps(nw.latitude, se.latitude, nw.longitude, se.longitude, pageable);
@@ -246,7 +245,27 @@ public class BoardService {
 		}
 		return boards;
 	}
+	public Page<Board> getAllList(String userInput, String category, Pageable pageable) {
+		Page<Board> boards = null;
 
+		if (userInput.equals("")) {
+			if (category.equals("1")) {// 입력값 공백 + 카테고리 전체 (그냥 전체 리스트)
+				boards = bRepo.findAll(pageable);
+			} else {// 입력값 공백이면 + 카테고리 (입력값조건 무시 카테고리만 걸고)
+				boards = bRepo.findByCategory(category,pageable);
+			}
+		} else {
+			userInput = userInput.trim();// 공백제거
+			userInput = userInput.replace(" ", ")(?=.*");// 정규식 형태 만들어주기
+			userInput = "(?=.*" + userInput + ")";
+			if (category.equals("1")) // 입력값 + 카테고리 전체 (입력값만 걸고 카테고리 조건 무시)
+				category = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
+			boards = bRepo.findByCategoryAndUserInput(category, userInput,pageable);
+		}
+		return boards;
+	}
+	
+	
 	public List<Board> getPopularBoard() {
 		List<Board> boards = new ArrayList<Board>();
 		try {

@@ -119,7 +119,7 @@ public class UserService {
 		try {
 			System.out.println("인증 업데이트");
 			uRepo.authUpdate(user.getId());
-			return 1;
+			return user.getId();
 		} catch (Exception e) {
 			e.printStackTrace();
 			Sentry.capture(e);

@@ -2,7 +2,7 @@ server:
   port: 8443
   ssl:
     enabled: true
-    key-store: /home/ubuntu/grapemarket-web/grapemarket/src/main/resources/grapemarket.p12
+    key-store: src/main/resources/grapemarket.p12
     key-store-password: bitc5600
     key-store-type: PKCS12
   servlet:
@@ -66,6 +66,6 @@ spring:
 #파일 저장할 경로(각자 파일 경로로)
 #정민학원컴퓨터경로: C:/Users/it/Documents/GitHub/grapemarket-web/grapemarket/src/main/resources/static/upload/ (지우지마세여;))
 file:
-  path: /home/ubuntu/grapemarket-web/grapemarket/target/classes/static/upload/
+  path: C:/Users/kimsu/Documents/GitHub/grapemarket-web/grapemarket/src/main/resources/static/upload/
 
 

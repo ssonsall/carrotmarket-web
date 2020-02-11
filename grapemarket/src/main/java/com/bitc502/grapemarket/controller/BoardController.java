@@ -53,10 +53,14 @@ public class BoardController {
 
 		// 검색어 저장
 		boardServ.saveKeyword(userInput);
-
+		Page<Board> boards;
 		// 검색어 있는지 확인하고 board 데이터 불러오기
-		Page<Board> boards = boardServ.getList(userInput, category, userPrincipal, range, pageable);
-
+		try {
+			boards = boardServ.getList(userInput, category, userPrincipal, range, pageable);
+		} catch (NullPointerException ne) {
+			boards = boardServ.getAllList(userInput, category, pageable);
+		}
+		
 		if (pageable.getPageNumber() >= boards.getTotalPages() && boards.getTotalPages() > 0) {
 			return "redirect:/board/page?page=" + (boards.getTotalPages() - 1) + "&category=" + category + "&userInput="
 					+ userInput + "&range=5";
