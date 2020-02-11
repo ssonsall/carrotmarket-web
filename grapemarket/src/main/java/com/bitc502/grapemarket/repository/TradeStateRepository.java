@@ -28,6 +28,9 @@ public interface TradeStateRepository extends JpaRepository<TradeState, Integer>
 	@Query(value = "UPDATE TradeState ts set ts.State = ?1 WHERE ts.boardId = ?2 AND ts.userId = ?3", nativeQuery = true)
 	void updateTradeState(String state, int boardId, int userId);
 
-	
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE TradeState ts set ts.State = ?1 WHERE ts.boardId = ?2 AND ts.userId != ?3", nativeQuery = true)
+	void updateTradeStateCancelBuy(String state, int boardId, int userId);
 
 }
