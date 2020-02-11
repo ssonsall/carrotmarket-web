@@ -49,11 +49,20 @@
 								<c:if test="${chat.buyerState eq 1}">
 									<div id="chatId_${chat.id}">
 										<div class="alert alert-success" role="alert"
+											style="position: relative; padding: 5px;"
 											onclick="enterRoom(${chat.id},${principal.user.id})">
 											<button class="close" type="button" data-dismiss="alert"
-												aria-hidden="true" onclick="outChat(${chat.id},'buyer')">&times;</button>
-											<i class="fa fa-comment"></i><strong>Alert!</strong>
-											${chat.sellerId.username}님과의 채팅방입니다.
+												style="position: absolute; left: 340px; top: -4px;" aria-hidden="true"
+												onclick="outChat(${chat.id},'buyer')">&times;</button>
+											<img src="/upload/${chat.board.image1}"
+												style="width: 50px; height: 50px;" />
+											<div
+												style="position: absolute; top: 12px; left: 70px; font-size: 12px;">
+												<span><i class="fa fa-location-arrow"></i>${chat.sellerId.address} :
+													 <strong> ${chat.board.title}</strong></span>
+												<p style="position: relative;">${chat.sellerId.username}님과의
+													채팅방입니다.</p>
+											</div>
 										</div>
 									</div>
 								</c:if>
@@ -62,13 +71,21 @@
 							<c:forEach var="chat" items="${chatForSell}">
 								<c:if test="${chat.sellerState eq 1}">
 									<div id="chatId_${chat.id}">
-										<div id="chatId_${chat.id}" class="alert alert-success"
-											role="alert"
+										<div class="alert alert-success" role="alert"
+											style="position: relative; padding: 5px;"
 											onclick="enterRoom(${chat.id},${principal.user.id})">
 											<button class="close" type="button" data-dismiss="alert"
-												aria-hidden="true" onclick="outChat(${chat.id},'seller')">&times;</button>
-											<i class="fa fa-comment"></i><strong>Alert!</strong>
-											${chat.buyerId.username}님과의 채팅방입니다.
+												style="position: absolute; left: 340px; top: -4px;" aria-hidden="true"
+												onclick="outChat(${chat.id},'buyer')">&times;</button>
+											<img src="/upload/${chat.board.image1}"
+												style="width: 50px; height: 50px;" />
+											<div
+												style="position: absolute; top: 12px; left: 70px; font-size: 12px;">
+												<span><i class="fa fa-location-arrow"></i>${chat.buyerId.address} :
+													 <strong> ${chat.board.title}</strong></span>
+												<p style="position: relative;">${chat.buyerId.username}님과의
+													채팅방입니다.</p>
+											</div>
 										</div>
 									</div>
 								</c:if>
