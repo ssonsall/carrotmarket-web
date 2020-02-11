@@ -127,13 +127,15 @@ function product_info(username, title, price, boardId) {
 function trade_state(tradeState, userId, boardId, roomId) {
 
     if (tradeState === '판매중') {
-        var form = `<div id="completeBtn"><button onclick="location.href='/board/detail/${boardId}'">게시물로 이동</button></div><button onclick="outChat(${roomId},'seller')">채팅방 나가기</button>`;
+        var form = `<div id="completeBtn" style="display:inline-block;"><button onclick="location.href='/board/detail/${boardId}'">게시물로 이동</button></div><button style="margin-left:10px;" onclick="outChat(${roomId},'seller')">채팅방 나가기</button>`;
     } else if (tradeState === '구매중') {
-        var form = `<div id="completeBtn"><button onclick="setTradeStateComplete(2,${userId},${boardId},${roomId})">구매 완료</button></div><button onclick="outChat(${roomId},'buyer')">채팅방 나가기</button>`;
+        var form = `<div id="completeBtn" style="display:inline-block;"><button onclick="setTradeStateComplete(2,${userId},${boardId},${roomId})">구매 완료</button></div><button style="margin-left:10px;" onclick="outChat(${roomId},'buyer')">채팅방 나가기</button>`;
     } else if (tradeState === '판매완료') {
-        var form = `<button onclick="outChat(${roomId},'seller')">채팅방 나가기</button>`;
+        var form = `<button style="margin-left:10px;" onclick="outChat(${roomId},'seller')">채팅방 나가기</button>`;
     } else if (tradeState === '구매완료') {
-        var form = `<button onclick="outChat(${roomId},'buyer')">채팅방 나가기</button>`;
+        var form = `<button style="margin-left:10px;" onclick="outChat(${roomId},'buyer')">채팅방 나가기</button>`;
+    } else{
+    	var form = `<button style="margin-left:10px;" onclick="outChat(${roomId},'buyer')">채팅방 나가기</button>`;
     }
     return form;
 }
