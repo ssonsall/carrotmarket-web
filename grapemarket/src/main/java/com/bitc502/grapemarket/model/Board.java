@@ -68,12 +68,10 @@ public class Board {
 	private String image3;
 	private String image4;
 	private String image5;
-
 	// 상품 사진 끝
 
 	@CreationTimestamp
 	private Timestamp createDate;
-	
 	
 	@CreationTimestamp
 	private Timestamp updateDate;

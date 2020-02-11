@@ -83,7 +83,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/admin/**").access("hasRole('ADMIN')")
 				.antMatchers("/board/page").permitAll()
 				.antMatchers("/board/**", "/chat/**","/user/userProfile")
-				.authenticated()
+				.access("hasAnyRole('USER,ADMIN,CAUTION1,CAUTION2')")
 				// 위의 주소를 타는 것을 제외한 접근은 시큐리티가 막지 않는다.
 				.anyRequest().permitAll().and().formLogin()
 				// 내 모델의 아이디와 패스워드 변수명이 username과 password가 아니라면 꼭 해줘라

@@ -33,7 +33,6 @@ public class Comment {
 	//comment를 작성한 유저 클릭시 그 유저가 like한 데이터, 그 유저가 작성한 글 보기 기능 구현시 "board", "like" 지워도 무관
 	private User user;
 	
-	
 //	private Board board; //id
 	@ManyToOne
 	@JoinColumn(name="boardId")

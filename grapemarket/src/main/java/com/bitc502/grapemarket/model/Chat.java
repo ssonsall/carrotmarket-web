@@ -54,8 +54,6 @@ public class Chat {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Board board;
 	
-	
-	
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name="ChatId")
 	@JsonIgnoreProperties({"chat","user"})
