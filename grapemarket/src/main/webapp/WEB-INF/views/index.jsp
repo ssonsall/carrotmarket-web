@@ -41,9 +41,9 @@
 											<form id="search" role="form" method="get" action="/board/page?page=0">
 												<div class="input-group col-sm-12 col-md-8 col-lg-10" style="float: none; margin: 0 auto">
 													<input class="form-control" type="text" id="userInput" name="userInput" placeholder="검색어를 입력하세요"
-														data-validation-required-message="Please enter your email address." required="required" /> 
-														<input type="hidden" name="category" value="1"> <span class="input-group-btn"> 
-														<input type="hidden" value="5" id="myRange"	style="position: relative; left: 20px;" name="range">
+														data-validation-required-message="Please enter your email address." required="required" /> <input type="hidden" name="category"
+														value="1"> <span class="input-group-btn"> <input type="hidden" value="5" id="myRange"
+														style="position: relative; left: 20px;" name="range">
 														<button class="btn btn-block btn-round btn-g" type="submit">검색</button>
 													</span>
 												</div>
@@ -52,7 +52,6 @@
 									</div>
 									<div class="col-sm-5 col-md-5 col-lg-3"
 										style="float: left; margin-left: 10%; background-color: #ebe1ed; padding: 20px; min-width: 150px; border-radius: 5px; color: black; font-weight: bold;">
-
 										<div style="text-align: left;">
 											<p style="text-align: center; font-size: 25px; color: #3f0c59;">포도마켓 인기검색어</p>
 											<c:forEach var="item" items="${searchs}" varStatus="status">
@@ -68,7 +67,13 @@
 													</c:choose>
 												</div>
 											</c:forEach>
-
+											<c:if test="${fn:length(searchs) < 7}">
+												<c:forEach var="item" begin="${fn:length(searchs)+1}" end="7">
+													<div style="height: 36px; font-size: 18px; padding-top: 2px; margin-bottom: 3px; border-bottom: solid 2px #b99bbf;">
+														&nbsp;<span style="color: #3f0c59; font-weight: bolder;">${item}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+													</div>
+												</c:forEach>
+											</c:if>
 										</div>
 									</div>
 								</div>
