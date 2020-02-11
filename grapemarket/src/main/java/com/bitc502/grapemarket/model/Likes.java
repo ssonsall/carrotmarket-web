@@ -33,7 +33,7 @@ public class Likes {
 	// id, title
 	@ManyToOne
 	@JoinColumn(name = "boardId")
-	@JsonIgnoreProperties({ "user","comment","like" })
+	@JsonIgnoreProperties({ "user","comment","like","tradeState","chat" })
 	private Board board;
 
 	@CreationTimestamp

@@ -36,29 +36,28 @@ public class Board {
 
 	// 댓글
 	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-	@JsonIgnoreProperties({ "board" })
+	@JsonIgnoreProperties({ "board","user" })
 	private List<Comment> comment;
 
 	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-	@JsonIgnoreProperties({ "board" })
+	@JsonIgnoreProperties({ "board","user" })
 	private List<Likes> like; // 좋아요
 
 	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-	@JsonIgnoreProperties({ "buyerId", "sellerId", "board" })
+	@JsonIgnoreProperties({"board"})
 	private List<Chat> chat;
 
 	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties({ "user", "board" })
 	private List<TradeState> tradeState;
 
-	// id, username, address
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne
 	@JoinColumn(name = "userId")
 	@JsonIgnoreProperties({ "comment", "board", "like" })
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
 
-	@OneToOne(cascade = CascadeType.REMOVE)
+	@OneToOne
 	@JoinColumn(name = "buyerId")
 	@JsonIgnoreProperties({ "comment", "board", "like" })
 	private User Buyer;

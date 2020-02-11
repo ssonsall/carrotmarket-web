@@ -30,13 +30,14 @@ public class Message {
 	
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "senderId")
-	@JsonIgnoreProperties({ "comment","board","like" })
+	@JsonIgnoreProperties({"user","comment","like","tradeState","chat"})
 	private User user; 
 	
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="chatId")
 	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnoreProperties({"buyerId","sellerId"})
 	private Chat chat; //id
 	
 	@CreationTimestamp

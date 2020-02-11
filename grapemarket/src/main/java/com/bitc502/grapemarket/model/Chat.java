@@ -33,6 +33,7 @@ public class Chat {
 	//private User user; //id, username
 	@ManyToOne
 	@JoinColumn(name = "buyerId")
+	@JsonIgnoreProperties({"like","comment","board","tradeState"})
 	private User buyerId;
 	
 	@Column(nullable=false, columnDefinition = "int default 1")
@@ -40,7 +41,7 @@ public class Chat {
 	
 	@ManyToOne
 	@JoinColumn(name = "sellerId")
-	@JsonIgnoreProperties({"like","comment","board"})
+	@JsonIgnoreProperties({"like","comment","board","tradeState"})
 	private User sellerId;
 	
 	@Column(nullable=false, columnDefinition = "int default 1")
@@ -53,9 +54,12 @@ public class Chat {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Board board;
 	
-	@OneToMany(cascade=CascadeType.ALL)
+	
+	
+	@OneToMany(cascade=CascadeType.REMOVE)
 	@JoinColumn(name="ChatId")
-	@OnDelete(action=OnDeleteAction.NO_ACTION)
+	@JsonIgnoreProperties({"chat","user"})
+	//chat table 에서는 이미 대화중인 상대 데이터를 가지고 있으므로 user 데이터 불러올 필요 x
 	private List<Message> messages;
 	
 	@CreationTimestamp
