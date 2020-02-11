@@ -47,7 +47,7 @@
                         data-toggle="dropup">
                         <c:choose>
                             <c:when test="${pricipal.user.provider eq 'local'}">
-                                <img src="/upload/${principal.user.userProfile}" style="width: 50px; height: 50px;">
+                                <img src="/grapemarket-web/grapemarket/target/classes/static/upload/${principal.user.userProfile}" style="width: 50px; height: 50px;">
                             </c:when>
                             <c:otherwise>
                                 <img src="/upload/${principal.user.userProfile}" style="width: 50px; height: 50px;">
