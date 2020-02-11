@@ -111,60 +111,60 @@ public class TestController {
 //		return boards;
 //	}
 
-	@GetMapping("/page")
-	public String getlist(Model model,
-			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable) {
-		Page<Board> boards = bRepo.findAll(pageable);
-		if (pageable.getPageNumber() >= boards.getTotalPages()) {
-			return "redirect:/test/page?page=" + (boards.getTotalPages() - 1);
-		}
-		int category = 4;
-		int countRow = bRepo.countFindByCategory(category);
-		int count = 0;
-		if (countRow % 8 == 0) {
-			count = countRow / 8;
-		} else {
-			count = (countRow / 8) + 1;
-		}
-		model.addAttribute("count", count);
-		model.addAttribute("boards", boards.getContent());
-		return "/board/list";
-	}
+//	@GetMapping("/page")
+//	public String getlist(Model model,
+//			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable) {
+//		Page<Board> boards = bRepo.findAll(pageable);
+//		if (pageable.getPageNumber() >= boards.getTotalPages()) {
+//			return "redirect:/test/page?page=" + (boards.getTotalPages() - 1);
+//		}
+//		int category = 4;
+//		int countRow = bRepo.countFindByCategory(category);
+//		int count = 0;
+//		if (countRow % 8 == 0) {
+//			count = countRow / 8;
+//		} else {
+//			count = (countRow / 8) + 1;
+//		}
+//		model.addAttribute("count", count);
+//		model.addAttribute("boards", boards.getContent());
+//		return "/board/list";
+//	}
 
-	@GetMapping("/pageres")
-	public @ResponseBody Page<Board> getlistres(Model model,
-			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable) {
-		Page<Board> boards = bRepo.findAll(pageable);
-		if (pageable.getPageNumber() >= boards.getTotalPages()) {
-			return null;
-		}
-		int category = 4;
-		int countRow = bRepo.countFindByCategory(category);
-		int count = 0;
-		if (countRow % 8 == 0) {
-			count = countRow / 8;
-		} else {
-			count = (countRow / 8) + 1;
-		}
+//	@GetMapping("/pageres")
+//	public @ResponseBody Page<Board> getlistres(Model model,
+//			@PageableDefault(sort = { "id" }, direction = Sort.Direction.DESC, size = 8) Pageable pageable) {
+//		Page<Board> boards = bRepo.findAll(pageable);
+//		if (pageable.getPageNumber() >= boards.getTotalPages()) {
+//			return null;
+//		}
+//		int category = 4;
+//		int countRow = bRepo.countFindByCategory(category);
+//		int count = 0;
+//		if (countRow % 8 == 0) {
+//			count = countRow / 8;
+//		} else {
+//			count = (countRow / 8) + 1;
+//		}
+//
+//		model.addAttribute("count", count);
+//		model.addAttribute("boards", boards.getContent());
+//		return boards;
+//	}
 
-		model.addAttribute("count", count);
-		model.addAttribute("boards", boards.getContent());
-		return boards;
-	}
-
-	@GetMapping("/liketest")
-	public @ResponseBody Page<Board> liketest(@RequestParam("con") String temp, @RequestParam("cate") String cate,
-			Pageable page) {
-		// 공백제거
-		temp = temp.trim();
-		// 정규식 형태 만들어주기
-		temp = temp.replace(" ", ")(?=.*");
-		temp = "(?=.*" + temp + ")";
-		if (cate.equals("1"))
-			cate = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
-		Page<Board> testU = bRepo.search(cate, temp, page);
-		return testU;
-	}
+//	@GetMapping("/liketest")
+//	public @ResponseBody Page<Board> liketest(@RequestParam("con") String temp, @RequestParam("cate") String cate,
+//			Pageable page) {
+//		// 공백제거
+//		temp = temp.trim();
+//		// 정규식 형태 만들어주기
+//		temp = temp.replace(" ", ")(?=.*");
+//		temp = "(?=.*" + temp + ")";
+//		if (cate.equals("1"))
+//			cate = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
+//		Page<Board> testU = bRepo.search(cate, temp, page);
+//		return testU;
+//	}
 
 	@GetMapping("/stest")
 	public @ResponseBody Statistics dashboard(Model model) {
@@ -215,32 +215,32 @@ public class TestController {
 		return distanceKm;
 	}
 
-	@GetMapping("/distance/{id}/{range}")
-	public @ResponseBody List<User> PostDistance(@AuthenticationPrincipal UserPrincipal userPrincipal,
-			@PathVariable int id,@PathVariable int range) {
-
-		Coordinate lat = Coordinate.fromDegrees(userPrincipal.getUser().getAddressX());
-		Coordinate lng = Coordinate.fromDegrees(userPrincipal.getUser().getAddressY());
-		Point Mine = Point.at(lat, lng);
-
-//		Optional<User> oUser = uRepo.findById(id);
-//		User user = oUser.get();
-
-//		lat = Coordinate.fromDegrees(user.getAddressX());
-//		lng = Coordinate.fromDegrees(user.getAddressY());
-//		Point SeoulGPS = Point.at(lat, lng);
-//		double distance = EarthCalc.gcdDistance(SeoulGPS, Mine); // in meters
-//		String distanceKm = (distance / 1000) + "km";
-//		System.out.println("distance : " + distanceKm);
-
-		BoundingArea area = EarthCalc.around(Mine, range*1000);
-		Point nw = area.northWest;
-		Point se = area.southEast;
-
-		List<User> users = uRepo.findByGPS(nw.latitude, se.latitude, nw.longitude, se.longitude);
-
-		return users;
-	}
+//	@GetMapping("/distance/{id}/{range}")
+//	public @ResponseBody List<User> PostDistance(@AuthenticationPrincipal UserPrincipal userPrincipal,
+//			@PathVariable int id,@PathVariable int range) {
+//
+//		Coordinate lat = Coordinate.fromDegrees(userPrincipal.getUser().getAddressX());
+//		Coordinate lng = Coordinate.fromDegrees(userPrincipal.getUser().getAddressY());
+//		Point Mine = Point.at(lat, lng);
+//
+////		Optional<User> oUser = uRepo.findById(id);
+////		User user = oUser.get();
+//
+////		lat = Coordinate.fromDegrees(user.getAddressX());
+////		lng = Coordinate.fromDegrees(user.getAddressY());
+////		Point SeoulGPS = Point.at(lat, lng);
+////		double distance = EarthCalc.gcdDistance(SeoulGPS, Mine); // in meters
+////		String distanceKm = (distance / 1000) + "km";
+////		System.out.println("distance : " + distanceKm);
+//
+//		BoundingArea area = EarthCalc.around(Mine, range*1000);
+//		Point nw = area.northWest;
+//		Point se = area.southEast;
+//
+//		List<User> users = uRepo.findByGPS(nw.latitude, se.latitude, nw.longitude, se.longitude);
+//
+//		return users;
+//	}
 	
 	@GetMapping("/maptest")
 	public String maptest() {

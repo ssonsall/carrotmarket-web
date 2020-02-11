@@ -8,11 +8,10 @@ import com.bitc502.grapemarket.model.Message;
 
 public interface MessageRepository extends JpaRepository<Message, Integer>{
 
-	List<Message> findByChatIdOrderByIdDesc(int id);
-
 	List<Message> findByChatIdOrderById(int roomId);
-
+	
 	List<Message> findByChatIdOrderByCreateDateDesc(int id);
 	
-
+	// 사용하지 않는 쿼리
+//	List<Message> findByChatIdOrderByIdDesc(int id);
 }

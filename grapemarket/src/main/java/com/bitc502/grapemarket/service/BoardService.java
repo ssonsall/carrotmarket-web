@@ -240,7 +240,7 @@ public class BoardService {
 			userInput = "(?=.*" + userInput + ")";
 			if (category.equals("1")) // 입력값 + 카테고리 전체 (입력값만 걸고 카테고리 조건 무시)
 				category = "1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16";
-			boards = bRepo.searchAndGps(se.latitude, nw.latitude, nw.longitude, se.longitude, category, userInput,
+			boards = bRepo.findByCategoryAndGpsAndUserInput(se.latitude, nw.latitude, nw.longitude, se.longitude, category, userInput,
 					pageable);
 		}
 		return boards;

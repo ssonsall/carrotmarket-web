@@ -14,14 +14,15 @@ import com.bitc502.grapemarket.model.User;
 
 public interface TradeStateRepository extends JpaRepository<TradeState, Integer>{
 	
-	int countByUserAndBoard(User user, Board board);
-
 	TradeState findByUserIdAndBoardId(int userId, int boardId);
+
+	List<TradeState> findByUserId(int id);
 	
 	@Query(value = "SELECT * FROM tradeState WHERE boardId=?1 AND state in('구매중','구매완료')",nativeQuery = true)
 	List<TradeState> findByBoardIdAndState(int id);
-	
-	List<TradeState> findByUserId(int id);
+
+	//안드용
+	int countByUserAndBoard(User user, Board board);
 	
 	@Modifying
 	@Transactional
