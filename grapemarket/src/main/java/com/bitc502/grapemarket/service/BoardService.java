@@ -70,18 +70,22 @@ public class BoardService {
 
 	// 글쓰기 페이지
 	public String writeForm(UserPrincipal userPrincipal, Model model) {
+		try {
+			Optional<User> oUser = uRepo.findById(userPrincipal.getUser().getId());
+			User user = oUser.get();
+			model.addAttribute("user", user);
+			if (userPrincipal.getUser().getAddressAuth() == 0) {
+				int authNeeded = 1;
+				model.addAttribute("authNeeded", authNeeded);
+				return "/user/userProfile";
+			}
 
-		Optional<User> oUser = uRepo.findById(userPrincipal.getUser().getId());
-		User user = oUser.get();
-		model.addAttribute("user", user);
-		if (userPrincipal.getUser().getAddressAuth() == 0) {
-			int authNeeded = 1;
-			model.addAttribute("authNeeded", authNeeded);
-			return "/user/userProfile";
+			return "/board/write2";
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		return "/board/write2";
-
+		return null;
 	}
 
 	// 상세보기 페이지
@@ -134,47 +138,63 @@ public class BoardService {
 
 	// 글 수정
 	public Board updateForm(int id, Model model) {
-		Optional<Board> oBoard = bRepo.findById(id);
-		Board board = oBoard.get();
-		return board;
+		try {
+			Optional<Board> oBoard = bRepo.findById(id);
+			Board board = oBoard.get();
+			return board;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
-	
 	@Transactional
-	public void setBuyerId(User user, Board board) {
+	public void boardComplete(User user, Board board) {
+		try {
+			Optional<Board> oBoard = bRepo.findById(board.getId());
+			Board board2 = oBoard.get();
+			TradeState state = tradeStateRepo.findByUserIdAndBoardId(user.getId(), board.getId());
+			if (board.getBuyer() != null) {
+				board2.setState("1");
+				board2.setBuyer(board.getBuyer());
+				if (state.getState().equals("판매중")) {
+					state.setState("판매완료");
+				}
 
-		Optional<Board> oBoard = bRepo.findById(board.getId());
-		Board board2 = oBoard.get();
-		TradeState state = tradeStateRepo.findByUserIdAndBoardId(user.getId(), board.getId());
-		if (board.getBuyer() != null) {
-			board2.setState("1");
-			board2.setBuyer(board.getBuyer());
-			if (state.getState().equals("판매중")) {
-				state.setState("판매완료");
-			}
-
-		} else {
-			board2.setState("-1");
-			if (state.getState().equals("판매중")) {
-				state.setState("판매취소");
-			}
-		}
-		
-
-		tradeStateRepo.save(state);
-		bRepo.save(board2);
-		
-		List<TradeState> tradeStates = tradeStateRepo.findByBoardIdAndState(board.getId());
-		
-		for (TradeState tradeState : tradeStates) {
-			if(tradeState.getUser().getId() != board.getBuyer().getId()) {
-				tradeState.setState("구매취소");
-			}else {
-				if(tradeState.getState().equals("구매중")) {
-					tradeState.setState("구매완료");
+			} else {
+				board2.setState("-1");
+				if (state.getState().equals("판매중")) {
+					state.setState("판매취소");
 				}
 			}
-			
+
+			tradeStateRepo.save(state);
+			bRepo.save(board2);
+
+			List<TradeState> tradeStates = tradeStateRepo.findByBoardIdAndState(board.getId());
+
+			if (board.getBuyer() == null) {
+
+				for (TradeState tradeState : tradeStates) {
+					tradeState.setState("구매취소");
+				} // end of for
+
+			} else {
+
+				for (TradeState tradeState : tradeStates) {
+					if (tradeState.getUser().getId() != board.getBuyer().getId()) {
+						tradeState.setState("구매취소");
+					} else {
+						if (tradeState.getState().equals("구매중")) {
+							tradeState.setState("구매완료");
+						}
+					}
+				} // end of for
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}

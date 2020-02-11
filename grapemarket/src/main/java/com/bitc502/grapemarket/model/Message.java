@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -26,16 +28,15 @@ public class Message {
 	private int id; // 시퀀스
 	private String message; //메시지 내용
 	
-	
-	
 	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "senderId")
 	@JsonIgnoreProperties({ "comment","board","like" })
 	private User user; 
 	
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="chatId")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Chat chat; //id
 	
 	@CreationTimestamp

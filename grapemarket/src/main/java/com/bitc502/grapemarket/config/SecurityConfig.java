@@ -82,7 +82,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// ex) board/접근을 세분화해서 막고싶으면 먼저 추가해주고 밑에 다막으면된다 순서 잘지켜라!!
 				.antMatchers("/admin/**").access("hasRole('ADMIN')")
 				.antMatchers("/board/list").permitAll()
-				.antMatchers("/board/**", "/chat/**")
+				.antMatchers("/board/**", "/chat/**","/user/userProfile")
 				.authenticated()
 				// 위의 주소를 타는 것을 제외한 접근은 시큐리티가 막지 않는다.
 				.anyRequest().permitAll().and().formLogin()
