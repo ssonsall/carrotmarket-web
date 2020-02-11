@@ -28,7 +28,7 @@ public class Message {
 	private int id; // 시퀀스
 	private String message; //메시지 내용
 	
-	@ManyToOne(cascade = CascadeType.MERGE)
+	@ManyToOne
 	@JoinColumn(name = "senderId")
 	@JsonIgnoreProperties({"user","comment","like","tradeState","chat"})
 	private User user; 

@@ -36,7 +36,7 @@ public class Board {
 
 	// 댓글
 	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-	@JsonIgnoreProperties({ "board","user" })
+	@JsonIgnoreProperties({ "board"})
 	private List<Comment> comment;
 
 	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)

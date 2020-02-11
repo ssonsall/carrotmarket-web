@@ -2457,12 +2457,13 @@ Google map
 
 .comment-avatar {
   width: 55px;
+  height: 55px;
   float: left;
   margin-top: 10px;
 }
 
 .comment-avatar img {
-  border-radius: 50%;
+  border-radius: 0%;
 }
 
 .comment-content {

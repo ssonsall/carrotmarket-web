@@ -343,7 +343,7 @@
 
 									<div id="comment_id_${comment.id}" class="comment clearfix">
 										<div class="comment-avatar">
-											<img src="" alt="avatar" />
+											<img src="/upload/${comment.user.userProfile}" alt="avatar" />
 										</div>
 										<div class="comment-content clearfix">
 											<div class="comment-author font-alt">
@@ -361,11 +361,7 @@
 												<p>${comment.content}</p>
 											</div>
 											<div class="comment-meta font-alt">
-												Today, 14:55 -<span><i class="fa fa-star star"></i></span><span><i
-													class="fa fa-star star"></i></span><span><i
-													class="fa fa-star star"></i></span><span><i
-													class="fa fa-star star"></i></span><span><i
-													class="fa fa-star star-off"></i></span>
+												${comment.createDate}
 											</div>
 										</div>
 
@@ -429,170 +425,6 @@
 				</div>
 			</section>
 			<hr class="divider-w">
-			<section class="module-small">
-				<div class="container">
-					<div class="row">
-						<div class="col-sm-6 col-sm-offset-3">
-							<h2 class="module-title font-alt">Related Products</h2>
-						</div>
-					</div>
-					<div class="row multi-columns-row">
-						<div class="col-sm-6 col-md-3 col-lg-3">
-							<div class="shop-item">
-								<div class="shop-item-image">
-									<img src="/assets/images/shop/product-11.jpg"
-										alt="Accessories Pack" />
-									<div class="shop-item-detail">
-										<a class="btn btn-round btn-b"><span class="icon-basket">Add
-												To Cart</span></a>
-									</div>
-								</div>
-								<h4 class="shop-item-title font-alt">
-									<a href="#">Accessories Pack</a>
-								</h4>
-								Â£9.00
-							</div>
-						</div>
-						<div class="col-sm-6 col-md-3 col-lg-3">
-							<div class="shop-item">
-								<div class="shop-item-image">
-									<img src="/assets/images/shop/product-12.jpg"
-										alt="Menâs Casual Pack" />
-									<div class="shop-item-detail">
-										<a class="btn btn-round btn-b"><span class="icon-basket">Add
-												To Cart</span></a>
-									</div>
-								</div>
-								<h4 class="shop-item-title font-alt">
-									<a href="#">Menâs Casual Pack</a>
-								</h4>
-								Â£12.00
-							</div>
-						</div>
-						<div class="col-sm-6 col-md-3 col-lg-3">
-							<div class="shop-item">
-								<div class="shop-item-image">
-									<img src="/assets/images/shop/product-13.jpg"
-										alt="Menâs Garb" />
-									<div class="shop-item-detail">
-										<a class="btn btn-round btn-b"><span class="icon-basket">Add
-												To Cart</span></a>
-									</div>
-								</div>
-								<h4 class="shop-item-title font-alt">
-									<a href="#">Menâs Garb</a>
-								</h4>
-								Â£6.00
-							</div>
-						</div>
-						<div class="col-sm-6 col-md-3 col-lg-3">
-							<div class="shop-item">
-								<div class="shop-item-image">
-									<img src="/assets/images/shop/product-14.jpg" alt="Cold Garb" />
-									<div class="shop-item-detail">
-										<a class="btn btn-round btn-b"><span class="icon-basket">Add
-												To Cart</span></a>
-									</div>
-								</div>
-								<h4 class="shop-item-title font-alt">
-									<a href="#">Cold Garb</a>
-								</h4>
-								Â£14.00
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-			<hr class="divider-w">
-			<section class="module">
-				<div class="container">
-					<div class="row">
-						<div class="col-sm-6 col-sm-offset-3">
-							<h2 class="module-title font-alt">Exclusive products</h2>
-							<div class="module-subtitle font-serif">The languages only
-								differ in their grammar, their pronunciation and their most
-								common words.</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="owl-carousel text-center" data-items="5"
-							data-pagination="false" data-navigation="false">
-							<div class="owl-item">
-								<div class="col-sm-12">
-									<div class="ex-product">
-										<a href="#"><img src="/assets/images/shop/product-1.jpg"
-											alt="Leather belt" /></a>
-										<h4 class="shop-item-title font-alt">
-											<a href="#">Leather belt</a>
-										</h4>
-										Â£12.00
-									</div>
-								</div>
-							</div>
-							<div class="owl-item">
-								<div class="col-sm-12">
-									<div class="ex-product">
-										<a href="#"><img src="/assets/images/shop/product-3.jpg"
-											alt="Derby shoes" /></a>
-										<h4 class="shop-item-title font-alt">
-											<a href="#">Derby shoes</a>
-										</h4>
-										Â£54.00
-									</div>
-								</div>
-							</div>
-							<div class="owl-item">
-								<div class="col-sm-12">
-									<div class="ex-product">
-										<a href="#"><img src="/assets/images/shop/product-2.jpg"
-											alt="Leather belt" /></a>
-										<h4 class="shop-item-title font-alt">
-											<a href="#">Leather belt</a>
-										</h4>
-										Â£19.00
-									</div>
-								</div>
-							</div>
-							<div class="owl-item">
-								<div class="col-sm-12">
-									<div class="ex-product">
-										<a href="#"><img src="/assets/images/shop/product-4.jpg"
-											alt="Leather belt" /></a>
-										<h4 class="shop-item-title font-alt">
-											<a href="#">Leather belt</a>
-										</h4>
-										Â£14.00
-									</div>
-								</div>
-							</div>
-							<div class="owl-item">
-								<div class="col-sm-12">
-									<div class="ex-product">
-										<a href="#"><img src="/assets/images/shop/product-5.jpg"
-											alt="Chelsea boots" /></a>
-										<h4 class="shop-item-title font-alt">
-											<a href="#">Chelsea boots</a>
-										</h4>
-										Â£44.00
-									</div>
-								</div>
-							</div>
-							<div class="owl-item">
-								<div class="col-sm-12">
-									<div class="ex-product">
-										<a href="#"><img src="/assets/images/shop/product-6.jpg"
-											alt="Leather belt" /></a>
-										<h4 class="shop-item-title font-alt">
-											<a href="#">Leather belt</a>
-										</h4>
-										Â£19.00
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
 			<%@include file="../include/footer.jsp"%>
 
 		</div>
