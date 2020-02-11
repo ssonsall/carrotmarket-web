@@ -152,7 +152,7 @@ public class BoardController {
 	@PostMapping("/complete")
 	public @ResponseBody void boardComplete(@AuthenticationPrincipal UserPrincipal userPrincipal, Board board) {
 
-		boardServ.setBuyerId(userPrincipal.getUser(), board); 
+		 boardServ.boardComplete(userPrincipal.getUser(), board); 
 	}
 	
 
