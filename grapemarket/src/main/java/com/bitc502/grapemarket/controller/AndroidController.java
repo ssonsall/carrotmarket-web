@@ -308,6 +308,7 @@ public class AndroidController {
 		try {
 			bRepo.updateTradeCancelState("-1", Integer.parseInt(boardId));
 			tradeStateRepo.updateTradeState("판매취소", Integer.parseInt(boardId), userPrincipal.getUser().getId());
+			tradeStateRepo.updateTradeStateCancelBuy("구매취소", Integer.parseInt(boardId), userPrincipal.getUser().getId());
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
