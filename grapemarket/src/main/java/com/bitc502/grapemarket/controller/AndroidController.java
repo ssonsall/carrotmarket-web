@@ -185,12 +185,6 @@ public class AndroidController {
 		}
 	}
 
-	// 안씀
-	@GetMapping("/allList")
-	public List<Board> allList() {
-		return bRepo.findAll();
-	}
-
 	// 주소 설정 안된 놈 접속하면 이 컨트롤러
 	@GetMapping("/allListPageable")
 	public List<Board> allListPageable(

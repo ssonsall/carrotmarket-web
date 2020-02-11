@@ -66,6 +66,6 @@ spring:
 #파일 저장할 경로(각자 파일 경로로)
 #정민학원컴퓨터경로: C:/Users/it/Documents/GitHub/grapemarket-web/grapemarket/src/main/resources/static/upload/ (지우지마세여;))
 file:
-  path: C:/dev/STS4/workspace/grapemarket-web/grapemarket/target/classes/static/upload/
+  path: C:/Users/ssons/Documents/myGithub/grapemarket-web/grapemarket/src/main/resources/static/upload/
 
 
