@@ -56,7 +56,7 @@ public class Chat {
 	
 	
 	
-	@OneToMany(cascade=CascadeType.REMOVE)
+	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name="ChatId")
 	@JsonIgnoreProperties({"chat","user"})
 	//chat table 에서는 이미 대화중인 상대 데이터를 가지고 있으므로 user 데이터 불러올 필요 x

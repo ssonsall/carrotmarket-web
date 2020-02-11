@@ -34,7 +34,7 @@ public class Message {
 	private User user; 
 	
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="chatId")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JsonIgnoreProperties({"buyerId","sellerId"})

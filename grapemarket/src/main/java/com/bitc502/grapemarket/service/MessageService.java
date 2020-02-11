@@ -35,6 +35,7 @@ public class MessageService {
 			message.setUser(user);
 			message.setChat(chat);
 			mRepo.save(message);
+			
 			if (chat.getBuyerState() == 0) {
 				chat.setBuyerState(1);
 			}
