@@ -57,6 +57,7 @@ public class BoardController {
 		// 검색어 있는지 확인하고 board 데이터 불러오기
 		try {
 			boards = boardServ.getList(userInput, category, userPrincipal, range, pageable);
+			if(userPrincipal.getUser().getAddress()==null) throw new NullPointerException();
 		} catch (NullPointerException ne) {
 			boards = boardServ.getAllList(userInput, category, pageable);
 		}
