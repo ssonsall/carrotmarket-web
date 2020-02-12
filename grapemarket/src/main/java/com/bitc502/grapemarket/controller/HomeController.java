@@ -30,6 +30,9 @@ public class HomeController {
 		List<Search> searchs = searchServ.getPopularKeyWords();
 		model.addAttribute("searchs", searchs);
 		model.addAttribute("boards", boards);
+		
+		String path = System.getProperty("user.dir");
+		System.out.println("Working Directory = " + path);
 		return "index";
 	}
 
