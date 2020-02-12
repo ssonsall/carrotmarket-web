@@ -38,39 +38,39 @@
 						<!-- ìí í° ì¬ì§ -->
 						<div class="col-sm-6 mb-sm-40">
 							<img style="width: 555px; height: 625.94px;" id="mainImage"
-								src="/home/ubuntu/upload/${board.image1}" alt="Single Product Image" />
+								src="/upload/${board.image1}" alt="Single Product Image" />
 							<!-- ìí ìì ì¬ì§ ìì-->
 							<ul class="product-gallery">
 								<li><img style="width: 83.25px; height: 93.89px;" id="img1"
-									onClick="changeImg(1)" src="/home/ubuntu/upload/${board.image1}"
+									onClick="changeImg(1)" src="/upload/${board.image1}"
 									alt=" No Image" /></li>
 								<c:if test="${!empty board.image2}">
 									<li><img style="width: 83.25px; height: 93.89px;"
-										id="img2" onClick="changeImg(2)" src="/home/ubuntu/upload/${board.image2}"
+										id="img2" onClick="changeImg(2)" src="/upload/${board.image2}"
 										alt=" No Image" /></li>
 								</c:if>
 								<c:if test="${!empty board.image3}">
 									<li><img style="width: 83.25px; height: 93.89px;"
-										id="img2" onClick="changeImg(3)" src="/home/ubuntu/upload/${board.image3}"
+										id="img2" onClick="changeImg(3)" src="/upload/${board.image3}"
 										alt=" No Image" /></li>
 								</c:if>
 								<c:if test="${!empty board.image4}">
 									<li><img style="width: 83.25px; height: 93.89px;"
-										id="img2" onClick="changeImg(4)" src="/home/ubuntu/upload/${board.image4}"
+										id="img2" onClick="changeImg(4)" src="/upload/${board.image4}"
 										alt=" No Image" /></li>
 								</c:if>
 								<c:if test="${!empty board.image5}">
 									<li><img style="width: 83.25px; height: 93.89px;"
-										id="img2" onClick="changeImg(5)" src="/home/ubuntu/upload/${board.image5}"
+										id="img2" onClick="changeImg(5)" src="/upload/${board.image5}"
 										alt=" No Image" /></li>
 								</c:if>
 
 								<!-- 								<li><img style="width: 83.25px; height: 93.89px;" id="img3" onClick="changeImg(3)"
-									src="/home/ubuntu/upload/${board.image3}" alt=" No Image" /></li>
+									src="/upload/${board.image3}" alt=" No Image" /></li>
 								<li><img style="width: 83.25px; height: 93.89px;" id="img4" onClick="changeImg(4)"
-									src="/home/ubuntu/upload/${board.image4}" alt=" No Image" /></li>
+									src="/upload/${board.image4}" alt=" No Image" /></li>
 								<li><img style="width: 83.25px; height: 93.89px;" id="img5" onClick="changeImg(5)"
-									src="/home/ubuntu/upload/${board.image5}" alt="" /></li> -->
+									src="/upload/${board.image5}" alt="" /></li> -->
 							</ul>
 
 
@@ -81,15 +81,15 @@
                                     var img = document
                                         .getElementById("mainImage");
                                     if (id == 1) {
-                                        img.src = "/home/ubuntu/upload/${board.image1}";
+                                        img.src = "/upload/${board.image1}";
                                     } else if (id == 2) {
-                                        img.src = "/home/ubuntu/upload/${board.image2}";
+                                        img.src = "/upload/${board.image2}";
                                     } else if (id == 3) {
-                                        img.src = "/home/ubuntu/upload/${board.image3}";
+                                        img.src = "/upload/${board.image3}";
                                     } else if (id == 4) {
-                                        img.src = "/home/ubuntu/upload/${board.image4}";
+                                        img.src = "/upload/${board.image4}";
                                     } else if (id == 5) {
-                                        img.src = "/home/ubuntu/upload/${board.image5}";
+                                        img.src = "/upload/${board.image5}";
                                     }
 
                                 }
@@ -343,7 +343,7 @@
 
 									<div id="comment_id_${comment.id}" class="comment clearfix">
 										<div class="comment-avatar">
-											<img src="/home/ubuntu/upload/${comment.user.userProfile}" alt="avatar" />
+											<img src="/upload/${comment.user.userProfile}" alt="avatar" />
 										</div>
 										<div class="comment-content clearfix">
 											<div class="comment-author font-alt">
