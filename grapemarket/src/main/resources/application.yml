@@ -11,7 +11,7 @@ server:
 spring:
   mvc:
     view:
-      prefix: /home/ubuntu/grapemarket-web/grapemarket/src/webapp/WEB-INF/views/
+      prefix: /home/ubuntu/grapemarket-web/grapemarket/src/main/webapp/WEB-INF/views/
       suffix: .jsp
       
   datasource:
