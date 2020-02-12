@@ -54,7 +54,7 @@
 											<button class="close" type="button" data-dismiss="alert"
 												style="position: absolute; left: 340px; top: -4px;" aria-hidden="true"
 												onclick="outChat(${chat.id},'buyer')">&times;</button>
-											<img src="/home/ubuntu/grapemarket-web/grapemarket/src/main/resources/static/upload/${chat.board.image1}"
+											<img src="/home/ubuntu/upload/${chat.board.image1}"
 												style="width: 50px; height: 50px;" />
 											<div
 												style="position: absolute; top: 12px; left: 70px; font-size: 12px;">
@@ -77,7 +77,7 @@
 											<button class="close" type="button" data-dismiss="alert"
 												style="position: absolute; left: 340px; top: -4px;" aria-hidden="true"
 												onclick="outChat(${chat.id},'buyer')">&times;</button>
-											<img src="/home/ubuntu/grapemarket-web/grapemarket/src/main/resources/static/upload/${chat.board.image1}"
+											<img src="/home/ubuntu/upload/${chat.board.image1}"
 												style="width: 50px; height: 50px;" />
 											<div
 												style="position: absolute; top: 12px; left: 70px; font-size: 12px;">

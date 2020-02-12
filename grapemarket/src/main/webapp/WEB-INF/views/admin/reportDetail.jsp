@@ -191,19 +191,19 @@
 												<tr>
 													<th>»çÁø</th>
 													<td><img style="width: 50px; height: 50px;"
-														src="/home/ubuntu/grapemarket-web/grapemarket/src/main/resources/static/upload/${AdminReportDetail.reportType.image1}" alt=" No Image" />
+														src="/home/ubuntu/upload/${AdminReportDetail.reportType.image1}" alt=" No Image" />
 														</li> <c:if test="${!empty AdminReportDetail.reportType.image2}">
 															<li><img style="width: 50px; height: 50px;"
-																src="/home/ubuntu/grapemarket-web/grapemarket/src/main/resources/static/upload/${AdminReportDetail.reportType.image2}" alt=" No Image" /></li>
+																src="/home/ubuntu/upload/${AdminReportDetail.reportType.image2}" alt=" No Image" /></li>
 														</c:if> <c:if test="${!empty AdminReportDetail.reportType.image3}">
 															<li><img style="width: 50px; height: 50px;"
-																src="/home/ubuntu/grapemarket-web/grapemarket/src/main/resources/static/upload/${AdminReportDetail.reportType.image3}" alt=" No Image" /></li>
+																src="/home/ubuntu/upload/${AdminReportDetail.reportType.image3}" alt=" No Image" /></li>
 														</c:if> <c:if test="${!empty AdminReportDetail.reportType.image4}">
 															<li><img style="width: 50px; height: 50px;"
-																src="/home/ubuntu/grapemarket-web/grapemarket/src/main/resources/static/upload/${AdminReportDetail.reportType.image4}" alt=" No Image" /></li>
+																src="/home/ubuntu/upload/${AdminReportDetail.reportType.image4}" alt=" No Image" /></li>
 														</c:if> <c:if test="${!empty AdminReportDetail.reportType.image5}">
 															<li><img style="width: 50px; height: 50px;"
-																src="/home/ubuntu/grapemarket-web/grapemarket/src/main/resources/static/upload/${AdminReportDetail.reportType.image5}" alt=" No Image" /></li>
+																src="/home/ubuntu/upload/${AdminReportDetail.reportType.image5}" alt=" No Image" /></li>
 														</c:if></td>
 												</tr>
 											</c:when>

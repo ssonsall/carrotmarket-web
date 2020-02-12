@@ -237,14 +237,14 @@
 										<c:when test="${board.state eq 1 }">
 										
 										<div style="width: 262.5px; height: 296.05px">
-										<img src="/home/ubuntu/grapemarket-web/grapemarket/src/main/resources/static/upload/sold.png" style="position: absolute; top: 100px; transform: rotate(-20deg); z-index: 1" >
-										<img src="/home/ubuntu/grapemarket-web/grapemarket/src/main/resources/static/upload/${board.image1}" alt="Accessories Pack" style="width: 262.5px; height: 296.05px; filter: brightness(50%); z-index: 2" />
+										<img src="/home/ubuntu/upload/sold.png" style="position: absolute; top: 100px; transform: rotate(-20deg); z-index: 1" >
+										<img src="/home/ubuntu/upload/${board.image1}" alt="Accessories Pack" style="width: 262.5px; height: 296.05px; filter: brightness(50%); z-index: 2" />
 										
 										</div>
 										
 										</c:when>
 										<c:otherwise>
-										<img src="/home/ubuntu/grapemarket-web/grapemarket/src/main/resources/static/upload/${board.image1}" alt="Accessories Pack" style="width: 262.5px; height: 296.05px" />
+										<img src="/home/ubuntu/upload/${board.image1}" alt="Accessories Pack" style="width: 262.5px; height: 296.05px" />
 										</c:otherwise>
 										</c:choose>
 											
