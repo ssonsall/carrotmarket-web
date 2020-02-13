@@ -75,7 +75,7 @@ function init(){
 	var tran_x = p.y;
 	var tran_y = p.x;
 	
-	location.href="https://ec2-15-164-214-135.ap-northeast-2.compute.amazonaws.com:8443/android/juso?address="+emdNm+"&addressX="+tran_x+"&addressY="+tran_y+"";
+	location.href="https://ec2-15-164-214-186.ap-northeast-2.compute.amazonaws.com:8443/android/juso?address="+emdNm+"&addressX="+tran_x+"&addressY="+tran_y+"";
 	
 	}
 }
