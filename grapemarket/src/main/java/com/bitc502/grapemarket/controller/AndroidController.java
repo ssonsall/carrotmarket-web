@@ -496,6 +496,7 @@ public class AndroidController {
 			userPrincipal.getUser().setAddress(address);
 			userPrincipal.getUser().setAddressX(Double.parseDouble(addressX));
 			userPrincipal.getUser().setAddressY(Double.parseDouble(addressY));
+			userPrincipal.getUser().setAddressAuth(0);
 			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
