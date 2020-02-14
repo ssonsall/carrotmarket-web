@@ -67,7 +67,7 @@
 								<ul class="nav nav-tabs font-alt" role="tablist" id="tablist">
 									<li class="active" id="tablist-profile"><a href="#profile"
 										data-toggle="tab"><span class="icon-profile-male"></span>유저정보</a></li>
-									<li id="tablist-profile"><a href="#myTown"
+									<li id="tablist-myTown"><a href="#myTown"
 										data-toggle="tab"><span class="icon-globe"></span>동네설정</a></li>
 									<li id="tablist-townAuth"><a href="#townAuth"
 										data-toggle="tab"><span class="icon-compass"></span>동네인증</a></li>
@@ -465,6 +465,20 @@
 								}
 
 							}
+
+							if (from === 'list') {
+								if (state === 'seeDetail') {
+									alert('동네 인증 필요');
+									document.querySelector('.tab-pane.active').className = 'tab-pane';
+									document.querySelector('li.active').className = '';
+									document.querySelector('#myTown').className = 'tab-pane active';
+									document.querySelector('#tablist-myTown').className = 'active';
+									getState();
+								}
+
+							}
+
+							
 
 							if (from === 'mytown') {
 								if (state === 'auth') {
