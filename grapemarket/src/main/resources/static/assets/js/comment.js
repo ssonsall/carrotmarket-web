@@ -9,14 +9,12 @@ function commentWrite() {
         return res.json();
     }).then(function (res) {
             //화면에 적용
-            console.log(res);
-            console.log(res.id);
             var commentId = res.id;
             var username = document.getElementById("username").value;
             var content = document.getElementById("comment_area").value;
-            console.log(username);
-            console.log(content);
-            var comment_et = commentItemForm(commentId,username,content);
+            var userProfile = document.getElementById("userProfileOnNav").src.split('/')[4]
+            console.log(userProfile)
+            var comment_et = commentItemForm(commentId,username,content,userProfile);
             
             $("#comments_reviews").append(comment_et);
             //입력폼 초기화하기
@@ -37,10 +35,10 @@ function commentDelete(commentId) {
     });
 }
 
-function commentItemForm(commentId,username, content) {
+function commentItemForm(commentId,username, content,userProfile) {
     var commentItem = `<div id="comment_id_" class="comment clearfix">
 										<div class="comment-avatar">
-											<img src="" alt="avatar" />
+											<img src="/upload/${userProfile}" alt="avatar" />
 										</div>
 										<div id="comment_id_${commentId}"class="comment-content clearfix">
 											<div class="comment-author font-alt">

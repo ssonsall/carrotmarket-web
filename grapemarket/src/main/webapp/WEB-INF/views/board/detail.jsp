@@ -114,9 +114,19 @@
 												</c:otherwise>
 											</c:choose>
 										</div>
+										<c:choose>
+										<c:when test="${likeCount ne 0}">
 										<div id="likeCount">
 											<p>${likeCount}명의회원이이상품을좋아합니다.</p>
 										</div>
+										</c:when>
+										<c:otherwise>
+										<div id="likeCount">
+											
+										</div>
+										</c:otherwise>
+										</c:choose>
+										
 									</form>
 									<%-- <c:choose>
 										<c:when test="${likeCount ne 0}">
